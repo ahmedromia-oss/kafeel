@@ -11,8 +11,12 @@ export class LanguageService {
     private LanguageRepo: languageRepository,
     private workerService: WorkerService,
   ) {}
-  async getLanguages(workerId: string): Promise<Language[]> {
-    return await this.LanguageRepo.findAll({ where: { workerId: workerId } });
+  async getLanguages(workerId: string, skip?:number , take?:number): Promise<Language[]> {
+    return await this.LanguageRepo.findAll({ where: { workerId: workerId } } , 
+      undefined,
+      skip,
+      take
+    );
   }
   async getLanguageById(languageId: string) {
     return await this.LanguageRepo.findOne({

@@ -49,6 +49,7 @@ export class UserService {
     });
   }
   public async UpdateUser(updateUser: User, userId: string): Promise<string> {
+   
     return await this.UserRepository.update({ id: userId }, updateUser);
   }
 }

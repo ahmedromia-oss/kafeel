@@ -22,15 +22,21 @@ import { AdvertiseModule } from './Advertise/advertise.module';
 import { config } from 'process';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { BucketsModule } from './Buckets/buckets.module';
+import { SocketModule } from './Socket/socket.module';
+import { companyModule } from './company/company.module';
+import { JobModule } from './Job/Job.module';
+import { JobApplicants } from './Job_Applicants/Job_applicants.model';
+import { JobApplicantsModule } from './Job_Applicants/Job_applicants.module';
 
 @Module({
   imports: [
     AdvertiseModule,
-    JwtModule.register({global:true}),
+    JwtModule.register({ global: true }),
     AuthModule,
     UserModule,
-   
-    TypeOrmModule.forRoot({...AppDataSource.options , autoLoadEntities:true}),
+JobModule,
+    TypeOrmModule.forRoot({ ...AppDataSource.options, autoLoadEntities: true }),
     SharedModule,
     TokenModule,
     LanguageModule,
@@ -38,9 +44,12 @@ import { JwtModule } from '@nestjs/jwt';
     ExperienceModule,
     EducationModule,
     AwardModule,
-    ConfigModule.forRoot({isGlobal:true}),
-    
-    ],
+    SocketModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    JobApplicantsModule,
+    BucketsModule,
+    companyModule,
+  ],
   controllers: [],
   providers: [],
 })

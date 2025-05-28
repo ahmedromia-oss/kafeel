@@ -10,6 +10,15 @@ export enum languageLevel {
   INTERMEDIATE = 'INTERMEDITE',
   NATIVE = 'NATIVE',
 }
+export enum FileType{
+  CV = "CV",
+  IMAGE = "IMAGE"
+}
+export enum MessageType {
+  TEXT = 'TEXT',
+  IMAGE = 'IMAGE',
+  FILE = 'FILE',
+}
 export const enum Code {
   NO_CHANGED_VALUES = 'NO_CHANGED_VALUES',
   DELETED = 'DELETED',
@@ -78,6 +87,11 @@ export enum PreferredSponsorType {
   GOVERNMENT = 'GOVERNMENT',
 }
 export const enum ValidationErrors {
+  
+  MUST_BE_SPONSORTYPE = 'MUST_BE_SPONSORTYPE',
+  MUST_JOB_TYPE = "MUST_JOB_TYPE",
+  MUST_URL = "MUST_URL",
+  NO_SPACE_NO_SPECIAL_CHRACHTER = "NO_SPACE_NO_SPECIAL_CHRACHTER",
   INVALID_LANGUAGE_LEVEL = "INVALID_LANGUAGE_LEVEL",
   INVALID_SKILL_LEVEL = "INVALID_SKILL_LEVEL",
   INVALID_EDUCATION_ENUM = "INVALID_EDUCATION_ENUM",

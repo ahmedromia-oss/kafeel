@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Experience } from './Experience.model';
@@ -31,8 +32,10 @@ export class experienceController {
   @serialize(GetExperienceDto)
   async getExperiences(
     @Param('workerId') workerId: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
   ): Promise<GetExperienceDto[]> {
-    return this.experienceService.getexperiences(workerId);
+    return this.experienceService.getexperiences(workerId , skip , take);
   }
 
   // GET /experiences/:workerId/:experienceId
@@ -83,10 +86,6 @@ export class experienceController {
     @user() user: userToken,
     @Param('experienceId') experienceId: string,
   ): Promise<string> {
-
-    return this.experienceService.deleteExperience(
-      experienceId,
-      user.sub,
-    );
+    return this.experienceService.deleteExperience(experienceId, user.sub);
   }
 }

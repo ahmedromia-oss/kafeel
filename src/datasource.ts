@@ -1,4 +1,3 @@
-
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 
@@ -6,9 +5,9 @@ dotenv.config();
 // For ES module environment, recreate __dirname
 
 export const AppDataSource = new DataSource({
-  
+
   host: process.env.host,
-  type: 'postgres',
+  type: 'mysql',
   username: process.env.DBuser,
   password: process.env.password,
   database: process.env.database,

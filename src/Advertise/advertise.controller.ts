@@ -1,4 +1,3 @@
-
 import {
   Body,
   Controller,
@@ -7,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -26,7 +26,6 @@ import { GetAdvertiseDto } from './DTOs/getAdvertise.dto';
 import { CreateAdvertiseDto } from './DTOs/createAdvertise.dto';
 import { UpdateAdvertiseDto } from './DTOs/updateAdvertise.dto';
 
-
 @Controller('advertises')
 export class AdvertiseController {
   constructor(private advertiseService: AdvertiseService) {}
@@ -36,8 +35,10 @@ export class AdvertiseController {
   @serialize(GetAdvertiseDto)
   async getAdvertises(
     @Param('workerId') workerId: string,
+    @Query('skip') skip?:number,
+    @Query('take') take?:number
   ): Promise<Advertise[]> {
-    return this.advertiseService.getAdvertises(workerId);
+    return await this.advertiseService.getAdvertises(workerId , skip , take);
   }
 
   // GET /advertises/:advertiseId
@@ -45,37 +46,37 @@ export class AdvertiseController {
   @serialize(GetAdvertiseDto)
   async getAdvertiseById(
     @Param('advertiseId') advertiseId: string,
-    @user() user: userToken,
   ): Promise<Advertise> {
-    return this.advertiseService.getAdvertiseById(advertiseId, user.sub);
+    return await this.advertiseService.getAdvertiseById(advertiseId);
   }
 
   // POST /advertises
   @Post()
   @serialize(GetAdvertiseDto)
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.WORKER , UserType.COMPANY)
+  @roles(UserType.WORKER, UserType.COMPANY)
   async createAdvertise(
+    
     @user() user: userToken,
     @Body() addAdvertise: CreateAdvertiseDto,
   ): Promise<Advertise> {
     const advertise = plainToClass(Advertise, addAdvertise);
     advertise.workerId = user.sub;
-    return this.advertiseService.createAdvertise(advertise);
+    return await this.advertiseService.createAdvertise(advertise);
   }
 
   // PUT /advertises/:advertiseId
   @Put(':advertiseId')
   @serialize()
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.WORKER , UserType.COMPANY)
+  @roles(UserType.WORKER, UserType.COMPANY)
   async updateAdvertise(
     @user() user: userToken,
     @Param('advertiseId') advertiseId: string,
     @Body() updateAdvertise: UpdateAdvertiseDto,
   ): Promise<string> {
     const advertise = plainToInstance(Advertise, updateAdvertise);
-    return this.advertiseService.updateAdvertise(
+    return await this.advertiseService.updateAdvertise(
       advertise,
       advertiseId,
       user.sub,
@@ -86,13 +87,13 @@ export class AdvertiseController {
   @Delete(':advertiseId')
   @serialize()
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.WORKER , UserType.COMPANY)
+  @roles(UserType.WORKER, UserType.COMPANY)
   async deleteAdvertise(
     @user() user: userToken,
     @Param('advertiseId') advertiseId: string,
   ): Promise<string> {
     // Assuming delete logic is implemented in the service
-    // return this.advertiseService.deleteAdvertise(advertiseId, user.sub);
-    return
+    return await this.advertiseService.deleteAdvertise(advertiseId, user.sub);
   }
+  
 }

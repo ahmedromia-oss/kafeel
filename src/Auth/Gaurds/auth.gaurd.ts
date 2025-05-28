@@ -12,6 +12,7 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { customJwtService } from 'src/JWT/jwt.service';
+import { tokenType } from 'src/constants';
 
 
 
@@ -26,7 +27,9 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-    if (!token) {
+    
+    const result = await this.jwtService.verifyToken(token , this.configService.get<string>('secretKey'))
+    if (result.tokenType != tokenType.VALID) {
       throw new UnauthorizedException();
     }
     try {

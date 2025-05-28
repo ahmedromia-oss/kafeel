@@ -8,16 +8,17 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  BeforeInsert,
+  PrimaryColumn,
 } from 'typeorm';
 
 import { Worker } from 'src/Worker/worker.model';
 import { JobType, PreferredSponsorType } from 'src/constants';
-
-
+import { v4 } from 'uuid';
 
 @Entity()
 export class Advertise {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   id: string;
 
   @Column({ type: 'varchar', length: 100 })
@@ -25,13 +26,14 @@ export class Advertise {
 
   @Column({ type: 'varchar', length: 50 })
   currentCity: string;
-
+  @Column({ type: 'boolean', default: true })
+  IsOpen: boolean;
   @Column({
     type: 'enum',
     enum: PreferredSponsorType,
   })
   preferredSponsorType: PreferredSponsorType;
-
+  @Column({ type: 'varchar', length: 50, nullable: true })
   expectedNotificationTime: string;
 
   @Column({
@@ -43,13 +45,19 @@ export class Advertise {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
   @Column()
   workerId: string;
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
   @ManyToOne(() => Worker, (worker) => worker.advertises)
   @JoinColumn({ name: 'workerId' })
   worker: Worker;
+  @BeforeInsert()
+  generateId() {
+    if (!this.id) {
+      this.id = v4();
+    }
+  }
 }

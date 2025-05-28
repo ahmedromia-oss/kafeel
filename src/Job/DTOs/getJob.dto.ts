@@ -22,6 +22,6 @@ export class GetJobDto {
 
   @Expose()
   isRemote: boolean;
-
-  
+  @Expose()
+  companyId: string;
 }

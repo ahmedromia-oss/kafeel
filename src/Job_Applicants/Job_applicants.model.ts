@@ -6,15 +6,18 @@ import {
   Unique,
   JoinColumn,
   Column,
+  BeforeInsert,
+  PrimaryColumn,
 } from 'typeorm';
 
 import { Worker } from 'src/Worker/worker.model';
 import { Job } from 'src/Job/models/job.model';
+import { v4 } from 'uuid';
 
 @Entity('job_applicants')
 @Unique(['workerId', 'JobId']) // Ensures a user can't apply to the same job multiple times
 export class JobApplicants {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   id: string;
 
   @Column({ type: 'uuid' })
@@ -31,11 +34,18 @@ export class JobApplicants {
   @JoinColumn({ name: 'JobId' })
   job: Job;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar', length: 255})
   CV: string;
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar', length: 255})
   describtion: string;
 
   @CreateDateColumn()
   appliedAt: Date;
+  @BeforeInsert()
+  generateId() {
+    if (!this.id) {
+      this.id = v4();
+    }
+  }
+  
 }

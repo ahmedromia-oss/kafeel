@@ -6,34 +6,36 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
 } from 'class-validator';
 import { education, ValidationErrors } from 'src/constants';
 
 export class createExperienceDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  jobTitle:string
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @Transform(({ value }) => new Date(value))
-
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   startDate: Date;
   @IsOptional()
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   describtion: string;
   @IsOptional()
   @Transform(({ value }) => new Date(value))
-
   @IsDate({ message: ValidationErrors.INVALID_DATE })
-
   endDate: Date;
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsString({ message: ValidationErrors.MUST_STRING })
   company: string;
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  @IsUrl({} , {message:ValidationErrors.MUST_URL})
   @IsOptional()
   companyUrl: string;
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   @IsOptional()
   city: string;
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   country: string;
 }

@@ -1,21 +1,31 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
+import { Code, valuesString } from 'src/constants';
 
 export class GetAwardDto {
   @Expose()
   id: string;
+  @Expose()
+  link?: string;
+  @Expose()
+  institution: string;
 
   @Expose()
-  name: string;
+  description?: string;
 
   @Expose()
-  awardLink: string;
+  startDate?: Date | string;
 
   @Expose()
-  describtion: string;
+  @Transform(({ value }) => {
+    if (value === null || typeof value === 'undefined')
+      return valuesString.PRESENT;
+
+    return new Date(value);
+  })
+  endDate?: Date | string;
 
   @Expose()
-  entity: string;
-
+  certificateFileUrl?: string;
   @Expose()
-  date: Date;
+  workerId: string;
 }

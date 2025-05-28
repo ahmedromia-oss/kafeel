@@ -5,7 +5,7 @@ import { ValidationErrors } from 'src/constants';
 @Expose()
 export class SignInUserDTO {
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
-  @Transform(({ value }) => value.toLowerCase())
+  @Transform(({ value }) => value?.toLowerCase())
   email: string;
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   password: string;

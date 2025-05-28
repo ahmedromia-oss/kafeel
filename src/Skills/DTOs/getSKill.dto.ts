@@ -3,6 +3,8 @@ import { skillLevel } from 'src/constants';
 
 export class GetSkillDto {
   @Expose()
+  id: string;
+  @Expose()
   name: string;
 
   @Expose()
@@ -10,4 +12,6 @@ export class GetSkillDto {
 
   @Expose()
   describtion: string;
+  @Expose()
+  workerId: string;
 }

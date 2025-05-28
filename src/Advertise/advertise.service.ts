@@ -4,7 +4,6 @@ import { AdvertiseRepository } from './advertise.repository';
 import { WorkerService } from 'src/Worker/worker.service';
 import { Advertise } from './advertise.model';
 
-
 @Injectable()
 export class AdvertiseService {
   constructor(
@@ -15,24 +14,33 @@ export class AdvertiseService {
   /**
    * Get all adverts for a given worker
    */
-  async getAdvertises(workerId: string): Promise<Advertise[]> {
-    return this.advertiseRepo.findAll({
-      where: { workerId },
-    });
+  async getAdvertises(
+    workerId: string,
+    skip?: number,
+    take?: number,
+  ): Promise<Advertise[]> {
+    return await this.advertiseRepo.findAll(
+      {
+        where: { workerId },
+      },
+      undefined,
+      skip,
+      take,
+    );
   }
 
   /**
    * Get a single advert by its ID, scoped to the worker
    */
-  async deleteAdvertise(advertiseId:string , workerId:string){
-    await this.advertiseRepo.delete({workerId:workerId , id:advertiseId})
+  async deleteAdvertise(advertiseId: string, workerId: string) {
+    return await this.advertiseRepo.delete({
+      workerId: workerId,
+      id: advertiseId,
+    });
   }
-  async getAdvertiseById(
-    advertiseId: string,
-    workerId: string,
-  ): Promise<Advertise> {
+  async getAdvertiseById(advertiseId: string): Promise<Advertise> {
     return await this.advertiseRepo.findOne({
-      where: { id: advertiseId, workerId },
+      where: { id: advertiseId },
     });
   }
 
@@ -42,7 +50,7 @@ export class AdvertiseService {
   async createAdvertise(advertise: Advertise): Promise<Advertise> {
     // ensure the worker exists
     advertise.worker = await this.workerService.GetWorker(advertise.workerId);
-    return this.advertiseRepo.create(advertise);
+    return await this.advertiseRepo.create(advertise);
   }
 
   /**
@@ -54,6 +62,9 @@ export class AdvertiseService {
     workerId: string,
   ): Promise<string> {
     // you might want to verify existence first, or let repository handle 0‑rows‑affected
-    return this.advertiseRepo.update({ id: advertiseId, workerId }, advertise);
+    return await this.advertiseRepo.update(
+      { id: advertiseId, workerId },
+      advertise,
+    );
   }
 }

@@ -7,11 +7,14 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  BeforeInsert,
+  PrimaryColumn,
 } from 'typeorm';
+import { v4 } from 'uuid';
 
 @Entity()
 export class Education {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   id: string;
   @Column({ nullable: false, type: 'date' })
   startDate: Date;
@@ -24,16 +27,23 @@ export class Education {
   @Column({ type: 'uuid' })
   workerId: string;
 
-  @Column({ nullable: true, type: 'text' })
+  @Column({ nullable: true, type: 'varchar', length: 255})
   describtion: string;
   @Column({ nullable: true, type: 'date' })
   endDate: Date;
-  @Column({ nullable: false, type: 'text' })
+  @Column({ nullable: false, type: 'varchar', length: 255})
   uniOrSchool: string;
-  @Column({ nullable: true, type: 'text' })
+  @Column({ nullable: true, type: 'varchar', length: 255})
   uniOrSchoolUrl: string;
-  @Column({ nullable: false, type: 'text' })
+  @Column({ nullable: false, type: 'varchar', length: 255})
   country: string;
-  @Column({ nullable: true, type: 'text' })
+  @Column({ nullable: true, type: 'varchar', length: 255})
   city: string;
+  @BeforeInsert()
+  generateId() {
+    if (!this.id) {
+      this.id = v4();
+    }
+  }
+ 
 }

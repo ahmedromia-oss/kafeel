@@ -13,8 +13,8 @@ export class SkillService {
     return await this.skillRepo.create(skill);
   }
 
-  async getAllSkills(workerId: string): Promise<Skill[]> {
-    return await this.skillRepo.findAll({ where: { workerId: workerId } });
+  async getAllSkills(workerId: string , skip?:number ,take?:number): Promise<Skill[]> {
+    return await this.skillRepo.findAll({ where: { workerId: workerId } } , undefined , skip , take);
   }
 
   async getSkillById(id: string): Promise<Skill> {

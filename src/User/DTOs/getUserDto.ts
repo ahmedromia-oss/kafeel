@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import { UserType } from 'src/constants';
 export class getUserDto {
   @Expose()
   id:string
@@ -23,4 +24,6 @@ export class getUserDto {
   firstName: string;
   @Expose()
   nationalId:string
+  @Expose()
+  userType:UserType
 }

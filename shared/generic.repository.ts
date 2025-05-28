@@ -1,4 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { take } from 'rxjs';
 
 import { Code, valuesString } from 'src/constants';
 
@@ -30,8 +31,10 @@ export class GenericRepository<T> {
   async findAll(
     options?: FindManyOptions<T>,
     manager?: EntityManager,
+    skip:number = 0 ,
+    take:number = 5
   ): Promise<T[]> {
-    return await this.getRepo(manager).find(options);
+    return await this.getRepo(manager).find({...options , skip:skip , take:take});
   }
 
   async findById(

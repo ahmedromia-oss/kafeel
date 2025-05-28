@@ -2,6 +2,7 @@ import {
   IsDate,
   IsOptional,
   IsString,
+  Matches,
   MaxLength,
   MinLength,
   NotContains,
@@ -10,51 +11,35 @@ import { ValidationErrors } from '../../constants';
 import { Expose, Transform } from 'class-transformer';
 import { Optional } from '@nestjs/common';
 export class updateUserDto {
-  @Optional()
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   @MinLength(5)
   @MaxLength(20)
-  nationalId:string
+  @IsOptional()
+  nationalId: string;
   @IsOptional()
   @Transform(({ value }) => {
     if (value) {
-      return value.toLowerCase();
+      return value?.toLowerCase();
     }
   })
   @MaxLength(15, { message: ValidationErrors.STRING_OUT_OF_RANGE })
   @IsString({ message: ValidationErrors.MUST_STRING })
-  @Transform(({ value }) => {
-    if (value) {
-      return value
-        .trim()
-        .split(/[\s,\t,\n]+/)
-        .join(' ');
-    }
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: ValidationErrors.NO_SPACE_NO_SPECIAL_CHRACHTER,
   })
-  @NotContains(' ', { message: ValidationErrors.UNVALID_SPACE })
-  @Expose()
-
   firstName: string;
 
-  @IsOptional()
-  profilePhoto: Express.Multer.File;
   @Transform(({ value }) => {
     if (value) {
-      return value
-        .trim()
-        .split(/[\s,\t,\n]+/)
-        .join(' ');
+      return value?.toLowerCase();
     }
   })
+  @IsOptional()
   @MaxLength(15, { message: ValidationErrors.STRING_OUT_OF_RANGE })
   @IsString({ message: ValidationErrors.MUST_STRING })
-  @Transform(({ value }) => {
-    if (value) {
-      return value.toLowerCase();
-    }
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: ValidationErrors.NO_SPACE_NO_SPECIAL_CHRACHTER,
   })
-  @IsOptional()
-  @NotContains(' ', { message: ValidationErrors.UNVALID_SPACE })
   lastName: string;
 
   @MaxLength(20, { message: ValidationErrors.STRING_OUT_OF_RANGE })
@@ -69,8 +54,6 @@ export class updateUserDto {
 
   @IsOptional()
   @Transform(({ value }) => new Date(value))
-  @IsDate({ message: 'MUST_DATE' })
+  @IsDate({ message: ValidationErrors.INVALID_DATE })
   birthDate: Date;
-
-  
 }

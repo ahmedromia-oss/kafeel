@@ -2,8 +2,8 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validato
 import { languageLevel, ValidationErrors } from 'src/constants';
 
 export class CreateLanguageDto {
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({message:ValidationErrors.REQUIRED})
+   @IsString({message:ValidationErrors.MUST_STRING})
   language: string;
 
   @IsNotEmpty()
@@ -11,7 +11,7 @@ export class CreateLanguageDto {
   lanuageLevel: languageLevel;
 
   @IsOptional()
-  @IsString()
+   @IsString({message:ValidationErrors.MUST_STRING})
   describtion?: string;
 
  

@@ -13,5 +13,6 @@ export class GetLanguageDto {
 
   @Expose()
   describtion: string;
-
+  @Expose()
+  workerId: string;
 }

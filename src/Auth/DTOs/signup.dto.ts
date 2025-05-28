@@ -34,21 +34,15 @@ export class SignUpDTO {
       return value.toLowerCase();
     }
   })
+ 
   @IsEmail({}, { message: ValidationErrors.MUST_EMAIL })
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @MaxLength(50, { message: ValidationErrors.STRING_OUT_OF_RANGE })
   email: string;
 
-  @Transform(({ value }) =>
-    value
-      .trim()
-      .split(/[\s,\t,\n]+/)
-      .join(' '),
-  )
-  @Matches('^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z])', '', {
+  @Matches(/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z])\S+$/, {
     message: '1UP_1LOWER_1SPECIAL_2NUM',
   })
-  @NotContains(' ', { message: ValidationErrors.UNVALID_SPACE })
   @MinLength(8, { message: ValidationErrors.MUST_8_CHRACHTERS })
   password: string;
 
@@ -60,39 +54,28 @@ export class SignUpDTO {
   @IsOptional()
   @Transform(({ value }) => {
     if (value) {
-      return value.toLowerCase();
+      return value?.toLowerCase();
     }
   })
   @MaxLength(15, { message: ValidationErrors.STRING_OUT_OF_RANGE })
   @IsString({ message: ValidationErrors.MUST_STRING })
-  @Transform(({ value }) => {
-    if (value) {
-      return value
-        .trim()
-        .split(/[\s,\t,\n]+/)
-        .join(' ');
-    }
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: ValidationErrors.NO_SPACE_NO_SPECIAL_CHRACHTER,
   })
-  @NotContains(' ', { message: ValidationErrors.UNVALID_SPACE })
   firstName: string;
 
-  @Transform(({ value }) => {
-    if (value) {
-      return value
-        .trim()
-        .split(/[\s,\t,\n]+/)
-        .join(' ');
-    }
-  })
+ 
   @MaxLength(15, { message: ValidationErrors.STRING_OUT_OF_RANGE })
   @IsString({ message: ValidationErrors.MUST_STRING })
   @Transform(({ value }) => {
     if (value) {
-      return value.toLowerCase();
+      return value?.toLowerCase();
     }
   })
+   @Matches(/^[a-zA-Z0-9]+$/, {
+    message: ValidationErrors.NO_SPACE_NO_SPECIAL_CHRACHTER,
+  })
   @IsOptional()
-  @NotContains(' ', { message: ValidationErrors.UNVALID_SPACE })
   lastName: string;
 
   @IsOptional()
@@ -102,6 +85,6 @@ export class SignUpDTO {
 
   @IsOptional()
   @Transform(({ value }) => new Date(value))
-  @IsDate({ message: ValidationErrors.INVALID_DATE})
+  @IsDate({ message: ValidationErrors.INVALID_DATE })
   birthDate: Date;
 }

@@ -11,6 +11,8 @@ import { education, ValidationErrors, valuesString } from 'src/constants';
 
 export class GetExperienceDto {
   @Expose()
+  jobTitle:string
+  @Expose()
   id:string
   @Expose()
   startDate: Date;
@@ -36,4 +38,6 @@ export class GetExperienceDto {
   city: string;
   @Expose()
   country: string;
+  @Expose()
+  workerId:string
 }

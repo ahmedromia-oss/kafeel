@@ -3,15 +3,14 @@ import { languageLevel, ValidationErrors } from 'src/constants';
 
 export class UpdateLanguageDto {
   @IsOptional()
-  @IsString()
-  language?: string;
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  language: string;
 
   @IsOptional()
   @IsEnum(languageLevel, { message: ValidationErrors.INVALID_LANGUAGE_LEVEL })
   lanuageLevel?: languageLevel;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   describtion?: string;
-
 }

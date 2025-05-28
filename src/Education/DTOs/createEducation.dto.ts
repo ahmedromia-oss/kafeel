@@ -1,37 +1,42 @@
 import { Optional } from '@nestjs/common';
+import { Transform } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
 } from 'class-validator';
 import { education, ValidationErrors } from 'src/constants';
 
 export class createEducationDto {
   @IsNotEmpty()
+  @Transform(({ value }) => new Date(value))
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   startDate: Date;
-  @IsNotEmpty()
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @IsEnum(education, { message: ValidationErrors.INVALID_EDUCATION_ENUM })
   degree: education;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   describtion: string;
   @IsOptional()
+  @Transform(({ value }) => new Date(value))
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   endDate: Date;
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsString({ message: ValidationErrors.MUST_STRING })
   uniOrSchool: string;
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   @IsOptional()
+  @IsUrl({}, { message: ValidationErrors.MUST_URL })
   uniOrSchoolUrl: string;
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   @IsOptional()
   city: string;
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   country: string;
 }

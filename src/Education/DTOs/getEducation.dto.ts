@@ -11,10 +11,12 @@ import { education, ValidationErrors, valuesString } from 'src/constants';
 
 export class getEducationDto {
   @Expose()
+  id: string;
+  @Expose()
   startDate: Date;
   @Expose()
   degree: education;
- 
+
   @Expose()
   describtion: string;
   @Transform(({ value }) => {
@@ -32,4 +34,6 @@ export class getEducationDto {
   city: string;
   @Expose()
   country: string;
+  @Expose()
+  workerId: string;
 }

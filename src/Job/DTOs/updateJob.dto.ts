@@ -7,36 +7,36 @@ import {
   IsUUID,
   Min,
   MaxLength,
+  Max,
 } from 'class-validator';
-import { JobType } from 'src/constants';
+import { JobType, ValidationErrors } from 'src/constants';
 
 export class UpdateJobDto {
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   @IsOptional()
   @MaxLength(100)
   title?: string;
 
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   @IsOptional()
   description?: string;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   @IsOptional()
+  @Max(99999999999)
   salary?: number;
 
-  @IsString()
+  @IsString({ message: ValidationErrors.MUST_STRING })
   @IsOptional()
-  @MaxLength(100)
+  @MaxLength(100, { message: ValidationErrors.STRING_OUT_OF_RANGE })
   location?: string;
 
-  @IsEnum(JobType)
+  @IsEnum(JobType, { message: ValidationErrors.MUST_JOB_TYPE })
   @IsOptional()
   jobType?: JobType;
 
   @IsBoolean()
   @IsOptional()
   isRemote?: boolean;
-
- 
 }

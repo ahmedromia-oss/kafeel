@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { user } from 'src/User/Decorators/user.decorator';
@@ -29,8 +30,12 @@ export class skillController {
   // GET /education/:workerId
   @Get('worker/:workerId')
   @serialize(GetSkillDto)
-  async getSkills(@Param('workerId') workerId: string): Promise<Skill[]> {
-    return this.skillService.getAllSkills(workerId);
+  async getSkills(
+    @Param('workerId') workerId: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ): Promise<Skill[]> {
+    return this.skillService.getAllSkills(workerId, skip, take);
   }
   // GET /skill/:workerId/:skillId
   @Get(':skillId')

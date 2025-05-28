@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import { UserType } from 'src/constants';
 export class getUserDtoWithToken {
   @Expose()
   refreshToken: string;
@@ -24,4 +25,6 @@ export class getUserDtoWithToken {
   lastName: string;
   @Expose()
   firstName: string;
+  @Expose()
+  userType:UserType
 }

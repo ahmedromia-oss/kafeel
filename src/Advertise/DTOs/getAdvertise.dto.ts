@@ -17,6 +17,8 @@ export class GetAdvertiseDto {
 
   @Expose()
   expectedNotificationTime: string;
+  @Expose()
+  IsOpen: boolean;
 
   @Expose()
   workType: JobType;

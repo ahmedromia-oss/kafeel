@@ -10,8 +10,17 @@ export class educationService {
     private educationRepo: educationRepository,
     private workerService: WorkerService,
   ) {}
-  async getEducations(workerId: string): Promise<Education[]> {
-    return await this.educationRepo.findAll({ where: { workerId: workerId } });
+  async getEducations(
+    workerId: string,
+    skip?: number,
+    take?: number,
+  ): Promise<Education[]> {
+    return await this.educationRepo.findAll(
+      { where: { workerId: workerId } },
+      undefined,
+      skip,
+      take,
+    );
   }
   async getEducationById(educationId: string) {
     return await this.educationRepo.findOne({
@@ -32,9 +41,7 @@ export class educationService {
       education,
     );
   }
-  async deleteEducation(id:string , workerId:string){
-
-    return await this.educationRepo.delete({id:id , workerId:workerId})
-
+  async deleteEducation(id: string, workerId: string) {
+    return await this.educationRepo.delete({ id: id, workerId: workerId });
   }
 }

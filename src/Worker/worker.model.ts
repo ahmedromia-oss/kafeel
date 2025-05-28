@@ -19,6 +19,7 @@ import {
   JoinColumn,
   OneToOne,
   ManyToOne,
+  BeforeInsert,
 } from 'typeorm';
 
 @Entity()
@@ -44,4 +45,6 @@ export class Worker {
   advertises:Advertise[]
   @OneToMany(() => JobApplicants, (jobApplicant) => jobApplicant.worker)
   jobApplications: JobApplicants[];
+  
+ 
 }

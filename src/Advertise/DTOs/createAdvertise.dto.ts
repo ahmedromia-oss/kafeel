@@ -7,45 +7,36 @@ import {
   IsEnum,
   IsOptional,
   IsUUID,
+  Validate,
 } from 'class-validator';
-import { JobType, PreferredSponsorType } from 'src/constants';
+import { JobType, PreferredSponsorType, ValidationErrors } from 'src/constants';
 
 export class CreateAdvertiseDto {
-  
-  @IsNotEmpty({ message: 'Job title is required.' })
-  @IsString({ message: 'Job title must be a string.' })
-  @MaxLength(100, { message: 'Job title must not exceed 100 characters.' })
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsString({ message: ValidationErrors.MUST_STRING })
   jobTitle: string;
 
-  
-  @IsNotEmpty({ message: 'Current city is required.' })
-  @IsString({ message: 'Current city must be a string.' })
-  @MaxLength(50, { message: 'Current city must not exceed 50 characters.' })
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsString({ message: ValidationErrors.MUST_STRING })
   currentCity: string;
 
-  
-  @IsNotEmpty({ message: 'Preferred sponsor type is required.' })
-  @IsEnum(PreferredSponsorType, { message: 'Preferred sponsor type is invalid.' })
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsEnum(PreferredSponsorType, {
+    message: ValidationErrors.MUST_BE_SPONSORTYPE,
+  })
   preferredSponsorType: PreferredSponsorType;
 
-  
-  @IsNotEmpty({ message: 'Expected notification time is required.' })
-  @IsString({ message: 'Expected notification time must be a string.' })
-  @MaxLength(30, { message: 'Expected notification time must not exceed 30 characters.' })
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsString({ message: ValidationErrors.MUST_STRING })
   expectedNotificationTime: string;
 
-  
-  @IsNotEmpty({ message: 'Work type is required.' })
-  @IsEnum(JobType, { message: 'Work type is invalid.' })
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  @IsEnum(JobType, { message: ValidationErrors.MUST_JOB_TYPE })
   workType: JobType;
-
-  
   @IsOptional()
-  @IsString({ message: 'Description must be a string.' })
-  @MaxLength(500, { message: 'Description must not exceed 500 characters.' })
-  description?: string;
+  IsOpen: boolean;
 
-  
-  @IsNotEmpty({ message: 'Worker ID is required.' })
-  workerId: string;
+  @IsOptional()
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  description?: string;
 }

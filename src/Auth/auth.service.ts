@@ -53,7 +53,8 @@ export class AuthService {
 
     if (
       refreshData.tokenType == tokenType.VALID &&
-      AccessData.tokenType == tokenType.EXPIRED &&
+      (AccessData.tokenType == tokenType.EXPIRED ||
+      AccessData.tokenType == tokenType.VALID ) &&
       AccessData.data?.sub == refreshData.data?.sub
     ) {
       return await this.jwtService.createToken(

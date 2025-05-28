@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -24,8 +25,6 @@ import { Language } from './languages.model';
 import { CreateLanguageDto } from './DTOs/addLanguage.dto';
 import { UpdateLanguageDto } from './DTOs/updateLanguage.dto';
 
-
-
 @Controller('language')
 export class languageController {
   constructor(private readonly languageService: LanguageService) {}
@@ -35,9 +34,10 @@ export class languageController {
   @serialize(GetLanguageDto)
   async getLanguages(
     @Param('workerId') workerId: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
   ): Promise<Language[]> {
-    
-    return this.languageService.getLanguages(workerId);
+    return this.languageService.getLanguages(workerId , skip , take);
   }
   // GET /Language/:WorkerId/:LanguageId
   @Get(':langaugeId')
@@ -57,13 +57,13 @@ export class languageController {
     @user() user: userToken,
     @Body() addlanguage: CreateLanguageDto,
   ): Promise<Language> {
-    const language = plainToClass(Language,addlanguage);
+    const language = plainToClass(Language, addlanguage);
     language.workerId = user.sub;
     return this.languageService.createLanguage(language);
   }
 
   // PUT /experiences/:workerId/:experienceId
-  @Put(':educationId')
+  @Put(':languageId')
   @serialize()
   @UseGuards(AuthGuard, RoleGuard)
   @roles(UserType.WORKER)
@@ -73,11 +73,7 @@ export class languageController {
     @Body() updateLanguage: UpdateLanguageDto,
   ): Promise<string> {
     const language = plainToInstance(Language, updateLanguage);
-    return this.languageService.updateLanguage(
-      language,
-      languageId,
-      user.sub,
-    );
+    return this.languageService.updateLanguage(language, languageId, user.sub);
   }
   @Delete(':languageId')
   @serialize()
@@ -87,10 +83,6 @@ export class languageController {
     @user() user: userToken,
     @Param('languageId') languageId: string,
   ): Promise<string> {
-
-    return this.languageService.deleteLanguage(
-      languageId,
-      user.sub,
-    );
+    return this.languageService.deleteLanguage(languageId, user.sub);
   }
 }

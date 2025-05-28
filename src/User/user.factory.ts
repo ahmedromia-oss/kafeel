@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
+import { companyService } from 'src/company/company.service';
 import { UserType } from 'src/constants';
 import { kafeelService } from 'src/Kafeel/kafeel.service';
 import { WorkerService } from 'src/Worker/worker.service';
@@ -15,6 +16,8 @@ export class UserFactoryService {
         return this.moduleRef.get(WorkerService, { strict: false });
       case UserType.KAFEEL:
         return this.moduleRef.get(kafeelService , {strict:false})
+      case UserType.COMPANY:
+        return this.moduleRef.get(companyService , {strict:false})
     }
   }
 }

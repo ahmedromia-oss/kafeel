@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -24,7 +25,6 @@ import { Education } from './education.model';
 import { createEducationDto } from './DTOs/createEducation.dto';
 import { updateEducationDto } from './DTOs/updateEducation.dto';
 
-
 @Controller('education')
 export class educationController {
   constructor(private readonly educationService: educationService) {}
@@ -34,9 +34,10 @@ export class educationController {
   @serialize(getEducationDto)
   async getEducations(
     @Param('workerId') workerId: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
   ): Promise<Education[]> {
-    
-    return this.educationService.getEducations(workerId);
+    return this.educationService.getEducations(workerId , skip , take);
   }
   // GET /education/:workerId/:educationId
   @Get(':educationId')
@@ -56,7 +57,7 @@ export class educationController {
     @user() user: userToken,
     @Body() addeducation: createEducationDto,
   ): Promise<Education> {
-    const education = plainToClass(Education,addeducation );
+    const education = plainToClass(Education, addeducation);
     education.workerId = user.sub;
     return this.educationService.createEducation(education);
   }
@@ -86,10 +87,6 @@ export class educationController {
     @user() user: userToken,
     @Param('educationId') educationId: string,
   ): Promise<string> {
-
-    return this.educationService.deleteEducation(
-      educationId,
-      user.sub,
-    );
+    return this.educationService.deleteEducation(educationId, user.sub);
   }
 }

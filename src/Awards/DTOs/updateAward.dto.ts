@@ -1,25 +1,33 @@
-import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  IsDate,
+  IsDateString,
+  IsOptional,
+  IsString,
+  IsUrl,
+  IsUUID,
+} from 'class-validator';
+import { ValidationErrors } from 'src/constants';
 
 export class UpdateAwardDto {
   @IsOptional()
-  @IsString()
-  name?: string;
+  @IsUrl({} , {message:ValidationErrors.MUST_URL})
+  link?: string;
+  @IsOptional()
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  institution: string;
 
   @IsOptional()
-  @IsString()
-  awardLink?: string;
+  @IsString({ message: ValidationErrors.MUST_STRING })
+  description?: string;
 
   @IsOptional()
-  @IsString()
-  describtion?: string;
+  @Transform(({ value }) => new Date(value))
+  @IsDate({ message: ValidationErrors.INVALID_DATE })
+  startDate?: string;
 
   @IsOptional()
-  @IsString()
-  entity?: string;
-
-  @IsOptional()
-  @IsDateString()
-  date?: Date;
-
-  
+  @Transform(({ value }) => new Date(value))
+  @IsDate({ message: ValidationErrors.INVALID_DATE })
+  endDate?: string;
 }

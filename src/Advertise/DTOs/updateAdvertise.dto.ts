@@ -7,41 +7,38 @@ import {
   IsEnum,
   IsUUID,
 } from 'class-validator';
-import { JobType, PreferredSponsorType } from 'src/constants';
+import { JobType, PreferredSponsorType, ValidationErrors } from 'src/constants';
 
 export class UpdateAdvertiseDto {
   
-  @IsOptional()
-  @IsString({ message: 'Job title must be a string.' })
-  @MaxLength(100, { message: 'Job title must not exceed 100 characters.' })
-  jobTitle?: string;
-
+    @IsOptional()
+    @IsString({ message: ValidationErrors.MUST_STRING })
+    
+    jobTitle: string;
+    @IsOptional()
+    ISOpen:boolean
   
-  @IsOptional()
-  @IsString({ message: 'Current city must be a string.' })
-  @MaxLength(50, { message: 'Current city must not exceed 50 characters.' })
-  currentCity?: string;
-
+    @IsOptional()
+    @IsString({ message: ValidationErrors.MUST_STRING })
   
-  @IsOptional()
-  @IsEnum(PreferredSponsorType, { message: 'Preferred sponsor type is invalid.' })
-  preferredSponsorType?: PreferredSponsorType;
-
+    currentCity: string;
   
-  @IsOptional()
-  @IsString({ message: 'Expected notification time must be a string.' })
-  @MaxLength(30, { message: 'Expected notification time must not exceed 30 characters.' })
-  expectedNotificationTime?: string;
-
+    @IsOptional()
+    @IsEnum(PreferredSponsorType, {
+      message: ValidationErrors.MUST_BE_SPONSORTYPE,
+    })
+    preferredSponsorType: PreferredSponsorType;
   
-  @IsOptional()
-  @IsEnum(JobType, { message: 'Work type is invalid.' })
-  workType?: JobType;
-
+    @IsOptional()
+    @IsString({ message: ValidationErrors.MUST_STRING })
+    expectedNotificationTime: string;
   
-  @IsOptional()
-  @IsString({ message: 'Description must be a string.' })
-  @MaxLength(500, { message: 'Description must not exceed 500 characters.' })
-  description?: string;
+    @IsOptional()
+    @IsEnum(JobType, { message: ValidationErrors.MUST_JOB_TYPE })
+    workType: JobType;
+  
+    @IsOptional()
+    @IsString({ message: ValidationErrors.MUST_STRING })
+    description?: string;
 
 }

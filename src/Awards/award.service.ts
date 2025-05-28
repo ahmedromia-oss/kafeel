@@ -1,11 +1,8 @@
 import { Injectable, UseGuards } from '@nestjs/common';
-;
 import { AwardRepository } from './award.repository';
 import { WorkerService } from 'src/Worker/worker.service';
 import { Award } from './awards.model';
-
-
-
+import { take } from 'rxjs';
 
 @Injectable()
 export class AwardService {
@@ -14,9 +11,17 @@ export class AwardService {
     private readonly workerService: WorkerService,
   ) {}
 
-  async getAwards(workerId: string): Promise<Award[]> {
-    
-    return await this.awardRepo.findAll({ where: { workerId:workerId } });
+  async getAwards(
+    workerId: string,
+    skip?: number,
+    take?: number,
+  ): Promise<Award[]> {
+    return await this.awardRepo.findAll(
+      { where: { workerId: workerId } },
+      undefined,
+      skip,
+      take,
+    );
   }
 
   async getAwardById(awardId: string): Promise<Award> {
@@ -25,20 +30,23 @@ export class AwardService {
     });
   }
 
- 
   async createAward(award: Award): Promise<Award> {
     award.worker = await this.workerService.GetWorker(award.workerId);
-    
+
     return await this.awardRepo.create(award);
   }
- 
-  async updateAward(award: Award, awardId: string, workerId: string): Promise<string> {
+
+  async updateAward(
+    award: Award,
+    awardId: string,
+    workerId: string,
+  ): Promise<string> {
     return await this.awardRepo.update(
-      { id: awardId, workerId:workerId },
+      { id: awardId, workerId: workerId },
       award,
     );
   }
-  async deleteAward(awardId:string , wokerID:string):Promise<string>{
-    return await this.awardRepo.delete({id:awardId , workerId:wokerID})
+  async deleteAward(awardId: string, wokerID: string): Promise<string> {
+    return await this.awardRepo.delete({ id: awardId, workerId: wokerID });
   }
 }
