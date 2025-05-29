@@ -2,12 +2,12 @@ import { Expose } from 'class-transformer';
 import { UserType } from 'src/constants';
 export class getUserDto {
   @Expose()
-  id:string
+  id: string;
   @Expose()
   birthDate: Date;
   @Expose()
   country: string;
-  
+
   @Expose()
   phoneNumber: string;
   @Expose()
@@ -23,7 +23,5 @@ export class getUserDto {
   @Expose()
   firstName: string;
   @Expose()
-  nationalId:string
-  @Expose()
-  userType:UserType
+  userType: UserType;
 }

@@ -21,4 +21,7 @@ export class JobApplicantsService {
     jobApplicant.job = job;
     return await this.jobApplicantsRepository.create(jobApplicant);
   }
+
+
+  
 }

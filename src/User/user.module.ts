@@ -13,9 +13,10 @@ import { BucketsModule } from 'src/Buckets/buckets.module';
 import { TokenModule } from 'src/JWT/jwt.module';
 import { KafeelModule } from 'src/Kafeel/kafeel.module';
 import { companyModule } from 'src/company/company.module';
+import { workerModule } from 'src/Worker/worker.module';
 
 @Module({
-  imports: [SharedModule, TypeOrmModule.forFeature([User]) , BucketsModule , TokenModule , KafeelModule , companyModule ],
+  imports: [SharedModule, TypeOrmModule.forFeature([User]) , BucketsModule , TokenModule , KafeelModule , companyModule, workerModule],
   exports: [UserService],
   controllers: [UserController],
   providers: [UserService, UserRepository , UserFactoryService],

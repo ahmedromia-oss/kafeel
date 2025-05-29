@@ -43,6 +43,7 @@ export class GenericRepository<T> {
     manager?: EntityManager,
   ): Promise<T | null> {
     try {
+      
       return await this.getRepo(manager).findOneOrFail({
         where: { id } as any,
         ...options,
@@ -56,6 +57,7 @@ export class GenericRepository<T> {
     manager?: EntityManager,
   ): Promise<T | null> {
     try {
+      
       return await this.getRepo(manager).findOneOrFail(options);
     } catch {
       throw new NotFoundException();

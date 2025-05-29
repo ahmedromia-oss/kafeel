@@ -28,6 +28,7 @@ import { companyModule } from './company/company.module';
 import { JobModule } from './Job/Job.module';
 import { JobApplicants } from './Job_Applicants/Job_applicants.model';
 import { JobApplicantsModule } from './Job_Applicants/Job_applicants.module';
+import { workerModule } from './Worker/worker.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { JobApplicantsModule } from './Job_Applicants/Job_applicants.module';
     UserModule,
 JobModule,
     TypeOrmModule.forRoot({ ...AppDataSource.options, autoLoadEntities: true }),
+    workerModule,
     SharedModule,
     TokenModule,
     LanguageModule,

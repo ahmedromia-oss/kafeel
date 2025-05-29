@@ -13,5 +13,8 @@ export class WorkerService {
   async GetWorker(workerId: string): Promise<Worker> {
     return await this.workerRepo.findOne({where:{userId:workerId}})
   }
+  async getProfile(userId:string){
+    return await this.workerRepo.findOne({where:{userId:userId} , relations:{experiences:true , educations:true , skills:true , languages:true , awards:true}})
+  }
   
 }

@@ -1,16 +1,13 @@
 import { Expose } from 'class-transformer';
 import { UserType } from 'src/constants';
-export class getUserDtoWithToken {
-  @Expose()
-  refreshToken: string;
-  @Expose()
-  Accesstoken: string;
+export class getPrivateUserDto {
   @Expose()
   id: string;
   @Expose()
   birthDate: Date;
   @Expose()
   country: string;
+
   @Expose()
   phoneNumber: string;
   @Expose()
@@ -26,7 +23,7 @@ export class getUserDtoWithToken {
   @Expose()
   firstName: string;
   @Expose()
-  userType:UserType;
+  userType: UserType;
   @Expose()
-  nationalId:string;
+  nationalId: string;
 }

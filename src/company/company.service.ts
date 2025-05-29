@@ -13,4 +13,7 @@ export class companyService {
   async getCompany(companyId: string): Promise<Company> {
     return await this.companyRepo.findOne({ where: { userId: companyId } });
   }
+  async getProfile(userId: string) {
+    return await this.companyRepo.findOne({ where: { userId: userId } });
+  }
 }

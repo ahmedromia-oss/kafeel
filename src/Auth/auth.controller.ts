@@ -5,12 +5,13 @@ import { serialize } from '../../Shared/Interceptors/Serialize.Interceptor';
 import { getUserDto } from 'src/User/DTOs/getUserDto';
 import { SignInUserDTO } from './DTOs/login.dto';
 import { getUserDtoWithToken } from 'src/User/DTOs/getUserWithToken.dto';
+import { getPrivateUserDto } from 'src/User/DTOs/getPrivateUser.dto';
 
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-  @serialize(getUserDto)
+  @serialize(getPrivateUserDto)
   @Post('signup')
   async SignUp(@Body() signUpDTO: SignUpDTO) {
     const result = await this.authService.signUp(signUpDTO);

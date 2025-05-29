@@ -25,6 +25,7 @@ import { GetJobDto } from './DTOs/getJob.dto';
 import { serialize } from 'shared/Interceptors/Serialize.Interceptor';
 import { UpdateJobDto } from './DTOs/updateJob.dto';
 import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
+import { get } from 'http';
 
 @Controller('jobs')
 export class JobController {
@@ -89,5 +90,17 @@ export class JobController {
     @Query('take') take?: number,
   ): Promise<Job[]> {
     return this.jobService.getJobs(skip, take);
+  }
+  @Get('applications/:jobId')
+  @UseGuards(AuthGuard, RoleGuard)
+  @roles(UserType.COMPANY)
+  @serialize()
+  async getApplications(
+    @user() user: userToken,
+    @Param('jobId') jobId: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ) {
+    return await this.jobService.getApplications(jobId, user.sub, skip, take);
   }
 }

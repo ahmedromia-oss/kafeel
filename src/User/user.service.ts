@@ -17,13 +17,13 @@ export class UserService {
 
   public async createUser(data: User): Promise<User> {
     return this.uow.execute(async (manager: EntityManager) => {
-      const user = await this.UserRepository.create(data , manager);
+      const user = await this.UserRepository.create(data, manager);
       const service = this.userFactory.getService(data.userType);
-      await service.create(user.id , manager);
+      await service.create(user.id, manager);
       return user;
-      
     });
   }
+
   public async IsEmailUnique(email: string) {
     return !(await this.UserRepository.checkIFExists({
       where: { email: email },
@@ -49,7 +49,12 @@ export class UserService {
     });
   }
   public async UpdateUser(updateUser: User, userId: string): Promise<string> {
-   
     return await this.UserRepository.update({ id: userId }, updateUser);
+  }
+  public async getProfile(userId: string) {
+    
+    const user = await this.getUserById(userId);
+    const service = this.userFactory.getService(user.userType);
+    return await service.getProfile(user.id);
   }
 }

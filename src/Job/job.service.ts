@@ -29,10 +29,7 @@ export class JobService {
       where: { id: jobId },
     });
   }
-  async getJobs(
-    skip?: number,
-    take?: number,
-  ): Promise<Job[]> {
+  async getJobs(skip?: number, take?: number): Promise<Job[]> {
     return await this.jobRepo.findAll(undefined, undefined, skip, take);
   }
 
@@ -47,5 +44,18 @@ export class JobService {
 
   async deleteJob(jobId: string, companyId: string): Promise<string> {
     return await this.jobRepo.delete({ id: jobId, companyId });
+  }
+  async getApplications(
+    jobId: string,
+    companyId: string,
+    skip?: number,
+    take?: number,
+  ) {
+    return await this.jobRepo.findAll(
+      { where: { id: jobId, companyId: companyId } },
+      undefined,
+      skip,
+      take,
+    );
   }
 }
