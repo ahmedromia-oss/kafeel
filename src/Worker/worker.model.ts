@@ -1,4 +1,3 @@
-
 import { Advertise } from 'src/Advertise/advertise.model';
 import { Award } from 'src/Awards/awards.model';
 
@@ -11,7 +10,6 @@ import { User } from 'src/User/user.model';
 import {
   Entity,
   Column,
-
   PrimaryColumn,
   JoinTable,
   ManyToMany,
@@ -21,11 +19,14 @@ import {
   ManyToOne,
   BeforeInsert,
 } from 'typeorm';
+import { BaseEntity } from 'shared/shared.entity';
 
 @Entity()
-export class Worker {
-  @PrimaryColumn({type:'uuid'})
+export class Worker extends BaseEntity {
+  @PrimaryColumn({ type: 'uuid' })
   userId: string;
+  @Column({ type: 'text', nullable: true })
+  jobTitle: string;
   @Column({ type: 'text', nullable: true })
   aboutMe: string;
   @OneToOne(() => User, { cascade: true, eager: true })
@@ -33,18 +34,16 @@ export class Worker {
   user: User;
   @OneToMany(() => Experience, (experience) => experience.worker)
   experiences: Experience[];
-  @OneToMany(()=>Education , (education)=>education.worker)
-  educations:Education[]
+  @OneToMany(() => Education, (education) => education.worker)
+  educations: Education[];
   @OneToMany(() => Skill, (Skill) => Skill.worker)
   skills: Skill[];
   @OneToMany(() => Language, (language) => language.worker)
   languages: Language[];
-  @OneToMany(()=>Award ,(award)=>award.worker)
-  awards:Award[]
-  @OneToMany(()=>Advertise , (advertise)=>advertise.worker)
-  advertises:Advertise[]
+  @OneToMany(() => Award, (award) => award.worker)
+  awards: Award[];
+  @OneToMany(() => Advertise, (advertise) => advertise.worker)
+  advertises: Advertise[];
   @OneToMany(() => JobApplicants, (jobApplicant) => jobApplicant.worker)
   jobApplications: JobApplicants[];
-  
- 
 }

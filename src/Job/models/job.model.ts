@@ -1,16 +1,12 @@
+import { BaseEntity } from 'shared/shared.entity';
 import { Company } from 'src/company/company.model';
 import { JobType } from 'src/constants';
 import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
 
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  ManyToMany,
-  JoinTable,
-  CreateDateColumn,
-  UpdateDateColumn,
   OneToMany,
   BeforeInsert,
   PrimaryColumn,
@@ -19,7 +15,7 @@ import {
 import { v4 } from 'uuid';
 
 @Entity()
-export class Job {
+export class Job extends BaseEntity {
   @PrimaryColumn()
   id: string;
 
@@ -47,20 +43,15 @@ export class Job {
   @OneToMany(() => JobApplicants, (jobApplicant) => jobApplicant.job)
   applicants: JobApplicants[];
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
   @BeforeInsert()
   generateId() {
     if (!this.id) {
       this.id = v4();
     }
   }
-  @Column({type:'uuid' , nullable:false})
-  companyId:string
-  @ManyToOne(() => Company, (company) =>company.Jobs , { onDelete: 'CASCADE' })
+  @Column({ type: 'uuid', nullable: false })
+  companyId: string;
+  @ManyToOne(() => Company, (company) => company.Jobs, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'companyId' })
   company: Company;
 }

@@ -14,18 +14,26 @@ export class AdvertiseService {
   /**
    * Get all adverts for a given worker
    */
+  async getAllAdvertises(skip: number = 0, take: number = 5) {
+    return await this.advertiseRepo.findAll(
+      {
+        where: { IsOpen: true }, relations:{worker:true},
+        skip:skip,
+        take:take
+      },
+     
+    );
+  }
   async getAdvertises(
     workerId: string,
-    skip?: number,
-    take?: number,
+    skip: number = 0,
+    take: number = 5,
   ): Promise<Advertise[]> {
     return await this.advertiseRepo.findAll(
       {
-        where: { workerId },
+        where: { workerId} , skip:skip , take:take
       },
-      undefined,
-      skip,
-      take,
+     
     );
   }
 

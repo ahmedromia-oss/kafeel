@@ -11,6 +11,8 @@ import { getUserDto } from './getUserDto';
 
 export class getProfileLockedDto {
   @Expose({ groups: [UserType.WORKER] })
+  jobTitle: string;
+  @Expose({ groups: [UserType.WORKER] })
   aboutMe: string;
   @Expose({ groups: [UserType.COMPANY, UserType.KAFEEL, UserType.WORKER] })
   @Type(() => getPrivateUserDto)

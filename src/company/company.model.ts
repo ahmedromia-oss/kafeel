@@ -17,12 +17,14 @@ import {
   OneToMany,
   JoinColumn,
   OneToOne,
+  
  
 } from 'typeorm';
 import { Job } from 'src/Job/models/job.model';
+import { BaseEntity } from 'shared/shared.entity';
 
 @Entity()
-export class Company {
+export class Company extends BaseEntity {
   @PrimaryColumn({type:'uuid'})
   userId: string;
   @Column({ type: 'text', nullable: true })
@@ -30,7 +32,6 @@ export class Company {
   @OneToOne(() => User, { cascade: true, eager: true })
   @JoinColumn({ name: 'userId' })
   user: User;
-  
   @OneToMany(() => Job, (job) => job.company)
   Jobs: Job[];
   

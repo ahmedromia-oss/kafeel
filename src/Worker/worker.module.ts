@@ -5,10 +5,11 @@ import { WorkerService } from './worker.service';
 import { Worker } from './worker.model';
 import { WorkerRepository } from './workerRepository';
 import { WorkerController } from './worker.controller';
+import { TokenModule } from 'src/JWT/jwt.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Worker])],
+  imports: [TypeOrmModule.forFeature([Worker]) , TokenModule],
   providers: [WorkerService , WorkerRepository],
   exports: [WorkerService],
   controllers:[WorkerController]

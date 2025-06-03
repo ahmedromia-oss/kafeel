@@ -31,10 +31,9 @@ export class GenericRepository<T> {
   async findAll(
     options?: FindManyOptions<T>,
     manager?: EntityManager,
-    skip:number = 0 ,
-    take:number = 5
+    
   ): Promise<T[]> {
-    return await this.getRepo(manager).find({...options , skip:skip , take:take});
+    return await this.getRepo(manager).find({...options});
   }
 
   async findById(

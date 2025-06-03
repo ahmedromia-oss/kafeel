@@ -62,7 +62,7 @@ export class UserController {
   async getAll() {
     return await this.userService.allUsers();
   }
-  @Get(':userId')
+  @Get('/user/:userId')
   @serialize(getProfileDto, [])
   async getProfile(@Param('userId') userId: string) {
     return await this.userService.getProfile(userId);

@@ -1,3 +1,4 @@
+import { BaseEntity } from 'shared/shared.entity';
 import { education, languageLevel, skillLevel } from 'src/constants';
 import { Worker } from 'src/Worker/worker.model';
 import {
@@ -13,7 +14,7 @@ import {
 import { v4 } from 'uuid';
 
 @Entity()
-export class Language {
+export class Language extends BaseEntity{
   @PrimaryColumn()
   id: string;
   @Column({ nullable: false, type: 'varchar', length: 255})

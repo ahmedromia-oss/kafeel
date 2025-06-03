@@ -25,6 +25,7 @@ import { Advertise } from './advertise.model';
 import { GetAdvertiseDto } from './DTOs/getAdvertise.dto';
 import { CreateAdvertiseDto } from './DTOs/createAdvertise.dto';
 import { UpdateAdvertiseDto } from './DTOs/updateAdvertise.dto';
+import { getAdvertiseForKafeel } from './DTOs/getAdvertiseForKafeelDto';
 
 @Controller('advertises')
 export class AdvertiseController {
@@ -35,12 +36,19 @@ export class AdvertiseController {
   @serialize(GetAdvertiseDto)
   async getAdvertises(
     @Param('workerId') workerId: string,
-    @Query('skip') skip?:number,
-    @Query('take') take?:number
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
   ): Promise<Advertise[]> {
-    return await this.advertiseService.getAdvertises(workerId , skip , take);
+    return await this.advertiseService.getAdvertises(workerId, skip, take);
   }
-
+  @Get('/')
+  @serialize(getAdvertiseForKafeel)
+  async getGlobalAdvertises(
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ) {
+    return await this.advertiseService.getAllAdvertises(skip, take);
+  }
   // GET /advertises/:advertiseId
   @Get(':advertiseId')
   @serialize(GetAdvertiseDto)
@@ -56,7 +64,6 @@ export class AdvertiseController {
   @UseGuards(AuthGuard, RoleGuard)
   @roles(UserType.WORKER, UserType.COMPANY)
   async createAdvertise(
-    
     @user() user: userToken,
     @Body() addAdvertise: CreateAdvertiseDto,
   ): Promise<Advertise> {
@@ -95,5 +102,4 @@ export class AdvertiseController {
     // Assuming delete logic is implemented in the service
     return await this.advertiseService.deleteAdvertise(advertiseId, user.sub);
   }
-  
 }

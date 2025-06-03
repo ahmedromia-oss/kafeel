@@ -13,10 +13,11 @@ import {
 import { Worker } from 'src/Worker/worker.model';
 import { Job } from 'src/Job/models/job.model';
 import { v4 } from 'uuid';
+import { BaseEntity } from 'shared/shared.entity';
 
 @Entity('job_applicants')
 @Unique(['workerId', 'JobId']) // Ensures a user can't apply to the same job multiple times
-export class JobApplicants {
+export class JobApplicants extends BaseEntity{
   @PrimaryColumn()
   id: string;
 
@@ -39,8 +40,7 @@ export class JobApplicants {
   @Column({ type: 'varchar', length: 255})
   describtion: string;
 
-  @CreateDateColumn()
-  appliedAt: Date;
+ 
   @BeforeInsert()
   generateId() {
     if (!this.id) {

@@ -22,6 +22,18 @@ export class JobApplicantsService {
     return await this.jobApplicantsRepository.create(jobApplicant);
   }
 
-
+async getApplications(
+    jobId: string,
+    companyId: string,
+    skip: number = 0,
+    take: number = 5,
+  ) {
+    return  await this.jobApplicantsRepository.findAll(
+      { where: { JobId:jobId , job:{companyId:companyId} } , relations:{job:true , worker:true} , skip:skip , take:take },
+    
+     
+    );
+   
+  }
   
 }

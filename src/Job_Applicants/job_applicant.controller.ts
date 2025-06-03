@@ -29,6 +29,7 @@ import { BucketsService } from 'src/Buckets/buckets.service';
 import { CreateJobApplicantDto } from './DTOs/createJobApplicant.dto';
 import { JobApplicants } from './Job_applicants.model';
 import { getJobApplicantDto } from './DTOs/getJobApplicant.dto';
+import { getUserDto } from 'src/User/DTOs/getUserDto';
 
 @Controller('jobApplicant')
 export class jobApplicantController {
@@ -59,6 +60,19 @@ export class jobApplicantController {
     } else {
       throw new BadRequestException(Code.CV_REQUIRED );
     }
+  }
+  @Get('applications/:jobId')
+  @UseGuards(AuthGuard, RoleGuard)
+  @roles(UserType.COMPANY)
+  @serialize(getJobApplicantDto)
+
+  async getApplications(
+    @user() user: userToken,
+    @Param('jobId') jobId: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ) {
+    return await this.jobApplicantService.getApplications(jobId, user.sub, skip, take);
   }
    
 }

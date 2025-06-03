@@ -1,3 +1,4 @@
+import { BaseEntity } from 'shared/shared.entity';
 import { UserType } from 'src/constants';
 import { Chat } from 'src/Socket/models/chat.model';
 import { Message } from 'src/Socket/models/message.model';
@@ -15,7 +16,7 @@ import {
 import { v4 } from 'uuid';
 
 @Entity()
-export class User {
+export class User extends BaseEntity{
   @PrimaryColumn()
   id: string;
   @Column({ nullable: true, type: 'varchar', length: 255})

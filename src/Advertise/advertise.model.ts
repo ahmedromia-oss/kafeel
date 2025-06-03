@@ -15,9 +15,10 @@ import {
 import { Worker } from 'src/Worker/worker.model';
 import { JobType, PreferredSponsorType } from 'src/constants';
 import { v4 } from 'uuid';
+import { BaseEntity } from 'shared/shared.entity';
 
 @Entity()
-export class Advertise {
+export class Advertise extends BaseEntity {
   @PrimaryColumn()
   id: string;
 
@@ -45,12 +46,9 @@ export class Advertise {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
   @Column()
   workerId: string;
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+
   @ManyToOne(() => Worker, (worker) => worker.advertises)
   @JoinColumn({ name: 'workerId' })
   worker: Worker;

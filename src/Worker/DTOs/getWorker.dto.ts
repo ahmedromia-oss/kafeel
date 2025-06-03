@@ -3,6 +3,8 @@ import { getUserDto } from 'src/User/DTOs/getUserDto';
 
 export class getWorkerDto {
   @Expose()
+  jobTitle: string;
+  @Expose()
   aboutMe: string;
   @Expose()
   @Type(() => getUserDto)

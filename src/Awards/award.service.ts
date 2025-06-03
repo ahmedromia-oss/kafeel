@@ -13,14 +13,12 @@ export class AwardService {
 
   async getAwards(
     workerId: string,
-    skip?: number,
-    take?: number,
+    skip: number = 0,
+    take: number = 5,
   ): Promise<Award[]> {
     return await this.awardRepo.findAll(
-      { where: { workerId: workerId } },
-      undefined,
-      skip,
-      take,
+      { where: { workerId: workerId } , skip:skip , take:take},
+      
     );
   }
 

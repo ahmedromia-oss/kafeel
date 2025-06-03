@@ -12,15 +12,14 @@ export class educationService {
   ) {}
   async getEducations(
     workerId: string,
-    skip?: number,
-    take?: number,
+    skip: number = 0,
+    take: number = 5,
   ): Promise<Education[]> {
-    return await this.educationRepo.findAll(
-      { where: { workerId: workerId } },
-      undefined,
-      skip,
-      take,
-    );
+    return await this.educationRepo.findAll({
+      where: { workerId: workerId },
+      skip: skip,
+      take: take,
+    });
   }
   async getEducationById(educationId: string) {
     return await this.educationRepo.findOne({

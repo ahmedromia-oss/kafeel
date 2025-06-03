@@ -13,24 +13,28 @@ export class JobService {
 
   async getJobsByCompany(
     companyId: string,
-    skip?: number,
-    take?: number,
+    skip: number = 0,
+    take: number = 5,
   ): Promise<Job[]> {
-    return await this.jobRepo.findAll(
-      { where: { companyId } },
-      undefined,
-      skip,
-      take,
-    );
+    return await this.jobRepo.findAll({
+      where: { companyId },
+      skip: skip,
+      take: take,
+    });
   }
 
   async getJobById(jobId: string): Promise<Job> {
     return await this.jobRepo.findOne({
       where: { id: jobId },
+      relations: { applicants: true },
     });
   }
-  async getJobs(skip?: number, take?: number): Promise<Job[]> {
-    return await this.jobRepo.findAll(undefined, undefined, skip, take);
+  async getJobs(skip: number = 0, take: number = 5): Promise<Job[]> {
+    return await this.jobRepo.findAll({
+      relations: { applicants: true, company: { Jobs: true } },
+      skip: skip,
+      take: take,
+    });
   }
 
   async createJob(job: Job): Promise<Job> {
@@ -44,18 +48,5 @@ export class JobService {
 
   async deleteJob(jobId: string, companyId: string): Promise<string> {
     return await this.jobRepo.delete({ id: jobId, companyId });
-  }
-  async getApplications(
-    jobId: string,
-    companyId: string,
-    skip?: number,
-    take?: number,
-  ) {
-    return await this.jobRepo.findAll(
-      { where: { id: jobId, companyId: companyId } },
-      undefined,
-      skip,
-      take,
-    );
   }
 }

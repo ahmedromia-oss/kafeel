@@ -7,7 +7,6 @@ export class getUserDto {
   birthDate: Date;
   @Expose()
   country: string;
-
   @Expose()
   phoneNumber: string;
   @Expose()

@@ -91,16 +91,5 @@ export class JobController {
   ): Promise<Job[]> {
     return this.jobService.getJobs(skip, take);
   }
-  @Get('applications/:jobId')
-  @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.COMPANY)
-  @serialize()
-  async getApplications(
-    @user() user: userToken,
-    @Param('jobId') jobId: string,
-    @Query('skip') skip?: number,
-    @Query('take') take?: number,
-  ) {
-    return await this.jobService.getApplications(jobId, user.sub, skip, take);
-  }
+  
 }

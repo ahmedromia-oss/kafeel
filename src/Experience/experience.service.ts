@@ -12,8 +12,8 @@ export class experienceService {
     private experienceRepo: experienceRepository,
     private workerService: WorkerService,
   ) {}
-  async getexperiences(workerId: string , skip?:number , take?:number): Promise<Experience[]> {
-    return await this.experienceRepo.findAll({ where: { workerId: workerId } } , undefined , skip , take);
+  async getexperiences(workerId: string , skip:number = 0 , take:number = 5): Promise<Experience[]> {
+    return await this.experienceRepo.findAll({ where: { workerId: workerId }  , skip:skip , take:take});
   }
   async getexperienceById(experienceId: string) {
     return await this.experienceRepo.findOne({

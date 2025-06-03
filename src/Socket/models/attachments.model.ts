@@ -10,9 +10,10 @@ import {
 } from 'typeorm';
 import { Message } from './message.model';
 import { v4 } from 'uuid';
+import { BaseEntity } from 'shared/shared.entity';
 
 @Entity('attachments')
-export class Attachment {
+export class Attachment extends BaseEntity{
   @PrimaryColumn()
   id: string;
   @Column({ type: 'uuid' })
@@ -29,8 +30,7 @@ export class Attachment {
   @Column()
   url: string; // e.g. path or external URL
 
-  @CreateDateColumn()
-  createdAt: Date;
+  
   @BeforeInsert()
     generateId() {
       if (!this.id) {

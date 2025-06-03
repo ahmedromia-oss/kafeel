@@ -1,6 +1,7 @@
 // src/transfer-announcement/dto/get-advertise.dto.ts
 import { Expose, Type } from 'class-transformer';
 import { JobType, PreferredSponsorType } from 'src/constants';
+import { getWorkerDto } from 'src/Worker/DTOs/getWorker.dto';
 
 export class GetAdvertiseDto {
   @Expose()
@@ -27,7 +28,8 @@ export class GetAdvertiseDto {
   description?: string;
 
   @Expose()
-  workerId: string;
+  @Type(()=>getWorkerDto)
+  worker: getWorkerDto;
 
   @Expose()
   createdAt: Date;

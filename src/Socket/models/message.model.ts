@@ -1,6 +1,5 @@
 import {
   Entity,
-  
   Column,
   ManyToOne,
   OneToMany,
@@ -15,9 +14,10 @@ import { User } from 'src/User/user.model';
 import { Attachment } from './attachments.model';
 import { MessageType } from 'src/constants';
 import { v4 } from 'uuid';
+import { BaseEntity } from 'shared/shared.entity';
 
 @Entity('messages')
-export class Message {
+export class Message extends BaseEntity{
   @PrimaryColumn()
   id: string;
 
@@ -27,12 +27,18 @@ export class Message {
   @Column({ type: 'uuid' })
   chatId: string;
 
-  @ManyToOne(() => User, (user) => user, { onDelete: 'SET NULL'})
-  @JoinColumn({ name: 'userId' })
+  @ManyToOne(() => User, (user) => user, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'senderId' })
   sender: User;
 
-  @Column({ type: 'uuid' , nullable:true })
-  userId: string;
+  @Column({ type: 'uuid', nullable: true })
+  senderId: string;
+  @ManyToOne(() => User, (user) => user, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'recieverId' })
+  reciever: User;
+
+  @Column({ type: 'uuid', nullable: true })
+  recieverId: string;
 
   @Column('text')
   content: string;
@@ -43,16 +49,11 @@ export class Message {
   @OneToMany(() => Attachment, (attachment) => attachment.message)
   attachments: Attachment[];
 
-  @CreateDateColumn()
-  createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
   @BeforeInsert()
   generateId() {
     if (!this.id) {
       this.id = v4();
     }
   }
-  
 }

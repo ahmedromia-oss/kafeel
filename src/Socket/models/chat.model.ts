@@ -12,10 +12,11 @@ import {
 } from 'typeorm';
 import { Message } from './message.model';
 import { v4 } from 'uuid';
+import { BaseEntity } from 'shared/shared.entity';
 
 
 @Entity('chats')
-export class Chat {
+export class Chat extends BaseEntity{
   @PrimaryColumn()
   id: string;
 
@@ -27,11 +28,7 @@ export class Chat {
   @OneToMany(() => Message, (message) => message.chat)
   messages: Message[];
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  
   @BeforeInsert()
   generateId() {
     if (!this.id) {

@@ -1,3 +1,4 @@
+import { BaseEntity } from 'shared/shared.entity';
 import { Worker } from 'src/Worker/worker.model';
 import {
   BeforeInsert,
@@ -11,7 +12,7 @@ import {
 } from 'typeorm';
 import { v4 } from 'uuid';
 @Entity()
-export class Award {
+export class Award extends BaseEntity {
   @PrimaryColumn()
   id: string;
 
@@ -44,11 +45,6 @@ export class Award {
   @Column({ nullable: true })
   certificateFileUrl: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
   @BeforeInsert()
   generateId() {
     if (!this.id) {
