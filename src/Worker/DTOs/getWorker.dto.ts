@@ -9,4 +9,6 @@ export class getWorkerDto {
   @Expose()
   @Type(() => getUserDto)
   user: getUserDto;
+  @Expose()
+  yearsOfExperience:number
 }

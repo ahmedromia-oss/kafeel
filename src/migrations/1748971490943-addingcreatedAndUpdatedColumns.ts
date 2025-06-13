@@ -4,7 +4,6 @@ export class AddingcreatedAndUpdatedColumns1748971490943 implements MigrationInt
     name = 'AddingcreatedAndUpdatedColumns1748971490943'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE \`job_applicants\` DROP COLUMN \`appliedAt\``);
         await queryRunner.query(`ALTER TABLE \`experience\` ADD \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)`);
         await queryRunner.query(`ALTER TABLE \`experience\` ADD \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)`);
         await queryRunner.query(`ALTER TABLE \`language\` ADD \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)`);
@@ -23,9 +22,7 @@ export class AddingcreatedAndUpdatedColumns1748971490943 implements MigrationInt
         await queryRunner.query(`ALTER TABLE \`worker\` ADD \`jobTitle\` text NULL`);
         await queryRunner.query(`ALTER TABLE \`kafeel\` ADD \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)`);
         await queryRunner.query(`ALTER TABLE \`kafeel\` ADD \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)`);
-        await queryRunner.query(`ALTER TABLE \`advertise\` DROP COLUMN \`createdAt\``);
         await queryRunner.query(`ALTER TABLE \`advertise\` ADD \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)`);
-        await queryRunner.query(`ALTER TABLE \`advertise\` DROP COLUMN \`updatedAt\``);
         await queryRunner.query(`ALTER TABLE \`advertise\` ADD \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)`);
     }
 

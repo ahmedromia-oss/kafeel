@@ -54,8 +54,7 @@ export class UserController {
       );
     }
 
-    const result = await this.userService.UpdateUser(user, userToUpdate.sub);
-    return result;
+    return await this.userService.UpdateUser(user, userToUpdate.sub);
   }
 
   @Get('/')

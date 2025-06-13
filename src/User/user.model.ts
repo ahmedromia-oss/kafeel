@@ -16,21 +16,21 @@ import {
 import { v4 } from 'uuid';
 
 @Entity()
-export class User extends BaseEntity{
+export class User extends BaseEntity {
   @PrimaryColumn()
   id: string;
-  @Column({ nullable: true, type: 'varchar', length: 255})
+  @Column({ nullable: true, type: 'varchar', length: 255 })
   firstName: string;
 
-  @Column({ nullable: true, type: 'varchar', length: 255})
+  @Column({ nullable: true, type: 'varchar', length: 255 })
   lastName: string;
 
-  @Column({ nullable: true, type: 'varchar', length: 255})
+  @Column({ nullable: true, type: 'varchar', length: 255 })
   profilePhoto: string;
 
-  @Column({ nullable: false, unique: true, type: 'varchar', length: 255})
+  @Column({ nullable: true, unique: true, type: 'varchar', length: 255 })
   email: string;
-  @Column({ type: 'varchar', length: 255})
+  @Column({ type: 'varchar', length: 255 })
   password: string;
   @Column({ default: false, type: 'boolean' })
   emailVerified: boolean;
@@ -38,7 +38,7 @@ export class User extends BaseEntity{
   @Column({ default: false, type: 'boolean' })
   phoneVerified: boolean;
 
-  @Column({ nullable: false, type: 'varchar', length: 255})
+  @Column({ nullable: false, type: 'varchar', length: 255 })
   phoneNumber: string;
 
   @Column({ nullable: true })
@@ -46,7 +46,7 @@ export class User extends BaseEntity{
 
   @Column({ nullable: true })
   birthDate: Date;
-  @Column({ nullable: false, default: '30128489520460' })
+  @Column({ nullable: true })
   nationalId: string;
 
   @Column({
@@ -66,5 +66,4 @@ export class User extends BaseEntity{
       this.id = v4();
     }
   }
-  
 }

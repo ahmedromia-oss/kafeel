@@ -1,4 +1,5 @@
 import { Expose, Type } from 'class-transformer';
+import { GetAdvertiseDto } from 'src/Advertise/DTOs/getAdvertise.dto';
 import { GetAwardDto } from 'src/Awards/DTOs/getAward.dto';
 import { UserType } from 'src/constants';
 import { getEducationDto } from 'src/Education/DTOs/getEducation.dto';
@@ -32,4 +33,7 @@ export class getProfileDto {
   @Expose({ groups: [UserType.WORKER] })
   @Type(() => getEducationDto)
   educations: getEducationDto[];
+  @Expose({ groups: [UserType.WORKER] })
+  @Type(()=>GetAdvertiseDto)
+  advertises:GetAdvertiseDto[]
 }

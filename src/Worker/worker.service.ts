@@ -21,6 +21,7 @@ export class WorkerService {
         skills: true,
         languages: true,
         awards: true,
+        advertises:true
       },
     });
   }
