@@ -3,15 +3,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { kafeel } from './kafeel.model';
 import { kafeelService } from './kafeel.service';
 import { KafeelRepository } from './kafeel.repository';
-import { kafeelController } from './kafeel.controller';
+import { KafeelController } from './kafeel.controller';
+import { TokenModule } from 'src/JWT/jwt.module';
 
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([kafeel])],
+  imports: [TypeOrmModule.forFeature([kafeel]) , TokenModule],
   providers: [kafeelService , KafeelRepository],
   exports: [],
-  controllers:[kafeelController]
+  controllers:[KafeelController]
 })
 export class KafeelModule {}
 

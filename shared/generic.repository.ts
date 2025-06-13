@@ -31,9 +31,8 @@ export class GenericRepository<T> {
   async findAll(
     options?: FindManyOptions<T>,
     manager?: EntityManager,
-    
   ): Promise<T[]> {
-    return await this.getRepo(manager).find({...options});
+    return await this.getRepo(manager).find({ ...options });
   }
 
   async findById(
@@ -42,7 +41,6 @@ export class GenericRepository<T> {
     manager?: EntityManager,
   ): Promise<T | null> {
     try {
-      
       return await this.getRepo(manager).findOneOrFail({
         where: { id } as any,
         ...options,
@@ -56,7 +54,6 @@ export class GenericRepository<T> {
     manager?: EntityManager,
   ): Promise<T | null> {
     try {
-      
       return await this.getRepo(manager).findOneOrFail(options);
     } catch {
       throw new NotFoundException();
@@ -69,12 +66,10 @@ export class GenericRepository<T> {
     manager?: EntityManager,
   ): Promise<string> {
     if (await this.checkIFExists({ where: Options })) {
-      try{
-      await this.getRepo(manager).update(Options, data);
-      }
-      catch(e){
-      throw new BadRequestException("NO_CHANGED_VALUES");
-        
+      try {
+        await this.getRepo(manager).update(Options, data);
+      } catch {
+        throw new BadRequestException('NO_CHANGED_VALUES');
       }
       return valuesString.UPDATED;
     } else {
@@ -89,8 +84,7 @@ export class GenericRepository<T> {
     if (await this.checkIFExists({ where: options })) {
       await this.getRepo(manager).delete(options);
       return Code.DELETED;
-    }
-    else{
+    } else {
       throw new NotFoundException();
     }
   }

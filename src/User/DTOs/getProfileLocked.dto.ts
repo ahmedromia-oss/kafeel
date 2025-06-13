@@ -36,4 +36,14 @@ export class getProfileLockedDto {
   @Expose({ groups: [UserType.WORKER] })
   @Type(() => GetAdvertiseDto)
   advertises: GetAdvertiseDto[];
+  @Expose({ groups: [UserType.KAFEEL] })
+  userName: string;
+  @Expose({ groups: [UserType.KAFEEL] })
+  JobTitle: string;
+
+  @Expose({ groups: [UserType.KAFEEL] })
+  city: string;
+
+  @Expose({ groups: [UserType.KAFEEL] })
+  preferred: string;
 }
