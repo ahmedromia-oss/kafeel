@@ -14,7 +14,11 @@ export class UserService {
     private userFactory: UserFactoryService,
     private uow: UnitOfWork,
   ) {}
-
+  public async getByPhoneNumber(phoneNumber: string) {
+    return await this.UserRepository.findOne({
+      where: { phoneNumber: phoneNumber },
+    });
+  }
   public async createUser(data: User): Promise<User> {
     return this.uow.execute(async (manager: EntityManager) => {
       const user = await this.UserRepository.create(data, manager);
@@ -25,9 +29,12 @@ export class UserService {
   }
 
   public async IsEmailUnique(email: string) {
-    return !(await this.UserRepository.checkIFExists({
-      where: { email: email },
-    }));
+    if (email) {
+      return !(await this.UserRepository.checkIFExists({
+        where: { email: email },
+      }));
+    }
+    return true;
   }
 
   public async getUserByEmail(email: string): Promise<User> {
@@ -52,7 +59,6 @@ export class UserService {
     return await this.UserRepository.update({ id: userId }, updateUser);
   }
   public async getProfile(userId: string) {
-    
     const user = await this.getUserById(userId);
     const service = this.userFactory.getService(user.userType);
     return await service.getProfile(user.id);

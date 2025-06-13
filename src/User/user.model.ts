@@ -38,7 +38,7 @@ export class User extends BaseEntity {
   @Column({ default: false, type: 'boolean' })
   phoneVerified: boolean;
 
-  @Column({ nullable: false, type: 'varchar', length: 255 })
+  @Column({ nullable: false, type: 'varchar', length: 255 , unique:true })
   phoneNumber: string;
 
   @Column({ nullable: true })

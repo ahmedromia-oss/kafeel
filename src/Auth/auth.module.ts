@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 
 import { RedisModule } from 'src/Redis/redis.module';
 import { TokenModule } from 'src/JWT/jwt.module';
+import { OTPModule } from 'src/OTP/otp.module';
 
 
 
@@ -15,7 +16,8 @@ import { TokenModule } from 'src/JWT/jwt.module';
   imports: [
     UserModule,
     RedisModule,
-    TokenModule
+    TokenModule,
+    OTPModule
   ],
   controllers: [AuthController],
   providers: [AuthService],

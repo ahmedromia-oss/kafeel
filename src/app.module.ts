@@ -29,6 +29,7 @@ import { JobModule } from './Job/Job.module';
 import { JobApplicants } from './Job_Applicants/Job_applicants.model';
 import { JobApplicantsModule } from './Job_Applicants/Job_applicants.module';
 import { workerModule } from './Worker/worker.module';
+import { OTPModule } from './OTP/otp.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ JobModule,
     JobApplicantsModule,
     BucketsModule,
     companyModule,
+    OTPModule
   ],
   controllers: [],
   providers: [],
