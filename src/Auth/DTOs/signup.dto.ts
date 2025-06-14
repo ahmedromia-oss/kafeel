@@ -16,6 +16,8 @@ import { Expose, Transform } from 'class-transformer';
 import { UserType, ValidationErrors } from 'src/constants';
 
 export class SignUpDTO {
+
+
   @IsEnum(UserType, { message: 'MUST_BE_VALID_USERTYPE' })
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @Transform(({ value }) =>

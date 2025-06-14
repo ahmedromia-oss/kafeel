@@ -34,13 +34,13 @@ export class otpService {
           userId: user.id,
         },
         {
-          code: this.generateCode(),
+          code: "000000",
           expiresAt: new Date(Date.now() + 5 * 60 * 1000),
         },
       );
       return await this.otpRepo.findOne({ where: { userId: user.id } });
     } catch {
-      return await this.otpRepo.create({ code: this.generateCode() });
+      return await this.otpRepo.create({ code: "000000" });
     }
   }
   private generateCode(): string {

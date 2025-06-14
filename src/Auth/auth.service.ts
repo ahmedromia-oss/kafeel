@@ -33,13 +33,14 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async signUp(data: SignUpDTO) {
+  async signUp(data: SignUpDTO, phoneVerified: boolean = false) {
     if (!(await this.userService.IsEmailUnique(data.email))) {
       throw new BadRequestException(Code.EMAIL_USED);
     }
     const hashedPass = await this.hashSaltPassword(data.password);
     data.password = hashedPass;
     const user = plainToInstance(User, data);
+    user.phoneVerified = phoneVerified;
     return await this.userService.createUser(user);
   }
   async verifyToken(
@@ -118,7 +119,6 @@ export class AuthService {
       const user = await this.userService.getByPhoneNumber(
         loginDto.phoneNumber,
       );
-      console.log(otp.user.userType, loginDto.userType);
       if (otp.userId != user.id || otp.user?.userType != loginDto.userType) {
         throw new BadRequestException(Code.INVALID_OTP);
       }
@@ -153,9 +153,8 @@ export class AuthService {
           userType: loginDto.userType,
           phoneNumber: loginDto.phoneNumber,
         } as SignUpDTO);
-        const userCreated = await this.signUp(user);
+        const userCreated = await this.signUp(user, true);
         otp.user = userCreated;
-        otp.userId = userCreated.id;
         await this.otpService.update(otp);
 
         const payload: userToken = {
@@ -176,6 +175,7 @@ export class AuthService {
             this.configService.get<string>('secretKey'),
             this.configService.get<string>('durationToken'),
           ),
+
           ...userCreated,
         };
       } else {
