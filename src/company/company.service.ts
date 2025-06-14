@@ -16,9 +16,7 @@ export class companyService {
   async getProfile(userId: string) {
     return await this.companyRepo.findOne({ where: { userId: userId } });
   }
-  async updateCompany(company:Company){
-
-    return await this.companyRepo.update({userId:company.userId } , company)
-
+  async updateCompany(companyId:string , company:Company){
+    return await this.companyRepo.update({userId:companyId } , company)
   }
 }

@@ -41,9 +41,51 @@ export class getProfileLockedDto {
   @Expose({ groups: [UserType.KAFEEL] })
   JobTitle: string;
 
-  @Expose({ groups: [UserType.KAFEEL] })
+  @Expose({ groups: [UserType.KAFEEL, UserType.COMPANY] })
   city: string;
 
   @Expose({ groups: [UserType.KAFEEL] })
   preferred: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  companyName: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  officePhoneNumber: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  officialEmail: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  websiteUrl: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  officeCity: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  commercialRegistrationNumber: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  ownerName: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  officeOwnerName: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  licenseNumber: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  officeName: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  ownerPhone: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  ownerEmail: string;
+
+  @Expose({ groups: [UserType.COMPANY] })
+  licenseImage: string; // URL or file path to license image
+
+  @Expose({ groups: [UserType.COMPANY] })
+  idImage: string;
 }

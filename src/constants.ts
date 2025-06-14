@@ -20,6 +20,7 @@ export enum MessageType {
   FILE = 'FILE',
 }
 export const enum Code {
+  license_must_valid_files = 'license_must_valid_files',
   INVALID_OTP = 'INVALID_OTP',
   NO_CHANGED_VALUES = 'NO_CHANGED_VALUES',
   DELETED = 'DELETED',

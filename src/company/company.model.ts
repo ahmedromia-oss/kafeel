@@ -30,32 +30,48 @@ export class Company extends BaseEntity {
   @OneToMany(() => Job, (job) => job.company)
   Jobs: Job[];
 
- 
-  
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  companyName: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  officePhoneNumber: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  officialEmail: string;
+
+  @Column({ nullable: true })
+  websiteUrl: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  officeCity: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  commercialRegistrationNumber: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
   ownerName: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  officeOwnerName: string;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
   licenseNumber: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   officeName: string;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   ownerPhone: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   ownerEmail: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   city: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   licenseImage: string; // URL or file path to license image
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   idImage: string; // URL or file path to ID image
 }
-
-
