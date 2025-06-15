@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { companyService } from './company.service';
 
-import { Request } from 'express';
 import { Company } from './company.model';
 import { updateCompanyDto } from './DTOs/updateCompany.dto';
 import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
@@ -69,24 +68,23 @@ export class CompanyController {
   async createLicense(
     @UploadedFiles()
     files: {
-      licenseImage: Express.Multer.File;
-      idImage: Express.Multer.File;
+      licenseImage: Express.Multer.File[];
+      idImage: Express.Multer.File[];
     },
     @user() user: userToken,
     @Body() dto: createLicenseDto,
   ) {
-    console.log('hello', files.idImage, files.licenseImage);
-    if (!files.idImage || !files.licenseImage) {
+    if (!files.idImage || !files.licenseImage || !files.idImage[0] || !files.licenseImage[0]) {
       throw new BadRequestException(Code.license_must_valid_files);
     }
     const company = plainToClass(Company, dto);
 
     company.idImage = this.bucketService.saveFile(
-      files.licenseImage,
+      files.idImage[0],
       FileType.CV,
     );
     company.licenseImage = this.bucketService.saveFile(
-      files.licenseImage,
+      files.licenseImage[0],
       FileType.CV,
     );
 
@@ -105,20 +103,20 @@ export class CompanyController {
   async updateLicense(
     @UploadedFiles()
     files: {
-      licenseImage: Express.Multer.File;
-      idImage: Express.Multer.File;
+      licenseImage: Express.Multer.File[];
+      idImage: Express.Multer.File[];
     },
     @user() user: userToken,
     @Body() dto: updateLicenseDto,
   ) {
     // fallback if userId is passed in dto
     const company = plainToClass(Company, dto);
-    if (files.idImage) {
-      company.idImage = this.bucketService.saveFile(files.idImage, FileType.CV);
+    if (files.idImage && files.idImage[0]) {
+      company.idImage = this.bucketService.saveFile(files.idImage[0], FileType.CV);
     }
-    if (files.licenseImage) {
+    if (files.licenseImage && files.licenseImage[0]) {
       company.licenseImage = this.bucketService.saveFile(
-        files.licenseImage,
+        files.licenseImage[0],
         FileType.CV,
       );
     }
