@@ -10,6 +10,8 @@ import { Message } from './models/message.model';
 import { Chat } from './models/chat.model';
 import { Attachment } from './models/attachments.model';
 import { TokenModule } from 'src/JWT/jwt.module';
+import { ChatController } from './controllers/chat.controller';
+import { MessageController } from './controllers/message.controller';
 
 @Module({
   imports: [UserModule , TypeOrmModule.forFeature([Message , Chat , Attachment]) , TokenModule],
@@ -22,5 +24,6 @@ import { TokenModule } from 'src/JWT/jwt.module';
     
   ],
   exports: [ChatGateway],
+  controllers:[ChatController , MessageController]
 })
 export class SocketModule {}

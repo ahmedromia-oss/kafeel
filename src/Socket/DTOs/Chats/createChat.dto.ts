@@ -1,4 +1,7 @@
+import { IsNotEmpty } from 'class-validator';
+import { ValidationErrors } from 'src/constants';
+
 export class createChatDto {
-  senderId: string;
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   recieverId: string;
 }

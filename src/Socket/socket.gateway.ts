@@ -35,7 +35,7 @@ export class ChatGateway
     private jwtService: customJwtService,
     private configService: ConfigService,
     private chatService: ChatService,
-    private messageService:MessageService
+    private messageService: MessageService,
   ) {}
   @WebSocketServer()
   server: Server;
@@ -50,13 +50,13 @@ export class ChatGateway
       const rooms = (await this.chatService.getChatsForUser(user.sub)).map(
         (room) => room.id,
       );
-     
+
       client.broadcast.socketsJoin(rooms);
     } catch {}
   }
 
   handleDisconnect(client: Socket) {
-    client.handshake.auth = null
+    client.handshake.auth = null;
   }
 
   @SubscribeMessage('sendMessage')
@@ -65,26 +65,24 @@ export class ChatGateway
     @WsCurrentUser() user: userToken,
     @ConnectedSocket() client: Socket,
   ) {
-    
     // Broadcast to all other clients except sender
-
-    client.broadcast
-      .to(data.chatId)
-      .emit('chatMessage', { message: data.message, senderId: user.sub });
-    return await this.messageService.createMessage({chatId:data.chatId , content:data.message} , user.sub)
-
-    
+    try {
+      client.broadcast
+        .to(data.chatId)
+        .emit('chatMessage', { message: data.message, senderId: user.sub });
+      return await this.messageService.createMessage(
+        { chatId: data.chatId, content: data.message },
+        user.sub,
+      );
+    } catch (e) {}
   }
   @SubscribeMessage('createChat')
   async createChat(
     @MessageBody() recieverId: string,
     @WsCurrentUser() user: userToken,
   ) {
-   
     if (user.sub != recieverId) {
-     
-      return await this.chatService.createChat({
-        senderId: user.sub,
+      return await this.chatService.createChat(user.sub, {
         recieverId: recieverId,
       } as createChatDto);
     }

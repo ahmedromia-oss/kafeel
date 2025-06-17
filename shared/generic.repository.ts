@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 export class GenericRepository<T> {
-  constructor(private readonly repository: Repository<T>) {}
+  constructor(protected readonly repository: Repository<T>) {}
 
   private getRepo(manager?: EntityManager): Repository<T> {
     return manager

@@ -6,8 +6,5 @@ export class getChatDto {
   id: string;
   @Expose()
   @Type(() => getUserDto)
-  host: getUserDto;
-  @Expose()
-  @Type(() => getUserDto)
-  reciever: getUserDto;
+  members: getUserDto[];
 }

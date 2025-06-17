@@ -9,12 +9,15 @@ import { MessageType } from 'src/constants';
 import { Message } from '../models/message.model';
 import { getMessageDto } from '../DTOs/Messages/getMessage.dto';
 import { plainToInstance } from 'class-transformer';
+import { take } from 'rxjs';
+import { ChatService } from './chat.service';
 
 @Injectable()
 export class MessageService {
   constructor(
     private readonly messageRepo: MessageRepository,
     private readonly userService: UserService,
+    private readonly chatService: ChatService,
   ) {}
 
   /**
@@ -23,16 +26,10 @@ export class MessageService {
   async getMessageWithChat(
     chatId: string,
     userId: string,
-  ): Promise<getMessageDto[]> {
-    const result = await this.messageRepo.findAll({
-      where: [
-        { chatId: chatId, recieverId: userId },
-        { chatId: chatId, senderId: userId },
-      ],
-    });
-    return plainToInstance(getMessageDto, result, {
-      excludeExtraneousValues: true,
-    });
+    skip?: number,
+    take?: number,
+  ): Promise<Message[]> {
+    return await this.messageRepo.findAllMessages(chatId, userId , skip , take);
   }
   async createMessage(
     createMessage: CreateMessageDto,
@@ -40,15 +37,21 @@ export class MessageService {
   ): Promise<Message> {
     // Fetch user entities for each member
 
-    const chat = await this.messageRepo.findById(createMessage.chatId);
+    const chat = await this.chatService.getChatById(createMessage.chatId);
 
-    const sender = await this.userService.getUserById(userId);
+    if (chat.members.find((e) => e.id == userId)) {
+      const reciever = chat.members.find((e) => e.id != userId);
+      const sender = chat.members.find((e) => e.id == userId);
 
-    return await this.messageRepo.create({
-      sender: sender,
-      chat: chat,
-      messageType: MessageType.TEXT,
-      content: createMessage.content,
-    });
+      return await this.messageRepo.create({
+        reciever: reciever,
+        sender: sender,
+        chat: chat,
+        messageType: MessageType.TEXT,
+        content: createMessage.content,
+      });
+    } else {
+      throw new NotFoundException();
+    }
   }
 }

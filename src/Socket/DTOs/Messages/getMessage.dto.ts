@@ -16,5 +16,11 @@ export class getMessageDto {
   sender: getUserDto;
 
   @Expose()
+  @Type(() => getUserDto)
+  reciever: getUserDto;
+
+  @Expose()
   attachments?: string[];
+  @Expose()
+  createdAt: Date;
 }

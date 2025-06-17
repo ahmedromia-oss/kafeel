@@ -12,4 +12,19 @@ export class ChatRepository extends GenericRepository<Chat> {
   ) {
     super(repository);
   }
+  async findOneChat(userIds: string[]) {
+    const result = await this.repository
+      .createQueryBuilder('chat')
+      .leftJoin('chat.members', 'member')
+      .where('member.id IN (:...userIds)', { userIds }) // include matching members
+      .groupBy('chat.id')
+      .having('COUNT(DISTINCT member.id) = :count', { count: userIds.length }) // match exact user count
+      .getOne();
+    return await this.findOne({
+      where: { id: result.id },
+      relations: { members: true },
+    });
+
+    // return the first matching chat
+  }
 }

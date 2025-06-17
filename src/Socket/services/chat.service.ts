@@ -14,14 +14,16 @@ export class ChatService {
   /**
    * Create a new chat with specified member IDs
    */
-  async createChat(createDto: createChatDto): Promise<Chat> {
+  async createChat(senderId: string, createDto: createChatDto): Promise<Chat> {
     // Fetch user entities for each member
-    const sender = await this.userService.getUserById(createDto.senderId);
+    const sender = await this.userService.getUserById(senderId);
     const reciever = await this.userService.getUserById(createDto.recieverId);
-    console.log(sender , reciever)
-    
     const members = [sender, reciever];
-    return await this.chatRepo.create({ members: members });
+    try {
+      return await this.chatRepo.findOneChat([senderId, createDto.recieverId]);
+    } catch (e) {
+      return await this.chatRepo.create({ members: members });
+    }
   }
 
   /**
@@ -33,31 +35,30 @@ export class ChatService {
     take: number = 5,
   ): Promise<Chat[]> {
     // Verify user exists to prevent orphan queries
-    return await this.chatRepo.findAll(
-      { where: { members: { id: userId  } } , skip:skip , take:take },
-   
-    );
+    return await this.chatRepo.findAll({
+      where: { members: { id: userId } },
+      skip: skip,
+      take: take,
+    });
   }
 
-  
   /**
    * Get a specific chat by ID
    */
   async getChatById(id: string): Promise<Chat> {
-    const chat = await this.chatRepo.findOne({
+    return await this.chatRepo.findOne({
       where: { id },
       relations: { messages: true, members: true },
     });
-    if (!chat) {
-      throw new NotFoundException(`Chat with id ${id} not found`);
-    }
-    return chat;
+  }
+  async chatById(id: string, userId: string): Promise<Chat> {
+    return await this.chatRepo.findOne({
+      where: [{ id }, { members: { id: userId } }],
+      relations: { messages: true, members: true },
+    });
   }
 
   /**
    * Delete a chat by its ID
    */
-  async deleteChat(id: string): Promise<void> {
-    await this.chatRepo.delete({ id: id });
-  }
 }
