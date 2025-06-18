@@ -8,6 +8,7 @@ import { GetLanguageDto } from 'src/Languages/DTOs/getLanguage.dto';
 import { GetSkillDto } from 'src/Skills/DTOs/getSKill.dto';
 import { Skill } from 'src/Skills/skills.model';
 import { getUserDto } from 'src/User/DTOs/getUserDto';
+import { createLocationString } from 'src/utils/overlappedCities';
 import { overLappingDates } from 'src/utils/overLappingdates';
 
 export class getProfileDto {

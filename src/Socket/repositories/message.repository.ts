@@ -33,7 +33,7 @@ export class MessageRepository extends GenericRepository<Message> {
       )
       .skip(skip)
       .take(take)
-      .orderBy('message.createdAt', 'ASC')
+      .orderBy('message.createdAt', 'DESC')
       .getMany();
   }
 }
