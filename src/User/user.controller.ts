@@ -70,6 +70,8 @@ export class UserController {
   @Get('private/profile')
   @serialize(getProfileLockedDto, [])
   async getProfilePrivate(@user() user: userToken) {
-    return await this.userService.getProfile(user.sub);
+    const result =  await this.userService.getProfile(user.sub);
+    console.log(result)
+    return result
   }
 }

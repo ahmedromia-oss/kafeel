@@ -29,7 +29,7 @@ export class MessageService {
     skip?: number,
     take?: number,
   ): Promise<Message[]> {
-    return await this.messageRepo.findAllMessages(chatId, userId , skip , take);
+    return await this.messageRepo.findAllMessages(chatId, userId, skip, take);
   }
   async createMessage(
     createMessage: CreateMessageDto,
@@ -43,13 +43,15 @@ export class MessageService {
       const reciever = chat.members.find((e) => e.id != userId);
       const sender = chat.members.find((e) => e.id == userId);
 
-      return await this.messageRepo.create({
+      const message = await this.messageRepo.create({
         reciever: reciever,
         sender: sender,
         chat: chat,
         messageType: MessageType.TEXT,
         content: createMessage.content,
       });
+      await this.chatService.updateLastMessage(chat.id, message);
+      return message;
     } else {
       throw new NotFoundException();
     }

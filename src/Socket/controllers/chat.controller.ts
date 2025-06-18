@@ -44,15 +44,15 @@ export class ChatController {
    * Get all chats for a user
    * GET /chats/user/:userId?skip=0&take=5
    */
-  @Get('user/:userId')
+  @Get()
   @UseGuards(AuthGuard)
   @serialize()
   async getChatsForUser(
     @user() user: userToken,
-    @Query('skip', ParseIntPipe) skip = 0,
-    @Query('take', ParseIntPipe) take = 5,
+    @Query('skip') skip = 0,
+    @Query('take') take = 5,
   ): Promise<Chat[]> {
-    return await this.chatService.getChatsForUser(user.sub, skip, take);
+    return await this.chatService.getChatsForUser(user.sub, Number(skip), Number(take));
   }
 
   /**

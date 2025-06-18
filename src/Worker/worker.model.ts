@@ -46,5 +46,7 @@ export class Worker extends BaseEntity {
   advertises: Advertise[];
   @OneToMany(() => JobApplicants, (jobApplicant) => jobApplicant.worker)
   jobApplications: JobApplicants[];
+  yearsOfExperience:number = 0
+  previouseCities:string = ""
  
 }

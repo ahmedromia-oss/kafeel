@@ -34,7 +34,7 @@ export class BucketsService {
       const originalName = file.originalname;
       const extension = extname(originalName); // e.g. ".png"
       const baseName = basename(originalName, extension); // e.g. "avatar"
-      const timestampedName = `${baseName}_${Date.now()}${extension}`;
+      const timestampedName = `${Date.now()}_${baseName}`;
 
       const folder = path.join(this.basePath, type);
 
@@ -50,7 +50,7 @@ export class BucketsService {
 
       return fullPath;
     }
-    return null
+    return null;
   }
 
   deleteFile(type: FileType, fileName: string) {

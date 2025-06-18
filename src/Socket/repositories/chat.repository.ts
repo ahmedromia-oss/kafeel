@@ -27,4 +27,17 @@ export class ChatRepository extends GenericRepository<Chat> {
 
     // return the first matching chat
   }
+  async findChats(userIds: string , skip:number , take:number) {
+    return await this.repository
+      .createQueryBuilder('chat')
+      .leftJoinAndSelect('chat.members', 'member')
+      .where('member.id  = :userIds', { userIds }) // include matching members
+      .skip(skip)
+      .take(take)// match exact user count
+      .getMany();
+    
+
+    // return the first matching chat
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { GetAdvertiseDto } from 'src/Advertise/DTOs/getAdvertise.dto';
 import { GetAwardDto } from 'src/Awards/DTOs/getAward.dto';
 import { UserType } from 'src/constants';
@@ -8,6 +8,7 @@ import { GetLanguageDto } from 'src/Languages/DTOs/getLanguage.dto';
 import { GetSkillDto } from 'src/Skills/DTOs/getSKill.dto';
 import { Skill } from 'src/Skills/skills.model';
 import { getUserDto } from 'src/User/DTOs/getUserDto';
+import { overLappingDates } from 'src/utils/overLappingdates';
 
 export class getProfileDto {
   @Expose({ groups: [UserType.WORKER] })
@@ -88,4 +89,17 @@ export class getProfileDto {
 
   @Expose({ groups: [UserType.COMPANY] })
   idImage: string;
+  @Transform(({ value, obj }) => {
+    // 'obj' is the entire object being transformed
+    // 'value' would be the current value of yearsOfExperience (if any)
+    return Math.ceil(overLappingDates(obj.experiences || []));
+  })
+  yearsOfExperience: number;
+  @Expose({ groups: [UserType.WORKER] })
+  @Transform(({ value, obj }) => {
+    // 'obj' is the entire object being transformed
+    // 'value' would be the current value of yearsOfExperience (if any)
+    return createLocationString(obj.experiences || []);
+  })
+  previouseCities: string;
 }

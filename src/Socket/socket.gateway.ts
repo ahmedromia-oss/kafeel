@@ -40,7 +40,7 @@ export class ChatGateway
   @WebSocketServer()
   server: Server;
 
-  afterInit(server: Server) {
+  async afterInit(server: Server) {
     console.log('Chat WebSocket server initialized');
   }
 
@@ -50,7 +50,7 @@ export class ChatGateway
       const rooms = (await this.chatService.getChatsForUser(user.sub)).map(
         (room) => room.id,
       );
-
+      console.log(rooms);
       client.broadcast.socketsJoin(rooms);
     } catch {}
   }
@@ -67,6 +67,7 @@ export class ChatGateway
   ) {
     // Broadcast to all other clients except sender
     try {
+      client.broadcast.socketsJoin([data.chatId]);
       client.broadcast
         .to(data.chatId)
         .emit('chatMessage', { message: data.message, senderId: user.sub });
