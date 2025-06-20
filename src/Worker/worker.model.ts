@@ -6,7 +6,7 @@ import { Experience } from 'src/Experience/Experience.model';
 import { Language } from 'src/Languages/languages.model';
 import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
 import { Skill } from 'src/Skills/skills.model';
-import { User } from 'src/User/user.model';
+import { User } from 'src/User/models/user.model';
 import {
   Entity,
   Column,
@@ -44,9 +44,10 @@ export class Worker extends BaseEntity {
   awards: Award[];
   @OneToMany(() => Advertise, (advertise) => advertise.worker)
   advertises: Advertise[];
+  @Column({ type: 'text', nullable: true })
+  cv: string;
   @OneToMany(() => JobApplicants, (jobApplicant) => jobApplicant.worker)
   jobApplications: JobApplicants[];
-  yearsOfExperience:number = 0
-  previouseCities:string = ""
- 
+  yearsOfExperience: number = 0;
+  previouseCities: string = '';
 }

@@ -26,6 +26,7 @@ import { GetAdvertiseDto } from './DTOs/getAdvertise.dto';
 import { CreateAdvertiseDto } from './DTOs/createAdvertise.dto';
 import { UpdateAdvertiseDto } from './DTOs/updateAdvertise.dto';
 import { getAdvertiseForKafeel } from './DTOs/getAdvertiseForKafeelDto';
+import { get } from 'http';
 
 @Controller('advertises')
 export class AdvertiseController {
@@ -101,5 +102,49 @@ export class AdvertiseController {
   ): Promise<string> {
     // Assuming delete logic is implemented in the service
     return await this.advertiseService.deleteAdvertise(advertiseId, user.sub);
+  }
+  @UseGuards(AuthGuard)
+  @Post('save/:advertiseId')
+  @serialize()
+  async saveAdvertise(
+    @user() user: userToken,
+    @Param('advertiseId') advertiseId: string,
+  ): Promise<string> {
+    // Assuming delete logic is implemented in the service
+    return await this.advertiseService.saveAndDeleteAdvertise(
+      user.sub,
+      advertiseId,
+    );
+  }
+  @UseGuards(AuthGuard)
+  @Get('saved')
+  @serialize(GetAdvertiseDto)
+  async Getsaved(
+    @user() user: userToken,
+    @Query('skip') skip: number,
+    @Query('take') take: number,
+  ): Promise<Advertise[]> {
+    // Assuming delete logic is implemented in the service
+    return await this.advertiseService.getSaved(user.sub, skip, take);
+  }
+  @Get('search')
+  @serialize(GetAdvertiseDto)
+  async search(
+    @Query('searchTerm') searchTerm?: string,
+    @Query('category') category?: string,
+    @Query('jobType') jobType?: string,
+    @Query('country') coutry?: string,
+    @Query('skip') skip: number = 0,
+    @Query('take') take: number = 5,
+  ): Promise<Advertise[]> {
+    // Assuming delete logic is implemented in the service
+    return await this.advertiseService.searchAdvertise(
+      searchTerm,
+      category,
+      jobType,
+      coutry,
+      skip,
+      take,
+    );
   }
 }

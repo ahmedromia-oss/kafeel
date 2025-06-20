@@ -2,20 +2,20 @@
 
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
   JoinColumn,
   BeforeInsert,
   PrimaryColumn,
+  OneToMany,
 } from 'typeorm';
 
 import { Worker } from 'src/Worker/worker.model';
 import { JobType, PreferredSponsorType } from 'src/constants';
 import { v4 } from 'uuid';
 import { BaseEntity } from 'shared/shared.entity';
+import { UserSavedJob } from 'src/User/models/userJobSaved';
+import { UserSavedAdvertise } from 'src/User/models/userAdvertiseSaved';
 
 @Entity()
 export class Advertise extends BaseEntity {
@@ -48,6 +48,9 @@ export class Advertise extends BaseEntity {
 
   @Column()
   workerId: string;
+
+  @OneToMany(() => UserSavedAdvertise, (savedAdvertise) => savedAdvertise.advertise)
+  savedByUsers: UserSavedAdvertise[];
 
   @ManyToOne(() => Worker, (worker) => worker.advertises)
   @JoinColumn({ name: 'workerId' })

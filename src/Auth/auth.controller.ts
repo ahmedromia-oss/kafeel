@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Get, Headers } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Headers,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDTO } from './DTOs/SignUp.dto';
 import { serialize } from '../../Shared/Interceptors/Serialize.Interceptor';
@@ -7,6 +14,10 @@ import { SignInUserDTO } from './DTOs/login.dto';
 import { getUserDtoWithToken } from 'src/User/DTOs/getUserWithToken.dto';
 import { getPrivateUserDto } from 'src/User/DTOs/getPrivateUser.dto';
 import { loginDto } from './DTOs/loginOTP.dto';
+import { resetPassword } from './DTOs/resetPassword.dto';
+import { user } from 'src/User/Decorators/user.decorator';
+import { userToken } from 'src/models/userToken.model';
+import { AuthGuard } from './Gaurds/auth.gaurd';
 
 @Controller('auth')
 export class AuthController {
@@ -36,5 +47,14 @@ export class AuthController {
   async SigninOTP(@Body() loginDto: loginDto) {
     const result = await this.authService.loginForOtp(loginDto);
     return result;
+  }
+  @serialize()
+  @Post('resetPassword')
+  @UseGuards(AuthGuard)
+  async resetPassword(
+    @Body() resetPassword: resetPassword,
+    @user() user: userToken,
+  ) {
+    return await this.authService.resetPassword(user.sub, resetPassword);
   }
 }

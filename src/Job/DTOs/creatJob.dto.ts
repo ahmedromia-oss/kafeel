@@ -10,8 +10,7 @@ import {
   MaxLength,
   Max,
 } from 'class-validator';
-import { JobType, ValidationErrors } from 'src/constants';
-import { MAX } from 'uuid';
+import { Code, JobType, ValidationErrors } from 'src/constants';
 
 export class CreateJobDto {
   @IsString({ message: ValidationErrors.MUST_STRING })
@@ -34,9 +33,16 @@ export class CreateJobDto {
 
   @IsString({ message: ValidationErrors.MUST_STRING })
   @IsOptional()
-  @MaxLength(100 , {message:ValidationErrors.STRING_OUT_OF_RANGE})
+  @MaxLength(100, { message: ValidationErrors.STRING_OUT_OF_RANGE })
   location?: string;
 
-  @IsEnum(JobType , {message:ValidationErrors.MUST_JOB_TYPE})
+  @IsEnum(JobType, { message: ValidationErrors.MUST_JOB_TYPE })
   jobType: JobType;
+
+  @IsNotEmpty({message:ValidationErrors.REQUIRED})
+  email:string
+  @IsNotEmpty({message:ValidationErrors.REQUIRED})
+  currency:string
+  @IsNotEmpty({message:ValidationErrors.REQUIRED})
+  phoneNumber:string
 }

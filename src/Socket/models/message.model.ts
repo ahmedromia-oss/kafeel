@@ -10,7 +10,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { Chat } from './chat.model';
-import { User } from 'src/User/user.model';
+import { User } from 'src/User/models/user.model';
 import { Attachment } from './attachments.model';
 import { MessageType } from 'src/constants';
 import { v4 } from 'uuid';

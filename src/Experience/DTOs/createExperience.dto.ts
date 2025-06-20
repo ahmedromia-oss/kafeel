@@ -13,7 +13,7 @@ import { education, ValidationErrors } from 'src/constants';
 export class createExperienceDto {
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @IsString({ message: ValidationErrors.MUST_STRING })
-  jobTitle:string
+  jobTitle: string;
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @Transform(({ value }) => new Date(value))
   @IsDate({ message: ValidationErrors.INVALID_DATE })
@@ -22,14 +22,18 @@ export class createExperienceDto {
   @IsString({ message: ValidationErrors.MUST_STRING })
   describtion: string;
   @IsOptional()
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => {
+    if (value) {
+      return new Date(value);
+    }
+  })
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   endDate: Date;
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @IsString({ message: ValidationErrors.MUST_STRING })
   company: string;
   @IsString({ message: ValidationErrors.MUST_STRING })
-  @IsUrl({} , {message:ValidationErrors.MUST_URL})
+  @IsUrl({}, { message: ValidationErrors.MUST_URL })
   @IsOptional()
   companyUrl: string;
   @IsString({ message: ValidationErrors.MUST_STRING })

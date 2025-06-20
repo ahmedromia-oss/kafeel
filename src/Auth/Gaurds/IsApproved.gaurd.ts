@@ -12,7 +12,7 @@ import { userToken } from 'src/models/userToken.model';
 import { PERMISSION_KEY } from '../Decorators/permissions.decorator';
 
 @Injectable()
-export class verifyEmailGuard implements CanActivate {
+export class IsApprovedGaurd implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -24,11 +24,11 @@ export class verifyEmailGuard implements CanActivate {
       return true;
     }
     const user: userToken = context.switchToHttp().getRequest();
-    if (requiredpermission.includes(PERMISSION.IS_EMAIL_VERIFIED)) {
-      if (user.verifyEmail) {
+    if (requiredpermission.includes(PERMISSION.IS_APPROVED)) {
+      if (user.Approved) {
         return true;
       }
-      throw new ForbiddenException({ code: Code.UN_VERIFIED });
+      throw new ForbiddenException({ code: Code.UN_APPROVED });
     }
     return true;
   }

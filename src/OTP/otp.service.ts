@@ -7,7 +7,7 @@ import {
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Code, tokenType } from 'src/constants';
 import { OtpRepository } from './otp.repository';
-import { User } from 'src/User/user.model';
+import { User } from 'src/User/models/user.model';
 import { Otp } from './otp.model';
 import { user } from 'src/User/Decorators/user.decorator';
 import { UserService } from 'src/User/user.service';

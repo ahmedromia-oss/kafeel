@@ -16,7 +16,7 @@ export class UpdateAdvertiseDto {
     
     jobTitle: string;
     @IsOptional()
-    ISOpen:boolean
+    IsOpen:boolean
   
     @IsOptional()
     @IsString({ message: ValidationErrors.MUST_STRING })

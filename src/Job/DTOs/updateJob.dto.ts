@@ -8,6 +8,7 @@ import {
   Min,
   MaxLength,
   Max,
+  IsNotEmpty,
 } from 'class-validator';
 import { JobType, ValidationErrors } from 'src/constants';
 
@@ -39,4 +40,10 @@ export class UpdateJobDto {
   @IsBoolean()
   @IsOptional()
   isRemote?: boolean;
+  @IsOptional({ message: ValidationErrors.REQUIRED })
+  email: string;
+  @IsOptional({ message: ValidationErrors.REQUIRED })
+  currency: string;
+  @IsOptional({ message: ValidationErrors.REQUIRED })
+  phoneNumber: string;
 }

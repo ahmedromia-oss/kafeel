@@ -10,9 +10,9 @@ export enum languageLevel {
   INTERMEDIATE = 'INTERMEDITE',
   NATIVE = 'NATIVE',
 }
-export enum FileType{
-  CV = "CV",
-  IMAGE = "IMAGE"
+export enum FileType {
+  CV = 'CV',
+  IMAGE = 'IMAGE',
 }
 export enum MessageType {
   TEXT = 'TEXT',
@@ -20,6 +20,8 @@ export enum MessageType {
   FILE = 'FILE',
 }
 export const enum Code {
+  PHONENUMBER_USED = 'PHONENUMBER_USED',
+  UN_APPROVED = 'UN_APPROVED',
   license_must_valid_files = 'license_must_valid_files',
   INVALID_OTP = 'INVALID_OTP',
   NO_CHANGED_VALUES = 'NO_CHANGED_VALUES',
@@ -64,12 +66,13 @@ export const enum mailSubjects {
 }
 export enum PERMISSION {
   IS_PHONE_VERIFIED = 'IS_PHONE_VERIFIED',
-  IS_EMAIL_VERIFIED = 'IS_EMAIL_VERIFIED'
+  IS_EMAIL_VERIFIED = 'IS_EMAIL_VERIFIED',
+  IS_APPROVED = 'IS_APPROVED',
 }
 
-export const enum valuesString{
-PRESENT = "PRESENT",
-UPDATED = "UPDATED"
+export const enum valuesString {
+  PRESENT = 'PRESENT',
+  UPDATED = 'UPDATED',
 }
 export enum JobType {
   FULL_TIME = 'FULL_TIME',
@@ -77,10 +80,11 @@ export enum JobType {
   TEMPORARY = 'TEMPORARY',
   INTERNSHIP = 'INTERNSHIP',
 }
-export enum UserType{
-  WORKER = "WORKER",
-  KAFEEL = "KAFEEL",
-  COMPANY = "COMPANY"
+export enum UserType {
+  WORKER = 'WORKER',
+  KAFEEL = 'KAFEEL',
+  COMPANY = 'COMPANY',
+  ADMIN = 'ADMIN',
 }
 
 export enum PreferredSponsorType {
@@ -89,15 +93,14 @@ export enum PreferredSponsorType {
   GOVERNMENT = 'GOVERNMENT',
 }
 export const enum ValidationErrors {
-  
   MUST_BE_SPONSORTYPE = 'MUST_BE_SPONSORTYPE',
-  MUST_JOB_TYPE = "MUST_JOB_TYPE",
-  MUST_URL = "MUST_URL",
-  NO_SPACE_NO_SPECIAL_CHRACHTER = "NO_SPACE_NO_SPECIAL_CHRACHTER",
-  INVALID_LANGUAGE_LEVEL = "INVALID_LANGUAGE_LEVEL",
-  INVALID_SKILL_LEVEL = "INVALID_SKILL_LEVEL",
-  INVALID_EDUCATION_ENUM = "INVALID_EDUCATION_ENUM",
-  INVALID_DATE = "INVALID_DATE",
+  MUST_JOB_TYPE = 'MUST_JOB_TYPE',
+  MUST_URL = 'MUST_URL',
+  NO_SPACE_NO_SPECIAL_CHRACHTER = 'NO_SPACE_NO_SPECIAL_CHRACHTER',
+  INVALID_LANGUAGE_LEVEL = 'INVALID_LANGUAGE_LEVEL',
+  INVALID_SKILL_LEVEL = 'INVALID_SKILL_LEVEL',
+  INVALID_EDUCATION_ENUM = 'INVALID_EDUCATION_ENUM',
+  INVALID_DATE = 'INVALID_DATE',
   MUST_BE_VALID_USERTYPE = 'MUST_BE_VALID_USERTYPE',
   MUST_UNIQUE = 'MUST_UNIQUE',
   REQUIRED = 'REQUIRED',

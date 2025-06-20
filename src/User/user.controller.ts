@@ -16,7 +16,7 @@ import { UserService } from './user.service';
 
 import { updateUserDto } from './DTOs/updateUserDto';
 
-import { User } from './user.model';
+import { User } from './models/user.model';
 import { plainToInstance } from 'class-transformer';
 
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -70,8 +70,12 @@ export class UserController {
   @Get('private/profile')
   @serialize(getProfileLockedDto, [])
   async getProfilePrivate(@user() user: userToken) {
-    const result =  await this.userService.getProfile(user.sub);
-    console.log(result)
-    return result
+    return await this.userService.getProfile(user.sub);
+  }
+  @Put('unApprove/:userId')
+  @UseGuards(AuthGuard)
+  @serialize()
+  async unApproveUser(@Param('userId') userId: string) {
+    return await this.userService.unApproveUser(userId);
   }
 }

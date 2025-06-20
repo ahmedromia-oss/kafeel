@@ -10,7 +10,7 @@ import {
 import { SignInUserDTO } from './DTOs/login.dto';
 import { UserService } from 'src/User/user.service';
 import { plainToInstance } from 'class-transformer';
-import { User } from 'src/User/user.model';
+import { User } from 'src/User/models/user.model';
 import { SignUpDTO } from './DTOs/signup.dto';
 import { Code, tokenType, UserType, ValidationErrors } from 'src/constants';
 import { randomBytes, scrypt as _scrypt, verify } from 'crypto';
@@ -22,6 +22,7 @@ import { getUserDto } from 'src/User/DTOs/getUserDto';
 import { userToken } from 'src/models/userToken.model';
 import { loginDto } from './DTOs/loginOTP.dto';
 import { otpService } from 'src/OTP/otp.service';
+import { resetPassword } from './DTOs/resetPassword.dto';
 
 @Injectable()
 export class AuthService {
@@ -37,9 +38,18 @@ export class AuthService {
     if (!(await this.userService.IsEmailUnique(data.email))) {
       throw new BadRequestException(Code.EMAIL_USED);
     }
+    if (
+      data.phoneNumber &&
+      (await this.userService.getByPhoneNumber(data.phoneNumber))
+    ) {
+      throw new BadRequestException(Code.PHONENUMBER_USED);
+    }
     const hashedPass = await this.hashSaltPassword(data.password);
     data.password = hashedPass;
     const user = plainToInstance(User, data);
+    if (user.userType == UserType.COMPANY) {
+      user.userApproved = false;
+    }
     user.phoneVerified = phoneVerified;
     return await this.userService.createUser(user);
   }
@@ -89,6 +99,7 @@ export class AuthService {
         throw new BadRequestException(Code.WRONG_CREDS);
       }
       const payload: userToken = {
+        Approved: user.userApproved,
         sub: user.id,
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
@@ -124,6 +135,7 @@ export class AuthService {
       }
 
       const payload: userToken = {
+        Approved: user.userApproved,
         sub: user.id,
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
@@ -158,6 +170,7 @@ export class AuthService {
         await this.otpService.update(otp);
 
         const payload: userToken = {
+          Approved: userCreated.userApproved,
           sub: userCreated.id,
           verifyEmail: userCreated.emailVerified,
           verifyPhone: userCreated.phoneVerified,
@@ -182,6 +195,23 @@ export class AuthService {
         throw e;
       }
     }
+  }
+  async resetPassword(
+    userId: string,
+    { oldPassword, newPassword }: resetPassword,
+  ) {
+    const user = await this.userService.getUserById(userId);
+    const scrypt = promisify(_scrypt);
+    const [salt, Storedhash] = user.password.split('.');
+    const hash = (await scrypt(oldPassword, salt, 32)) as Buffer;
+    if (Storedhash != hash.toString('hex')) {
+      throw new BadRequestException(Code.WRONG_CREDS);
+    }
+    const hashedPass = await this.hashSaltPassword(newPassword);
+    return await this.userService.UpdateUser(
+      { ...user, password: hashedPass } as User,
+      user.id,
+    );
   }
   private generateStrongPassword(length: number = 12): string {
     const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

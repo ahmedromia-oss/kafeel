@@ -28,7 +28,11 @@ export class CreateAwardDto {
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   startDate?: string;
 
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => {
+    if (value) {
+      return new Date(value);
+    }
+  })
   @IsOptional()
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   endDate?: string;

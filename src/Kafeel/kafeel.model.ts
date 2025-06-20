@@ -1,5 +1,5 @@
 import { BaseEntity } from 'shared/shared.entity';
-import { User } from 'src/User/user.model';
+import { User } from 'src/User/models/user.model';
 import {
   BeforeInsert,
   Column,

@@ -2,6 +2,7 @@ import { BaseEntity } from 'shared/shared.entity';
 import { Company } from 'src/company/company.model';
 import { JobType } from 'src/constants';
 import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
+import { UserSavedJob } from 'src/User/models/userJobSaved';
 
 import {
   Entity,
@@ -54,4 +55,12 @@ export class Job extends BaseEntity {
   @ManyToOne(() => Company, (company) => company.Jobs, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'companyId' })
   company: Company;
+  @Column('text')
+  email: string;
+  @Column('text')
+  currency: string;
+  @Column('text')
+  phoneNumber: string;
+  @OneToMany(() => UserSavedJob, (savedJob) => savedJob.job)
+  savedByUsers: UserSavedJob[];
 }

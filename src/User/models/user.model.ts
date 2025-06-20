@@ -14,6 +14,8 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { v4 } from 'uuid';
+import { UserSavedJob } from './userJobSaved';
+import { UserSavedAdvertise } from './userAdvertiseSaved';
 
 @Entity()
 export class User extends BaseEntity {
@@ -22,6 +24,7 @@ export class User extends BaseEntity {
   @Column({ nullable: true, type: 'varchar', length: 255 })
   firstName: string;
 
+  @Column({ nullable: true, type: 'varchar', length: 255 })
   @Column({ nullable: true, type: 'varchar', length: 255 })
   lastName: string;
 
@@ -38,7 +41,7 @@ export class User extends BaseEntity {
   @Column({ default: false, type: 'boolean' })
   phoneVerified: boolean;
 
-  @Column({ nullable: false, type: 'varchar', length: 255 , unique:true })
+  @Column({ nullable: true, type: 'varchar', length: 255, unique: true })
   phoneNumber: string;
 
   @Column({ nullable: true })
@@ -60,6 +63,14 @@ export class User extends BaseEntity {
   chats: Chat[];
   @OneToMany(() => Message, (message) => message.sender)
   sentMessages: Message[];
+
+  @Column({ default: true })
+  userApproved: boolean;
+
+  @OneToMany(() => UserSavedJob, (savedJob) => savedJob.user)
+  savedJobs: UserSavedJob[];
+  @OneToMany(() => UserSavedAdvertise, (savedAdvertise) => savedAdvertise.user)
+  savedAdvertises: UserSavedAdvertise[];
   @BeforeInsert()
   generateId() {
     if (!this.id) {

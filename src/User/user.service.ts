@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.model';
+import { User } from './models/user.model';
 
 import { getUserDto } from './DTOs/getUserDto';
 import { UnitOfWork } from 'src/UnitOfWork/unitOfWork.service';
-import { UserRepository } from './user.repository';
 import { UserFactoryService } from './user.factory';
-import { DataSource, EntityManager } from 'typeorm';
+import { UserRepository } from './repositories/user.repository';
+import { EntityManager } from 'typeorm';
+
 
 @Injectable()
 export class UserService {
@@ -45,10 +46,8 @@ export class UserService {
       select: Object.keys(new getUserDto()) as (keyof User)[],
     });
   }
-  public async getUserById(id: string): Promise<getUserDto> {
-    return await this.UserRepository.findById(id, {
-      select: Object.keys(new getUserDto()) as (keyof User)[],
-    });
+  public async getUserById(id: string): Promise<User> {
+    return await this.UserRepository.findById(id);
   }
   public async allUsers(): Promise<User[]> {
     return await this.UserRepository.findAll({
@@ -62,5 +61,11 @@ export class UserService {
     const user = await this.getUserById(userId);
     const service = this.userFactory.getService(user.userType);
     return await service.getProfile(user.id);
+  }
+  public async unApproveUser(userId:string){
+    return await this.UpdateUser(
+      { userApproved: false } as User,
+      userId,
+    );
   }
 }

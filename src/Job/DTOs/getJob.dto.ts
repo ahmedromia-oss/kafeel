@@ -1,7 +1,6 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import { getCompanyDto } from 'src/company/DTOs/getCompany.dto';
 import { JobType } from 'src/constants';
-import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
 
 export class GetJobDto {
   @Expose()
@@ -33,6 +32,12 @@ export class GetJobDto {
   @Transform(({ value }) => value?.length ?? 0)
   applicants: number;
   @Expose()
-  @Type(()=>getCompanyDto)
-  company:getCompanyDto
+  @Type(() => getCompanyDto)
+  company: getCompanyDto;
+  @Expose()
+  email: string;
+  @Expose()
+  currency: string;
+  @Expose()
+  phoneNumber: string;
 }

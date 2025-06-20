@@ -50,7 +50,6 @@ export class ChatGateway
       const rooms = (await this.chatService.getChatsForUser(user.sub)).map(
         (room) => room.id,
       );
-      console.log(rooms);
       client.broadcast.socketsJoin(rooms);
     } catch {}
   }

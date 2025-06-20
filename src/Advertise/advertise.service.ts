@@ -3,10 +3,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { AdvertiseRepository } from './advertise.repository';
 import { WorkerService } from 'src/Worker/worker.service';
 import { Advertise } from './advertise.model';
+import { UserSavedAdvertiseRepository } from 'src/User/repositories/userSavedJobs.repository';
+import { Code, JobType, valuesString } from 'src/constants';
+import { user } from 'src/User/Decorators/user.decorator';
+import { ILike, In } from 'typeorm';
 
 @Injectable()
 export class AdvertiseService {
   constructor(
+    private readonly userSavedRepo: UserSavedAdvertiseRepository,
     private readonly advertiseRepo: AdvertiseRepository,
     private readonly workerService: WorkerService,
   ) {}
@@ -15,26 +20,23 @@ export class AdvertiseService {
    * Get all adverts for a given worker
    */
   async getAllAdvertises(skip: number = 0, take: number = 5) {
-    return await this.advertiseRepo.findAll(
-      {
-        where: { IsOpen: true }, relations:{worker:true},
-        skip:skip,
-        take:take
-      },
-     
-    );
+    return await this.advertiseRepo.findAll({
+      where: { IsOpen: true },
+      relations: { worker: true },
+      skip: skip,
+      take: take,
+    });
   }
   async getAdvertises(
     workerId: string,
     skip: number = 0,
     take: number = 5,
   ): Promise<Advertise[]> {
-    return await this.advertiseRepo.findAll(
-      {
-        where: { workerId} , skip:skip , take:take
-      },
-     
-    );
+    return await this.advertiseRepo.findAll({
+      where: { workerId },
+      skip: skip,
+      take: take,
+    });
   }
 
   /**
@@ -74,5 +76,65 @@ export class AdvertiseService {
       { id: advertiseId, workerId },
       advertise,
     );
+  }
+
+  async saveAndDeleteAdvertise(userId: string, advertiseId: string) {
+    await this.advertiseRepo.findOne({ where: { id: advertiseId } });
+    try {
+      await this.userSavedRepo.findOne({
+        where: { userId: userId, advertiseId: advertiseId },
+      });
+      return await this.userSavedRepo.delete({
+        userId: userId,
+        advertiseId: advertiseId,
+      });
+    } catch (e) {
+      if (e instanceof NotFoundException) {
+        await this.userSavedRepo.create({
+          userId: userId,
+          advertiseId: advertiseId,
+        });
+        return valuesString.UPDATED;
+      }
+    }
+  }
+  async getSaved(userId: string, skip = 0, take = 5) {
+    return (
+      await this.userSavedRepo.findAll({
+        order: { createdAt: 'DESC' },
+        where: { userId: userId },
+        skip: skip,
+        take: take,
+        relations: { advertise: { worker: true } },
+      })
+    ).map((e) => e.advertise);
+  }
+  async searchAdvertise(
+    searchTerm?: string,
+    category?: string,
+    jobType?: string,
+    country?: string,
+    skip: number = 0,
+    take: number = 5,
+  ) {
+    return await this.advertiseRepo.findAll({
+      relations: { worker: true },
+      skip: skip,
+      take: take,
+      where: [
+        {
+          jobTitle: ILike(
+            `%${searchTerm ? searchTerm : category ? category : ''}%`,
+          ),
+          workType: jobType ? jobType : (In(Object.values(JobType)) as any),
+          currentCity: ILike(`%${country ? country : ''}%`),
+        },
+        {
+          description: ILike(`%${searchTerm}%`),
+          workType: jobType ? jobType : (In(Object.values(JobType)) as any),
+          currentCity: ILike(`%${country ? country : ''}%`),
+        },
+      ],
+    });
   }
 }

@@ -19,7 +19,7 @@ import { updateCompanyDto } from './DTOs/updateCompany.dto';
 import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
 import { RoleGuard } from 'src/Auth/Gaurds/Role.gaurd';
 import { roles } from 'src/Auth/Decorators/Roles.decorator';
-import { Code, FileType, UserType } from 'src/constants';
+import { Code, FileType, PERMISSION, UserType } from 'src/constants';
 import { plainToClass } from 'class-transformer';
 import { userToken } from 'src/models/userToken.model';
 import { user } from 'src/User/Decorators/user.decorator';
@@ -29,7 +29,9 @@ import { CreateCompanyDto } from './DTOs/createCompany.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { serialize } from 'shared/Interceptors/Serialize.Interceptor';
 import { BucketsService } from 'src/Buckets/buckets.service';
-
+import { getCompanyDto } from './DTOs/getCompany.dto';
+import { permissions } from 'src/Auth/Decorators/permissions.decorator';
+@permissions(PERMISSION.IS_APPROVED)
 @Controller('company')
 export class CompanyController {
   constructor(
@@ -74,7 +76,12 @@ export class CompanyController {
     @user() user: userToken,
     @Body() dto: createLicenseDto,
   ) {
-    if (!files.idImage || !files.licenseImage || !files.idImage[0] || !files.licenseImage[0]) {
+    if (
+      !files.idImage ||
+      !files.licenseImage ||
+      !files.idImage[0] ||
+      !files.licenseImage[0]
+    ) {
       throw new BadRequestException(Code.license_must_valid_files);
     }
     const company = plainToClass(Company, dto);
@@ -112,7 +119,10 @@ export class CompanyController {
     // fallback if userId is passed in dto
     const company = plainToClass(Company, dto);
     if (files.idImage && files.idImage[0]) {
-      company.idImage = this.bucketService.saveFile(files.idImage[0], FileType.CV);
+      company.idImage = this.bucketService.saveFile(
+        files.idImage[0],
+        FileType.CV,
+      );
     }
     if (files.licenseImage && files.licenseImage[0]) {
       company.licenseImage = this.bucketService.saveFile(
@@ -121,5 +131,18 @@ export class CompanyController {
       );
     }
     return await this.companyService.updateCompany(user.sub, company);
+  }
+  @serialize()
+  @Put('approveUser/:companyId')
+  @UseGuards(AuthGuard)
+  async approveCompany(@Param() companyId: string) {
+    return await this.companyService.approveCompany(companyId);
+  }
+
+  @serialize(getCompanyDto)
+  @Post('approveUser/:companyId')
+  @UseGuards(AuthGuard)
+  async unAppovedCompanies() {
+    return await this.companyService.unApprovedUsers();
   }
 }

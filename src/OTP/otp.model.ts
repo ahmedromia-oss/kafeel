@@ -1,5 +1,5 @@
 // src/entities/otp.entity.ts
-import { User } from 'src/User/user.model';
+import { User } from 'src/User/models/user.model';
 import {
   Entity,
   PrimaryGeneratedColumn,

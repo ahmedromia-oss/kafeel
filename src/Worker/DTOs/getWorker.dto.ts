@@ -13,4 +13,6 @@ export class getWorkerDto {
   yearsOfExperience:number
   @Expose()
   previouseCities:string
+  @Expose()
+  cv:string
 }

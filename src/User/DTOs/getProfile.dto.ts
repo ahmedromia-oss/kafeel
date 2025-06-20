@@ -90,6 +90,7 @@ export class getProfileDto {
 
   @Expose({ groups: [UserType.COMPANY] })
   idImage: string;
+  @Expose()
   @Transform(({ value, obj }) => {
     // 'obj' is the entire object being transformed
     // 'value' would be the current value of yearsOfExperience (if any)

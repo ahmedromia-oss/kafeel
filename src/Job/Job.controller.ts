@@ -20,12 +20,11 @@ import { user } from 'src/User/Decorators/user.decorator';
 
 import { RoleGuard } from 'src/Auth/Gaurds/Role.gaurd';
 import { roles } from 'src/Auth/Decorators/Roles.decorator';
-import { UserType } from 'src/constants';
+import { JobType, UserType } from 'src/constants';
 import { GetJobDto } from './DTOs/getJob.dto';
 import { serialize } from 'shared/Interceptors/Serialize.Interceptor';
 import { UpdateJobDto } from './DTOs/updateJob.dto';
 import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
-import { get } from 'http';
 
 @Controller('jobs')
 export class JobController {
@@ -91,5 +90,46 @@ export class JobController {
   ): Promise<Job[]> {
     return this.jobService.getJobs(skip, take);
   }
-  
+  @UseGuards(AuthGuard)
+  @Post('save/:JobId')
+  @serialize()
+  async saveAdvertise(
+    @user() user: userToken,
+    @Param('JobId') JobId: string,
+  ): Promise<string> {
+    // Assuming delete logic is implemented in the service
+    return await this.jobService.saveAndDeleteJob(user.sub, JobId);
+  }
+  @Get('saved')
+  @UseGuards(AuthGuard)
+  @serialize(GetJobDto)
+  async Getsaved(
+    @user() user: userToken,
+    @Param('skip') skip: number,
+    @Param('take') take: number,
+  ): Promise<Job[]> {
+    // Assuming delete logic is implemented in the service
+    return await this.jobService.getSaved(user.sub, skip, take);
+  }
+
+  @Get('search')
+  @serialize(GetJobDto)
+  async search(
+    @Query('searchTerm') searchTerm?: string,
+    @Query('category') category?: string,
+    @Query('jobType') jobType?: string,
+    @Query('country') coutry?: string,
+    @Query('skip') skip: number = 0,
+    @Query('take') take: number = 5,
+  ): Promise<Job[]> {
+    // Assuming delete logic is implemented in the service
+    return await this.jobService.searchJob(
+      searchTerm,
+      category,
+      jobType,
+      coutry,
+      skip,
+      take,
+    );
+  }
 }

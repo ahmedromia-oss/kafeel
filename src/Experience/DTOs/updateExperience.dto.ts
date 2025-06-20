@@ -12,7 +12,7 @@ import { education, ValidationErrors } from 'src/constants';
 export class updateExperienceDto {
   @IsOptional()
   @IsString({ message: ValidationErrors.MUST_STRING })
-  jobTitle:string
+  jobTitle: string;
   @IsOptional()
   @Transform(({ value }) => new Date(value))
   @IsDate({ message: ValidationErrors.INVALID_DATE })
@@ -21,7 +21,11 @@ export class updateExperienceDto {
   @IsString()
   describtion: string;
   @IsOptional()
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => {
+    if (value) {
+      return new Date(value);
+    }
+  })
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   endDate: Date;
   @IsOptional()

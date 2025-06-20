@@ -8,21 +8,18 @@ import { AdvertiseService } from './advertise.service';
 import { workerModule } from 'src/Worker/worker.module';
 import { AdvertiseController } from './advertise.controller';
 import { TokenModule } from 'src/JWT/jwt.module';
-
-
+import { UserSavedAdvertise } from 'src/User/models/userAdvertiseSaved';
+import { UserSavedAdvertiseRepository } from 'src/User/repositories/userSavedJobs.repository';
+import { UserModule } from 'src/User/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Advertise]),
     workerModule,
-    TokenModule
-    
+    TokenModule,
+    UserModule,
   ],
-  providers: [
-    AdvertiseService,
-    AdvertiseRepository,
-    
-  ],
+  providers: [AdvertiseService, AdvertiseRepository],
   controllers: [AdvertiseController],
   exports: [AdvertiseService],
 })

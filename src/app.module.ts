@@ -6,7 +6,7 @@ import { AuthModule } from './Auth/auth.module';
 import { UserModule } from './User/user.module';
 import { SharedModule } from './UnitOfWork/unitOfWork.module';
 import { TokenModule } from './JWT/jwt.module';
-import { User } from './User/user.model';
+import { User } from './User/models/user.model';
 import { Award } from './Awards/awards.model';
 
 import { Education } from './Education/education.model';
