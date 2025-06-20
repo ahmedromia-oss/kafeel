@@ -100,7 +100,7 @@ export class JobController {
     // Assuming delete logic is implemented in the service
     return await this.jobService.saveAndDeleteJob(user.sub, JobId);
   }
-  @Get('saved')
+  @Get('saved/jobs')
   @UseGuards(AuthGuard)
   @serialize(GetJobDto)
   async Getsaved(
