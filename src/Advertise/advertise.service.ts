@@ -125,25 +125,14 @@ export class AdvertiseService {
     skip: number = 0,
     take: number = 5,
   ) {
-    return await this.advertiseRepo.findAll({
-      relations: { worker: true, company: true },
-      skip: skip,
-      take: take,
-      where: [
-        {
-          jobTitle: ILike(
-            `%${searchTerm ? searchTerm : category ? category : ''}%`,
-          ),
-          workType: jobType ? jobType : (In(Object.values(JobType)) as any),
-          currentCity: ILike(`%${country ? country : ''}%`),
-        },
-        {
-          description: ILike(`%${searchTerm}%`),
-          workType: jobType ? jobType : (In(Object.values(JobType)) as any),
-          currentCity: ILike(`%${country ? country : ''}%`),
-        },
-      ],
-    });
+    return await this.advertiseRepo.searchAdvertise(
+      searchTerm,
+      jobType,
+      category,
+      country,
+      skip,
+      take,
+    );
   }
   async addAdvertiseForCompany(advertise: Advertise, companyId: string) {
     const company = await this.userService.getUserById(companyId);

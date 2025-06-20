@@ -112,7 +112,7 @@ export class JobController {
     return await this.jobService.getSaved(user.sub, skip, take);
   }
 
-  @Get('search')
+  @Get('search/jobs')
   @serialize(GetJobDto)
   async search(
     @Query('searchTerm') searchTerm?: string,

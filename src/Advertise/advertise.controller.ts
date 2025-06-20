@@ -129,7 +129,7 @@ export class AdvertiseController {
     // Assuming delete logic is implemented in the service
     return await this.advertiseService.getSaved(user.sub, skip, take);
   }
-  @Get('search')
+  @Get('search/advertise')
   @serialize(GetAdvertiseDto)
   async search(
     @Query('searchTerm') searchTerm?: string,

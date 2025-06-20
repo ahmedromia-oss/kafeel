@@ -14,7 +14,6 @@ export class JobService {
     private readonly jobRepo: JobRepository,
     private readonly companyService: companyService,
   ) {}
-  async searchJobs() {}
 
   async getJobsByCompany(
     companyId: string,
@@ -90,26 +89,8 @@ export class JobService {
     skip?: number,
     take?: number,
   ) {
-    return await this.jobRepo.findAll({
-      relations: { company: true },
-      skip: skip,
-      take: take,
-      where: [
-        {
-          title: ILike(
-            `%${searchTerm ? searchTerm : category ? category : ''}%`,
-          ),
-          jobType: jobType ? jobType : (In(Object.values(JobType)) as any),
-          company: { city: ILike(`%${country ? country : ''}%`) },
-        },
-        {
-          description: ILike(
-            `%${searchTerm ? searchTerm : category ? category : ''}%`,
-          ),
-          jobType: jobType ? jobType : (In(Object.values(JobType)) as any),
-          company: { city: ILike(`%${country ? country : ''}%`) },
-        },
-      ],
-    });
+   
+    return await this.jobRepo.searchJobs(searchTerm , category , jobType , country , skip , take)
+    
   }
 }
