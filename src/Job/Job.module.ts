@@ -6,7 +6,7 @@ import { JobRepository } from './job.repository';
 import { JobController } from './Job.controller';
 import { TokenModule } from 'src/JWT/jwt.module';
 import { companyModule } from 'src/company/company.module';
-import { UserSavedJob } from 'src/User/models/userJobSaved';
+import { UserSavedJob } from 'src/User/models/userJobSaved.model';
 import { UserModule } from 'src/User/user.module';
 
 

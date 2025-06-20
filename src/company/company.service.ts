@@ -5,7 +5,6 @@ import { companyRepository } from './company.repository';
 import { Company } from './company.model';
 import { UserService } from 'src/User/user.service';
 import { User } from 'src/User/models/user.model';
-import { user } from 'src/User/Decorators/user.decorator';
 
 @Injectable()
 export class companyService {

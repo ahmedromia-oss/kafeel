@@ -4,7 +4,7 @@ import { GenericRepository } from 'shared/generic.repository';
 
 
 import { Repository } from 'typeorm';
-import { UserSavedJob } from '../models/userJobSaved';
+import { UserSavedJob } from '../models/userJobSaved.model';
 import { User } from '../models/user.model';
 
 @Injectable()

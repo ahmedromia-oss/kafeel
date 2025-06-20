@@ -3,6 +3,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { educationRepository } from './education.repository';
 import { Education } from './education.model';
 import { WorkerService } from 'src/Worker/worker.service';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class educationService {
@@ -26,9 +27,11 @@ export class educationService {
       where: { id: educationId },
     });
   }
-  async createEducation(education: Education): Promise<Education> {
+  async createEducation(education: Education , manager?:EntityManager): Promise<Education> {
     education.worker = await this.workerService.GetWorker(education.workerId);
+    if(manager){
     return await this.educationRepo.create(education);
+    }
   }
   async updateEducation(
     education: Education,

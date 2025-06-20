@@ -4,13 +4,18 @@ import { AdvertiseRepository } from './advertise.repository';
 import { WorkerService } from 'src/Worker/worker.service';
 import { Advertise } from './advertise.model';
 import { UserSavedAdvertiseRepository } from 'src/User/repositories/userSavedJobs.repository';
-import { Code, JobType, valuesString } from 'src/constants';
+import { Code, JobType, UserType, valuesString } from 'src/constants';
 import { user } from 'src/User/Decorators/user.decorator';
-import { ILike, In } from 'typeorm';
+import { EntityManager, ILike, In } from 'typeorm';
+import { UserService } from 'src/User/user.service';
+import { UnitOfWork } from 'src/UnitOfWork/unitOfWork.service';
+import { User } from 'src/User/models/user.model';
+import { Worker } from 'src/Worker/worker.model';
 
 @Injectable()
 export class AdvertiseService {
   constructor(
+    private readonly userService: UserService,
     private readonly userSavedRepo: UserSavedAdvertiseRepository,
     private readonly advertiseRepo: AdvertiseRepository,
     private readonly workerService: WorkerService,
@@ -135,6 +140,14 @@ export class AdvertiseService {
           currentCity: ILike(`%${country ? country : ''}%`),
         },
       ],
+    });
+  }
+  async addAdvertiseForCompany(advertise: Advertise, companyId: string) {
+    const company = await this.userService.getUserById(companyId);
+    return await this.advertiseRepo.create({
+      ...advertise,
+      company,
+      companyId,
     });
   }
 }

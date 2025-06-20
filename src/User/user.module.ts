@@ -16,8 +16,8 @@ import { workerModule } from 'src/Worker/worker.module';
 import { UserRepository } from './repositories/user.repository';
 import { UserSavedAdvertiseRepository } from './repositories/userSavedJobs.repository';
 import { UserSavedJobRepository } from './repositories/userSavedAdvertise.repository';
-import { UserSavedAdvertise } from './models/userAdvertiseSaved';
-import { UserSavedJob } from './models/userJobSaved';
+import { UserSavedAdvertise } from './models/userAdvertiseSaved.model';
+import { UserSavedJob } from './models/userJobSaved.model';
 
 @Module({
   imports: [SharedModule, TypeOrmModule.forFeature([User , UserSavedAdvertise , UserSavedJob]) , BucketsModule , TokenModule , KafeelModule , forwardRef(() => companyModule), workerModule],

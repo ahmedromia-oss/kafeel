@@ -31,6 +31,7 @@ import { serialize } from 'shared/Interceptors/Serialize.Interceptor';
 import { BucketsService } from 'src/Buckets/buckets.service';
 import { getCompanyDto } from './DTOs/getCompany.dto';
 import { permissions } from 'src/Auth/Decorators/permissions.decorator';
+import { GetAdvertiseDto } from 'src/Advertise/DTOs/getAdvertise.dto';
 @permissions(PERMISSION.IS_APPROVED)
 @Controller('company')
 export class CompanyController {
@@ -143,6 +144,12 @@ export class CompanyController {
   @Post('approveUser/:companyId')
   @UseGuards(AuthGuard)
   async unAppovedCompanies() {
+    return await this.companyService.unApprovedUsers();
+  }
+  @serialize(GetAdvertiseDto)
+  @Post('companyAddAdvertise')
+  @UseGuards(AuthGuard)
+  async addAdvertise() {
     return await this.companyService.unApprovedUsers();
   }
 }

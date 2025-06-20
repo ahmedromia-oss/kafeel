@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { GenericRepository } from 'shared/generic.repository';
 
 import { Repository } from 'typeorm';
-import { UserSavedAdvertise } from '../models/userAdvertiseSaved';
+import { UserSavedAdvertise } from '../models/userAdvertiseSaved.model';
 
 @Injectable()
 export class UserSavedAdvertiseRepository extends GenericRepository<UserSavedAdvertise> {

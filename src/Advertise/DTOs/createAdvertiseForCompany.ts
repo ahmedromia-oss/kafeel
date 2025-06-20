@@ -1,17 +1,15 @@
 // src/transfer-announcement/dto/create-advertise.dto.ts
 import { Expose } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-  IsEnum,
-  IsOptional,
-  IsUUID,
-  Validate,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsEnum, IsOptional } from 'class-validator';
 import { JobType, PreferredSponsorType, ValidationErrors } from 'src/constants';
 
-export class CreateAdvertiseDto {
+export class CreateAdvertiseForCompanyDto {
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  email: string;
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  phoneNumber: string;
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  userName: string;
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @IsString({ message: ValidationErrors.MUST_STRING })
   jobTitle: string;
@@ -37,8 +35,8 @@ export class CreateAdvertiseDto {
   IsOpen: boolean;
 
   @IsOptional()
-  currencey: string;
-  @IsOptional()
   @IsString({ message: ValidationErrors.MUST_STRING })
   description?: string;
+  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
+  currencey: string;
 }

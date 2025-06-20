@@ -30,6 +30,7 @@ import { CreateJobApplicantDto } from './DTOs/createJobApplicant.dto';
 import { JobApplicants } from './Job_applicants.model';
 import { getJobApplicantDto } from './DTOs/getJobApplicant.dto';
 import { getUserDto } from 'src/User/DTOs/getUserDto';
+import { User } from 'src/User/models/user.model';
 
 @Controller('jobApplicant')
 export class jobApplicantController {
@@ -42,7 +43,7 @@ export class jobApplicantController {
   @UseInterceptors(FileInterceptor('CV'))
   @serialize(getJobApplicantDto)
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.WORKER)
+  @roles(UserType.WORKER, UserType.COMPANY)
   async createJob(
     @Param('jobId') jobId: string,
     @user() user: userToken,
@@ -51,28 +52,31 @@ export class jobApplicantController {
   ): Promise<JobApplicants> {
     if (CV) {
       const cv = this.bucketService.saveFile(CV, FileType.CV);
-      console.log(cv)
+      console.log(cv);
       const jobApplicant = plainToInstance(JobApplicants, data);
-      jobApplicant.workerId = user.sub;
-      jobApplicant.CV = cv
+      jobApplicant.userId = user.sub;
+      jobApplicant.CV = cv;
       jobApplicant.JobId = jobId;
       return await this.jobApplicantService.applyForJob(jobApplicant);
     } else {
-      throw new BadRequestException(Code.CV_REQUIRED );
+      throw new BadRequestException(Code.CV_REQUIRED);
     }
   }
   @Get('applications/:jobId')
   @UseGuards(AuthGuard, RoleGuard)
   @roles(UserType.COMPANY)
   @serialize(getJobApplicantDto)
-
   async getApplications(
     @user() user: userToken,
     @Param('jobId') jobId: string,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ) {
-    return await this.jobApplicantService.getApplications(jobId, user.sub, skip, take);
+    return await this.jobApplicantService.getApplications(
+      jobId,
+      user.sub,
+      skip,
+      take,
+    );
   }
-   
 }

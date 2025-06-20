@@ -1,11 +1,5 @@
 import { Advertise } from 'src/Advertise/advertise.model';
-import { Award } from 'src/Awards/awards.model';
 
-import { Education } from 'src/Education/education.model';
-import { Experience } from 'src/Experience/Experience.model';
-import { Language } from 'src/Languages/languages.model';
-import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
-import { Skill } from 'src/Skills/skills.model';
 import { User } from 'src/User/models/user.model';
 import {
   Entity,
@@ -74,4 +68,6 @@ export class Company extends BaseEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   idImage: string; // URL or file path to ID image
+  @OneToMany(() => Advertise, (advertise) => advertise.worker)
+  advertises: Advertise[];
 }

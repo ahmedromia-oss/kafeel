@@ -2,7 +2,7 @@ import { BaseEntity } from 'shared/shared.entity';
 import { Company } from 'src/company/company.model';
 import { JobType } from 'src/constants';
 import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
-import { UserSavedJob } from 'src/User/models/userJobSaved';
+import { UserSavedJob } from 'src/User/models/userJobSaved.model';
 
 import {
   Entity,

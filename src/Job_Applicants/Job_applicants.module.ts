@@ -8,12 +8,19 @@ import { JobModule } from 'src/Job/Job.module';
 import { jobApplicantController } from './job_applicant.controller';
 import { TokenModule } from 'src/JWT/jwt.module';
 import { BucketsModule } from 'src/Buckets/buckets.module';
-
+import { UserService } from 'src/User/user.service';
+import { UserModule } from 'src/User/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([JobApplicants]),  workerModule , JobModule , TokenModule , BucketsModule],
+  imports: [
+    TypeOrmModule.forFeature([JobApplicants]),
+    UserModule,
+    JobModule,
+    TokenModule,
+    BucketsModule,
+  ],
   controllers: [jobApplicantController],
-  providers: [JobApplicantsService , JobApplicantsRepository],
+  providers: [JobApplicantsService, JobApplicantsRepository],
   exports: [],
 })
 export class JobApplicantsModule {}

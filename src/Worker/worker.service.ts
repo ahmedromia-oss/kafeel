@@ -21,11 +21,22 @@ export class WorkerService {
         skills: true,
         languages: true,
         awards: true,
-        advertises:true
+        advertises: true,
       },
     });
   }
-  async updateWorker(workerId: string, worker: Worker) {
+  async updateWorker(
+    workerId: string,
+    worker: Worker,
+    manager?: EntityManager,
+  ) {
+    if (manager) {
+      return await this.workerRepo.update(
+        { userId: workerId },
+        worker,
+        manager,
+      );
+    }
     return await this.workerRepo.update({ userId: workerId }, worker);
   }
 }

@@ -8,7 +8,7 @@ import { AdvertiseService } from './advertise.service';
 import { workerModule } from 'src/Worker/worker.module';
 import { AdvertiseController } from './advertise.controller';
 import { TokenModule } from 'src/JWT/jwt.module';
-import { UserSavedAdvertise } from 'src/User/models/userAdvertiseSaved';
+import { UserSavedAdvertise } from 'src/User/models/userAdvertiseSaved.model';
 import { UserSavedAdvertiseRepository } from 'src/User/repositories/userSavedJobs.repository';
 import { UserModule } from 'src/User/user.module';
 

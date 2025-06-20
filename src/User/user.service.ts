@@ -7,7 +7,6 @@ import { UserFactoryService } from './user.factory';
 import { UserRepository } from './repositories/user.repository';
 import { EntityManager } from 'typeorm';
 
-
 @Injectable()
 export class UserService {
   constructor(
@@ -20,8 +19,14 @@ export class UserService {
       where: { phoneNumber: phoneNumber },
     });
   }
-  public async createUser(data: User): Promise<User> {
-    return this.uow.execute(async (manager: EntityManager) => {
+  public async createUser(data: User, manager?: EntityManager): Promise<User> {
+    if (manager) {
+      const user = await this.UserRepository.create(data, manager);
+      const service = this.userFactory.getService(data.userType);
+      await service.create(user.id, manager);
+      return user;
+    }
+    return await this.uow.execute(async (manager: EntityManager) => {
       const user = await this.UserRepository.create(data, manager);
       const service = this.userFactory.getService(data.userType);
       await service.create(user.id, manager);
@@ -62,10 +67,7 @@ export class UserService {
     const service = this.userFactory.getService(user.userType);
     return await service.getProfile(user.id);
   }
-  public async unApproveUser(userId:string){
-    return await this.UpdateUser(
-      { userApproved: false } as User,
-      userId,
-    );
+  public async unApproveUser(userId: string) {
+    return await this.UpdateUser({ userApproved: false } as User, userId);
   }
 }

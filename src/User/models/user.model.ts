@@ -14,8 +14,9 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { v4 } from 'uuid';
-import { UserSavedJob } from './userJobSaved';
-import { UserSavedAdvertise } from './userAdvertiseSaved';
+import { UserSavedJob } from './userJobSaved.model';
+import { UserSavedAdvertise } from './userAdvertiseSaved.model';
+import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,6 +24,8 @@ export class User extends BaseEntity {
   id: string;
   @Column({ nullable: true, type: 'varchar', length: 255 })
   firstName: string;
+  @OneToMany(() => JobApplicants, (jobApplicant) => jobApplicant.User)
+  jobApplications: JobApplicants[];
 
   @Column({ nullable: true, type: 'varchar', length: 255 })
   @Column({ nullable: true, type: 'varchar', length: 255 })

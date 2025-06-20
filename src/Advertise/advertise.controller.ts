@@ -15,7 +15,7 @@ import { userToken } from 'src/models/userToken.model';
 import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
 import { RoleGuard } from 'src/Auth/Gaurds/Role.gaurd';
 import { roles } from 'src/Auth/Decorators/Roles.decorator';
-import { UserType } from 'src/constants';
+import { PERMISSION, UserType } from 'src/constants';
 
 import { serialize } from 'shared/Interceptors/Serialize.Interceptor';
 import { plainToClass, plainToInstance } from 'class-transformer';
@@ -27,6 +27,8 @@ import { CreateAdvertiseDto } from './DTOs/createAdvertise.dto';
 import { UpdateAdvertiseDto } from './DTOs/updateAdvertise.dto';
 import { getAdvertiseForKafeel } from './DTOs/getAdvertiseForKafeelDto';
 import { get } from 'http';
+import { CreateAdvertiseForCompanyDto } from './DTOs/createAdvertiseForCompany';
+import { permissions } from 'src/Auth/Decorators/permissions.decorator';
 
 @Controller('advertises')
 export class AdvertiseController {
@@ -95,7 +97,7 @@ export class AdvertiseController {
   @Delete(':advertiseId')
   @serialize()
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.WORKER, UserType.COMPANY)
+  @roles(UserType.WORKER)
   async deleteAdvertise(
     @user() user: userToken,
     @Param('advertiseId') advertiseId: string,
@@ -145,6 +147,21 @@ export class AdvertiseController {
       coutry,
       skip,
       take,
+    );
+  }
+  @Post()
+  @serialize(GetAdvertiseDto)
+  @UseGuards(AuthGuard, RoleGuard)
+  @roles(UserType.COMPANY)
+  @permissions(PERMISSION.IS_APPROVED)
+  async createAdvertiseForCompany(
+    @user() user: userToken,
+    @Body() addAdvertise: CreateAdvertiseForCompanyDto,
+  ): Promise<Advertise> {
+    const advertise = plainToClass(Advertise, addAdvertise);
+    return await this.advertiseService.addAdvertiseForCompany(
+      advertise,
+      user.sub,
     );
   }
 }
