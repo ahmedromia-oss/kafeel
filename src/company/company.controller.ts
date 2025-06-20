@@ -136,7 +136,8 @@ export class CompanyController {
   @serialize()
   @Put('approveUser/:companyId')
   @UseGuards(AuthGuard)
-  async approveCompany(@Param() companyId: string) {
+  async approveCompany(@Param('companyId') companyId: string) {
+    console.log(companyId)
     return await this.companyService.approveCompany(companyId);
   }
 

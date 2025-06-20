@@ -104,4 +104,6 @@ export class getProfileDto {
     return createLocationString(obj.experiences || []);
   })
   previouseCities: string;
+  @Expose()
+  userApproved:boolean
 }

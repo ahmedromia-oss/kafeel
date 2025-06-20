@@ -23,4 +23,6 @@ export class getUserDto {
   firstName: string;
   @Expose()
   userType: UserType;
+  @Expose()
+  userApproved:boolean
 }

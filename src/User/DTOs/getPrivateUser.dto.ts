@@ -26,4 +26,6 @@ export class getPrivateUserDto {
   userType: UserType;
   @Expose()
   nationalId: string;
+  @Expose()
+  userApproved:boolean
 }

@@ -104,4 +104,6 @@ export class getProfileLockedDto {
     return createLocationString(obj.experiences || []);
   })
   previouseCities: string;
+  @Expose()
+  userApproved:boolean
 }

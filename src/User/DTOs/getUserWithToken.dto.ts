@@ -29,4 +29,6 @@ export class getUserDtoWithToken {
   userType:UserType;
   @Expose()
   nationalId:string;
+  @Expose()
+  userApproved:boolean
 }
