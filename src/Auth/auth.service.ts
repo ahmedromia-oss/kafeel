@@ -38,10 +38,7 @@ export class AuthService {
     if (!(await this.userService.IsEmailUnique(data.email))) {
       throw new BadRequestException(Code.EMAIL_USED);
     }
-    if (
-      data.phoneNumber &&
-      (await this.userService.getByPhoneNumber(data.phoneNumber))
-    ) {
+    if (!(await this.userService.IsPhoneUnique(data.phoneNumber))) {
       throw new BadRequestException(Code.PHONENUMBER_USED);
     }
     const hashedPass = await this.hashSaltPassword(data.password);

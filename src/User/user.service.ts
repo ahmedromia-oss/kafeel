@@ -42,6 +42,14 @@ export class UserService {
     }
     return true;
   }
+  public async IsPhoneUnique(phone: string) {
+    if (phone) {
+      return !(await this.UserRepository.checkIFExists({
+        where: { phoneNumber: phone },
+      }));
+    }
+    return true;
+  }
 
   public async getUserByEmail(email: string): Promise<User> {
     return await this.UserRepository.findOne({ where: { email: email } });

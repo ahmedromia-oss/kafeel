@@ -119,7 +119,7 @@ export class AdvertiseController {
     );
   }
   @UseGuards(AuthGuard)
-  @Get('saved')
+  @Get('saved/advertise')
   @serialize(GetAdvertiseDto)
   async Getsaved(
     @user() user: userToken,
