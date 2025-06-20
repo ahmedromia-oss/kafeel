@@ -27,18 +27,21 @@ export class AdvertiseService {
   async getAllAdvertises(skip: number = 0, take: number = 5) {
     return await this.advertiseRepo.findAll({
       where: { IsOpen: true },
-      relations: { worker: true },
+      relations: { worker: true, company: true },
       skip: skip,
       take: take,
     });
   }
   async getAdvertises(
-    workerId: string,
+    userId: string,
     skip: number = 0,
     take: number = 5,
   ): Promise<Advertise[]> {
     return await this.advertiseRepo.findAll({
-      where: { workerId },
+      where: [
+        { companyId: userId, IsOpen: true },
+        { workerId: userId, IsOpen: true },
+      ],
       skip: skip,
       take: take,
     });
@@ -110,7 +113,7 @@ export class AdvertiseService {
         where: { userId: userId },
         skip: skip,
         take: take,
-        relations: { advertise: { worker: true } },
+        relations: { advertise: { worker: true, company: true } },
       })
     ).map((e) => e.advertise);
   }
@@ -123,7 +126,7 @@ export class AdvertiseService {
     take: number = 5,
   ) {
     return await this.advertiseRepo.findAll({
-      relations: { worker: true },
+      relations: { worker: true, company: true },
       skip: skip,
       take: take,
       where: [
