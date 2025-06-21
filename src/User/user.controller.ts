@@ -70,7 +70,7 @@ export class UserController {
   @Get('private/profile')
   @serialize(getProfileLockedDto, [])
   async getProfilePrivate(@user() user: userToken) {
-    return await this.userService.getProfile(user.sub);
+    return await this.userService.getProfileLocked(user.sub);
   }
   @Put('unApprove/:userId')
   @UseGuards(AuthGuard)

@@ -25,6 +25,21 @@ export class WorkerService {
       },
     });
   }
+
+  async getPrivateProfile(userId: string) {
+    return await this.workerRepo.findOne({
+      where: { userId: userId },
+      relations: {
+        experiences: true,
+        educations: true,
+        skills: true,
+        languages: true,
+        awards: true,
+        advertises: true,
+        user: { savedAdvertises: true, savedJobs: true },
+      },
+    });
+  }
   async updateWorker(
     workerId: string,
     worker: Worker,

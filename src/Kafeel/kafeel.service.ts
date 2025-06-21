@@ -14,7 +14,13 @@ export class kafeelService {
   async getProfile(userId: string) {
     return await this.KafeelRepo.findOne({ where: { userId: userId } });
   }
+  async getPrivateProfile(userId: string) {
+    return await this.KafeelRepo.findOne({
+      where: { userId: userId },
+      relations: { user: { savedAdvertises: true, savedJobs: true } },
+    });
+  }
   async updateKafeel(id: string, kafeel: kafeel) {
-    return await this.KafeelRepo.update({ userId: id },kafeel);
+    return await this.KafeelRepo.update({ userId: id }, kafeel);
   }
 }

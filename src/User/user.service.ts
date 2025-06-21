@@ -72,11 +72,17 @@ export class UserService {
   }
   public async getProfile(userId: string) {
     const user = await this.getUserById(userId);
-    const service =this.userFactory.getService(user.userType);
-    const res =  await service.getProfile(user.id);
-    console.log(res)
-    return res
+    const service = this.userFactory.getService(user.userType);
+    return await service.getProfile(user.id);
   }
+  public async getProfileLocked(userId: string) {
+    const user = await this.UserRepository.findOne({
+      where: { id: userId },
+    });
+    const service = this.userFactory.getService(user.userType);
+    return await service.getPrivateProfile(user.id);
+  }
+
   public async unApproveUser(userId: string) {
     return await this.UpdateUser({ userApproved: false } as User, userId);
   }

@@ -52,4 +52,5 @@ export class GetAdvertiseDto {
   phoneNumber: string;
   @Expose()
   userName: string;
+  
 }

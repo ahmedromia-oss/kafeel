@@ -1,5 +1,7 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { GetAdvertiseDto } from 'src/Advertise/DTOs/getAdvertise.dto';
 import { UserType } from 'src/constants';
+import { GetJobDto } from 'src/Job/DTOs/getJob.dto';
 export class getPrivateUserDto {
   @Expose()
   id: string;
@@ -27,5 +29,11 @@ export class getPrivateUserDto {
   @Expose()
   nationalId: string;
   @Expose()
-  userApproved:boolean
+  userApproved: boolean;
+  @Expose()
+  @Type(() => GetJobDto)
+  savedJobs: GetJobDto;
+  @Expose()
+  @Type(() => GetAdvertiseDto)
+  savedAdvertises: GetAdvertiseDto;
 }

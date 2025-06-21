@@ -18,14 +18,14 @@ export class SerializeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {
     return handler.handle().pipe(
       map((data: any) => {
-        if (data.user?.userType && this.groups) {
+        if (data?.user?.userType && this.groups) {
           this.groups.push(data.user?.userType);
         }
 
         return {
           code: Code.SUCCESS,
           data: this.dto
-            ? plainToInstance(this.dto, data, {
+            ? plainToInstance(this.dto,data, {
                 excludeExtraneousValues: true,
                 groups: this.groups,
               })
