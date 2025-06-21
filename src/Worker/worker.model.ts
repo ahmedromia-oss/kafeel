@@ -47,6 +47,6 @@ export class Worker extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   cv: string;
 
-  yearsOfExperience: number = 0;
-  previouseCities: string = '';
+  yearsOfExperience: number;
+  previouseCities: string;
 }
