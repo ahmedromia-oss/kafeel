@@ -63,4 +63,5 @@ export class Job extends BaseEntity {
   phoneNumber: string;
   @OneToMany(() => UserSavedJob, (savedJob) => savedJob.job)
   savedByUsers: UserSavedJob[];
+  IsSaved:boolean
 }

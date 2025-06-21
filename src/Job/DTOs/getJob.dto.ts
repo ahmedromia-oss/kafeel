@@ -40,4 +40,6 @@ export class GetJobDto {
   currency: string;
   @Expose()
   phoneNumber: string;
+  @Expose()
+  IsSaved:boolean
 }

@@ -6,6 +6,8 @@ import { companyService } from 'src/company/company.service';
 import { UserSavedJobRepository } from 'src/User/repositories/userSavedAdvertise.repository';
 import { JobType, valuesString } from 'src/constants';
 import { ILike, In } from 'typeorm';
+import { user } from 'src/User/Decorators/user.decorator';
+import e from 'express';
 
 @Injectable()
 export class JobService {
@@ -19,26 +21,69 @@ export class JobService {
     companyId: string,
     skip: number = 0,
     take: number = 5,
+    userId?: string,
   ): Promise<Job[]> {
-    return await this.jobRepo.findAll({
+    const result = await this.jobRepo.findAll({
+      relations: { savedByUsers: true },
       where: { companyId },
       skip: skip,
       take: take,
     });
+    if (userId) {
+      return result.map((e) => {
+        if (e.savedByUsers.map((x) => x.userId).includes(userId)) {
+          return { ...e, IsSaved: true } as Job;
+        } else {
+          return { ...e, IsSaved: false } as Job;
+        }
+      });
+    } else {
+      return result.map((e) => {
+        return { ...e, IsSaved: false } as Job;
+      });
+    }
   }
 
-  async getJobById(jobId: string): Promise<Job> {
-    return await this.jobRepo.findOne({
+  async getJobById(jobId: string, userId?: string): Promise<Job> {
+    const result = await this.jobRepo.findOne({
       where: { id: jobId },
-      relations: { applicants: true },
+      relations: { applicants: true, savedByUsers: true },
     });
+
+    if (userId && result.savedByUsers.map((e) => e.userId).includes(userId)) {
+      return { ...result, IsSaved: true } as Job;
+    } else {
+      return { ...result, IsSaved: false } as Job;
+    }
   }
-  async getJobs(skip: number = 0, take: number = 5): Promise<Job[]> {
-    return await this.jobRepo.findAll({
-      relations: { applicants: true, company: { Jobs: true } },
+  async getJobs(
+    skip: number = 0,
+    take: number = 5,
+    userId?: string,
+  ): Promise<Job[]> {
+    const result = await this.jobRepo.findAll({
+      relations: {
+        savedByUsers: true,
+        applicants: true,
+        company: { Jobs: true },
+      },
+
       skip: skip,
       take: take,
     });
+    if (userId) {
+      return result.map((e) => {
+        if (e.savedByUsers.map((x) => x.userId).includes(userId)) {
+          return { ...e, IsSaved: true } as Job;
+        } else {
+          return { ...e, IsSaved: false } as Job;
+        }
+      });
+    } else {
+      return result.map((e) => {
+        return { ...e, IsSaved: false } as Job;
+      });
+    }
   }
 
   async createJob(job: Job): Promise<Job> {
@@ -89,8 +134,13 @@ export class JobService {
     skip?: number,
     take?: number,
   ) {
-   
-    return await this.jobRepo.searchJobs(searchTerm , category , jobType , country , skip , take)
-    
+    return await this.jobRepo.searchJobs(
+      searchTerm,
+      category,
+      jobType,
+      country,
+      skip,
+      take,
+    );
   }
 }

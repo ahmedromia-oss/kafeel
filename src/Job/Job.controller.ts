@@ -25,6 +25,7 @@ import { GetJobDto } from './DTOs/getJob.dto';
 import { serialize } from 'shared/Interceptors/Serialize.Interceptor';
 import { UpdateJobDto } from './DTOs/updateJob.dto';
 import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
+import { OptionalAuthGuard } from 'src/Auth/Gaurds/optional.auth.gaurd';
 
 @Controller('jobs')
 export class JobController {
@@ -56,19 +57,25 @@ export class JobController {
   }
   @Get(':jobId')
   @serialize(GetJobDto)
-  async getJobById(@Param('jobId') jobId: string): Promise<Job> {
-    return await this.jobService.getJobById(jobId);
+  @UseGuards(OptionalAuthGuard)
+  async getJobById(
+    @Param('jobId') jobId: string,
+    @user() user: userToken,
+  ): Promise<Job> {
+    return await this.jobService.getJobById(jobId, user?.sub);
   }
 
   // GET /jobs/company/:companyId
   @Get('company/:companyId')
+  @UseGuards(OptionalAuthGuard)
   @serialize(GetJobDto)
   async getCompanyJobs(
     @Param('companyId') companyId: string,
+    @user() user: userToken,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ): Promise<Job[]> {
-    return this.jobService.getJobsByCompany(companyId, skip, take);
+    return this.jobService.getJobsByCompany(companyId, skip, take, user?.sub);
   }
 
   // DELETE /jobs/:jobId
@@ -83,12 +90,15 @@ export class JobController {
     return this.jobService.deleteJob(jobId, user.sub);
   }
   @Get()
+  @UseGuards(OptionalAuthGuard)
   @serialize(GetJobDto)
   async getJobs(
+    @user() user?: userToken,
+
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ): Promise<Job[]> {
-    return this.jobService.getJobs(skip, take);
+    return this.jobService.getJobs(skip, take, user?.sub);
   }
   @UseGuards(AuthGuard)
   @Post('save/:JobId')

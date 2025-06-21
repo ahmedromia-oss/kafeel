@@ -21,11 +21,7 @@ export class SerializeInterceptor implements NestInterceptor {
         if (data.user?.userType && this.groups) {
           this.groups.push(data.user?.userType);
         }
-        
-        
-       
-       
-        
+
         return {
           code: Code.SUCCESS,
           data: this.dto
