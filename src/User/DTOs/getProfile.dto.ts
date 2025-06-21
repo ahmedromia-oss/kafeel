@@ -104,6 +104,8 @@ export class getProfileDto {
     return createLocationString(obj.experiences || []);
   })
   previouseCities: string;
-  @Expose()
-  userApproved:boolean
+  @Expose({ groups: [UserType.COMPANY, UserType.WORKER, UserType.KAFEEL] })
+  userApproved: boolean;
+  @Expose({ groups: [UserType.WORKER] })
+  cv: string;
 }

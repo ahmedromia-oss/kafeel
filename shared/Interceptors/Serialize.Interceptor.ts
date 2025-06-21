@@ -27,7 +27,6 @@ export class SerializeInterceptor implements NestInterceptor {
           data: this.dto
             ? plainToInstance(this.dto, data, {
                 excludeExtraneousValues: true,
-                exposeDefaultValues: true,
                 groups: this.groups,
               })
             : data,

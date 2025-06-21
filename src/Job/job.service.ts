@@ -21,69 +21,31 @@ export class JobService {
     companyId: string,
     skip: number = 0,
     take: number = 5,
-    userId?: string,
   ): Promise<Job[]> {
-    const result = await this.jobRepo.findAll({
-      relations: { savedByUsers: true },
+    return await this.jobRepo.findAll({
+      relations: { savedByUsers: true , applicants:true },
       where: { companyId },
       skip: skip,
       take: take,
     });
-    if (userId) {
-      return result.map((e) => {
-        if (e.savedByUsers.map((x) => x.userId).includes(userId)) {
-          return { ...e, IsSaved: true } as Job;
-        } else {
-          return { ...e, IsSaved: false } as Job;
-        }
-      });
-    } else {
-      return result.map((e) => {
-        return { ...e, IsSaved: false } as Job;
-      });
-    }
   }
 
-  async getJobById(jobId: string, userId?: string): Promise<Job> {
-    const result = await this.jobRepo.findOne({
+  async getJobById(jobId: string): Promise<Job> {
+    return await this.jobRepo.findOne({
       where: { id: jobId },
       relations: { applicants: true, savedByUsers: true },
     });
-
-    if (userId && result.savedByUsers.map((e) => e.userId).includes(userId)) {
-      return { ...result, IsSaved: true } as Job;
-    } else {
-      return { ...result, IsSaved: false } as Job;
-    }
   }
-  async getJobs(
-    skip: number = 0,
-    take: number = 5,
-    userId?: string,
-  ): Promise<Job[]> {
-    const result = await this.jobRepo.findAll({
+  async getJobs(skip: number = 0, take: number = 5): Promise<Job[]> {
+    return await this.jobRepo.findAll({
       relations: {
         savedByUsers: true,
         applicants: true,
         company: { Jobs: true },
       },
-
       skip: skip,
       take: take,
     });
-    if (userId) {
-      return result.map((e) => {
-        if (e.savedByUsers.map((x) => x.userId).includes(userId)) {
-          return { ...e, IsSaved: true } as Job;
-        } else {
-          return { ...e, IsSaved: false } as Job;
-        }
-      });
-    } else {
-      return result.map((e) => {
-        return { ...e, IsSaved: false } as Job;
-      });
-    }
   }
 
   async createJob(job: Job): Promise<Job> {

@@ -20,6 +20,7 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import { BaseEntity } from 'shared/shared.entity';
+import { Expose } from 'class-transformer';
 
 @Entity()
 export class Worker extends BaseEntity {
@@ -46,7 +47,6 @@ export class Worker extends BaseEntity {
   advertises: Advertise[];
   @Column({ type: 'text', nullable: true })
   cv: string;
-
   yearsOfExperience: number;
   previouseCities: string;
 }

@@ -29,6 +29,11 @@ export class JobRepository extends GenericRepository<Job> {
     const qb = this.repository
       .createQueryBuilder('job')
       .leftJoinAndSelect('job.company', 'company')
+      .leftJoinAndSelect('company.Jobs', 'Jobs')
+      .leftJoinAndSelect('job.applicants', 'applicants')
+      .leftJoinAndSelect('company.user', 'user')
+
+
       // Pagination
       .skip(skip)
       .take(take)

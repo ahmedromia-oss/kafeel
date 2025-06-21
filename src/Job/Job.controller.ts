@@ -57,12 +57,10 @@ export class JobController {
   }
   @Get(':jobId')
   @serialize(GetJobDto)
-  @UseGuards(OptionalAuthGuard)
   async getJobById(
     @Param('jobId') jobId: string,
-    @user() user: userToken,
   ): Promise<Job> {
-    return await this.jobService.getJobById(jobId, user?.sub);
+    return await this.jobService.getJobById(jobId);
   }
 
   // GET /jobs/company/:companyId
@@ -71,11 +69,10 @@ export class JobController {
   @serialize(GetJobDto)
   async getCompanyJobs(
     @Param('companyId') companyId: string,
-    @user() user: userToken,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ): Promise<Job[]> {
-    return this.jobService.getJobsByCompany(companyId, skip, take, user?.sub);
+    return this.jobService.getJobsByCompany(companyId, skip, take);
   }
 
   // DELETE /jobs/:jobId
@@ -98,7 +95,7 @@ export class JobController {
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ): Promise<Job[]> {
-    return this.jobService.getJobs(skip, take, user?.sub);
+    return this.jobService.getJobs(skip, take);
   }
   @UseGuards(AuthGuard)
   @Post('save/:JobId')

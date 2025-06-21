@@ -34,6 +34,9 @@ export class AdvertiseRepository extends GenericRepository<Advertise> {
       .createQueryBuilder('ad')
       .leftJoinAndSelect('ad.worker', 'worker')
       .leftJoinAndSelect('ad.company', 'company')
+      .leftJoinAndSelect('company.user', 'companyUser')
+      .leftJoinAndSelect('worker.user', 'workerUser')
+
       .skip(skip)
       .take(take)
       .orderBy('ad.createdAt', 'DESC');

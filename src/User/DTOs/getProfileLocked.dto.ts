@@ -10,6 +10,7 @@ import { UserType } from 'src/constants';
 import { GetAdvertiseDto } from 'src/Advertise/DTOs/getAdvertise.dto';
 import { overLappingDates } from 'src/utils/overLappingdates';
 import { createLocationString } from 'src/utils/overlappedCities';
+import { User } from '../models/user.model';
 
 export class getProfileLockedDto {
   @Expose({ groups: [UserType.WORKER] })
@@ -54,6 +55,8 @@ export class getProfileLockedDto {
 
   @Expose({ groups: [UserType.COMPANY] })
   officePhoneNumber: string;
+  @Expose({ groups: [UserType.WORKER] })
+  cv: string;
 
   @Expose({ groups: [UserType.COMPANY] })
   officialEmail: string;
@@ -104,6 +107,7 @@ export class getProfileLockedDto {
     return createLocationString(obj.experiences || []);
   })
   previouseCities: string;
-  @Expose()
-  userApproved:boolean
+  @Expose({ groups: [UserType.COMPANY, UserType.WORKER, UserType.KAFEEL] })
+  userApproved: boolean;
+  
 }

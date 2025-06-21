@@ -27,11 +27,8 @@ export class educationService {
       where: { id: educationId },
     });
   }
-  async createEducation(education: Education , manager?:EntityManager): Promise<Education> {
-    education.worker = await this.workerService.GetWorker(education.workerId);
-    if(manager){
+  async createEducation(education: Education): Promise<Education> {
     return await this.educationRepo.create(education);
-    }
   }
   async updateEducation(
     education: Education,
