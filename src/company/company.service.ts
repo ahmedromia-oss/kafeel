@@ -29,12 +29,10 @@ export class companyService {
     return await this.companyRepo.update({ userId: companyId }, company);
   }
   async approveCompany(companyId: string) {
-    console.log(companyId)
     const company = await this.companyRepo.findOne({
       where: { userId: companyId },
       relations: { user: true },
     });
-    console.log(company)
     return await this.userService.UpdateUser(
       { ...company.user, userApproved: true } as User,
       companyId,

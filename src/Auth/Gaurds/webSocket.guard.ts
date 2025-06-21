@@ -58,7 +58,6 @@ export class webSocketGaurd implements CanActivate {
 
   private extractTokenFromHeader(client: Socket): string | undefined {
     const token= client.handshake.auth?.token
-    console.log("hello broooo")
     return token
 
   }

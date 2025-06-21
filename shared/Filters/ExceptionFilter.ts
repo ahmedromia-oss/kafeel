@@ -16,7 +16,6 @@ export class ResponseExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
-    console.log(exception);
     try {
       var obj = {};
 

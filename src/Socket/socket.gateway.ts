@@ -41,7 +41,6 @@ export class ChatGateway
   server: Server;
 
   async afterInit(server: Server) {
-    console.log('Chat WebSocket server initialized');
   }
 
   async handleConnection(client: Socket) {

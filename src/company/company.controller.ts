@@ -137,7 +137,6 @@ export class CompanyController {
   @Put('approveUser/:companyId')
   @UseGuards(AuthGuard)
   async approveCompany(@Param('companyId') companyId: string) {
-    console.log(companyId)
     return await this.companyService.approveCompany(companyId);
   }
 

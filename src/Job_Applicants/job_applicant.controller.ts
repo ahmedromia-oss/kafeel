@@ -52,7 +52,6 @@ export class jobApplicantController {
   ): Promise<JobApplicants> {
     if (CV) {
       const cv = this.bucketService.saveFile(CV, FileType.CV);
-      console.log(cv);
       const jobApplicant = plainToInstance(JobApplicants, data);
       jobApplicant.userId = user.sub;
       jobApplicant.CV = cv;
