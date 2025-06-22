@@ -23,7 +23,7 @@ export class companyService {
     return await this.companyRepo.findOne({ where: { userId: userId } });
   }
   async getPrivateProfile(userId: string) {
-    return await this.companyRepo.findOne({ where: { userId: userId },  relations:{user:{savedAdvertises:true , savedJobs:true}} });
+    return await this.companyRepo.findOne({ where: { userId: userId }});
   }
   async updateCompany(companyId: string, company: Company) {
     return await this.companyRepo.update({ userId: companyId }, company);

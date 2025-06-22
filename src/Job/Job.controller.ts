@@ -56,15 +56,15 @@ export class JobController {
     return await this.jobService.updateJob(job, jobId, user.sub);
   }
   @Get(':jobId')
+  @UseGuards(OptionalAuthGuard)
   @serialize(GetJobDto)
-  async getJobById(
-    @Param('jobId') jobId: string,
-  ): Promise<Job> {
+  async getJobById(@Param('jobId') jobId: string): Promise<Job> {
     return await this.jobService.getJobById(jobId);
   }
 
   // GET /jobs/company/:companyId
   @Get('company/:companyId')
+  @UseGuards(OptionalAuthGuard)
   @UseGuards(OptionalAuthGuard)
   @serialize(GetJobDto)
   async getCompanyJobs(
@@ -120,6 +120,7 @@ export class JobController {
   }
 
   @Get('search/jobs')
+  @UseGuards(OptionalAuthGuard)
   @serialize(GetJobDto)
   async search(
     @Query('searchTerm') searchTerm?: string,

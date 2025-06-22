@@ -27,7 +27,7 @@ export class AdvertiseService {
   async getAllAdvertises(skip: number = 0, take: number = 5) {
     return await this.advertiseRepo.findAll({
       where: { IsOpen: true },
-      relations: { worker: true, company: true },
+      relations: { worker: true, company: true, savedByUsers: true },
       skip: skip,
       take: take,
     });
@@ -42,6 +42,7 @@ export class AdvertiseService {
         { companyId: userId, IsOpen: true },
         { workerId: userId, IsOpen: true },
       ],
+      relations: { savedByUsers: true },
       skip: skip,
       take: take,
     });
@@ -59,6 +60,7 @@ export class AdvertiseService {
   async getAdvertiseById(advertiseId: string): Promise<Advertise> {
     return await this.advertiseRepo.findOne({
       where: { id: advertiseId },
+      relations: { savedByUsers: true },
     });
   }
 
@@ -113,7 +115,9 @@ export class AdvertiseService {
         where: { userId: userId },
         skip: skip,
         take: take,
-        relations: { advertise: { worker: true, company: true } },
+        relations: {
+          advertise: { worker: true, company: true, savedByUsers: true },
+        },
       })
     ).map((e) => e.advertise);
   }

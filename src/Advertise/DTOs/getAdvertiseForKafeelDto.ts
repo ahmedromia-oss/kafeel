@@ -2,6 +2,7 @@
 import { Expose, Type } from 'class-transformer';
 import { JobType, PreferredSponsorType } from 'src/constants';
 import { getUserDto } from 'src/User/DTOs/getUserDto';
+import { User } from 'src/User/models/user.model';
 import { getWorkerDto } from 'src/Worker/DTOs/getWorker.dto';
 
 export class getAdvertiseForKafeel {
@@ -37,4 +38,9 @@ export class getAdvertiseForKafeel {
 
   @Expose()
   updatedAt: Date;
+  @Expose()
+  currentUserId: string;
+  savedByUsers: User;
+  @Expose()
+  IsSaved: boolean;
 }

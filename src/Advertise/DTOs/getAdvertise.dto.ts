@@ -1,7 +1,8 @@
 // src/transfer-announcement/dto/get-advertise.dto.ts
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { getCompanyDto } from 'src/company/DTOs/getCompany.dto';
 import { JobType, PreferredSponsorType } from 'src/constants';
+import { User } from 'src/User/models/user.model';
 import { getWorkerDto } from 'src/Worker/DTOs/getWorker.dto';
 
 export class GetAdvertiseDto {
@@ -52,5 +53,16 @@ export class GetAdvertiseDto {
   phoneNumber: string;
   @Expose()
   userName: string;
-  
+  currentUserId: string;
+
+  savedByUsers: User;
+  @Expose()
+  @Transform(({ obj }) => {
+    return (
+      obj.savedByUsers
+        ?.map((e) => e.userId)
+        .includes(obj?.currentUserId || '') || false
+    );
+  })
+  IsSaved: boolean;
 }

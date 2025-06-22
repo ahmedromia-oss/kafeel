@@ -36,7 +36,7 @@ export class WorkerService {
         languages: true,
         awards: true,
         advertises: true,
-        user: { savedAdvertises: true, savedJobs: true },
+        
       },
     });
   }

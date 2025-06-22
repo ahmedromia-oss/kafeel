@@ -17,7 +17,6 @@ export class kafeelService {
   async getPrivateProfile(userId: string) {
     return await this.KafeelRepo.findOne({
       where: { userId: userId },
-      relations: { user: { savedAdvertises: true, savedJobs: true } },
     });
   }
   async updateKafeel(id: string, kafeel: kafeel) {

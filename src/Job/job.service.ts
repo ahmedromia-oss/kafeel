@@ -33,7 +33,7 @@ export class JobService {
   async getJobById(jobId: string): Promise<Job> {
     return await this.jobRepo.findOne({
       where: { id: jobId },
-      relations: { applicants: true, savedByUsers: true },
+      relations: { applicants: true, savedByUsers: true , company: { Jobs: true } },
     });
   }
   async getJobs(skip: number = 0, take: number = 5): Promise<Job[]> {
@@ -41,7 +41,7 @@ export class JobService {
       relations: {
         savedByUsers: true,
         applicants: true,
-        company: { Jobs: true },
+        company: { Jobs: true  },
       },
       skip: skip,
       take: take,
@@ -84,7 +84,7 @@ export class JobService {
         where: { userId: userId },
         skip: skip,
         take: take,
-        relations: { job: { company: true, applicants: true } },
+        relations: { job: { company: true, applicants: true }},
       })
     ).map((e) => e.job);
   }

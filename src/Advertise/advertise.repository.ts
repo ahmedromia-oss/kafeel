@@ -33,6 +33,8 @@ export class AdvertiseRepository extends GenericRepository<Advertise> {
     const qb = this.repository
       .createQueryBuilder('ad')
       .leftJoinAndSelect('ad.worker', 'worker')
+      .leftJoinAndSelect('ad.savedByUsers', 'savedByUsers')
+
       .leftJoinAndSelect('ad.company', 'company')
       .leftJoinAndSelect('company.user', 'companyUser')
       .leftJoinAndSelect('worker.user', 'workerUser')

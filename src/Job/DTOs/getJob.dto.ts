@@ -1,8 +1,11 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import { getCompanyDto } from 'src/company/DTOs/getCompany.dto';
 import { JobType } from 'src/constants';
+import { User } from 'src/User/models/user.model';
+import { UserSavedJob } from 'src/User/models/userJobSaved.model';
 
 export class GetJobDto {
+  currentUserId: string;
   @Expose()
   id: string;
 
@@ -40,6 +43,10 @@ export class GetJobDto {
   currency: string;
   @Expose()
   phoneNumber: string;
+  savedByUsers: UserSavedJob[];
   @Expose()
-  IsSaved:boolean
+  @Transform(({ obj }) => {
+    return obj.savedByUsers?.map((e)=>e.userId).includes(obj?.currentUserId || '') || false;
+  })
+  IsSaved: boolean;
 }

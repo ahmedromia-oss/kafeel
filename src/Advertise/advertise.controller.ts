@@ -29,6 +29,7 @@ import { getAdvertiseForKafeel } from './DTOs/getAdvertiseForKafeelDto';
 import { get } from 'http';
 import { CreateAdvertiseForCompanyDto } from './DTOs/createAdvertiseForCompany';
 import { permissions } from 'src/Auth/Decorators/permissions.decorator';
+import { OptionalAuthGuard } from 'src/Auth/Gaurds/optional.auth.gaurd';
 
 @Controller('advertises')
 export class AdvertiseController {
@@ -37,6 +38,8 @@ export class AdvertiseController {
   // GET /advertises/worker/:workerId
   @Get('worker/:workerId')
   @serialize(GetAdvertiseDto)
+  @UseGuards(OptionalAuthGuard)
+
   async getAdvertises(
     @Param('workerId') workerId: string,
     @Query('skip') skip?: number,
@@ -45,6 +48,8 @@ export class AdvertiseController {
     return await this.advertiseService.getAdvertises(workerId, skip, take);
   }
   @Get('/')
+  @UseGuards(OptionalAuthGuard)
+
   @serialize(getAdvertiseForKafeel)
   async getGlobalAdvertises(
     @Query('skip') skip?: number,
@@ -55,6 +60,7 @@ export class AdvertiseController {
   // GET /advertises/:advertiseId
   @Get(':advertiseId')
   @serialize(GetAdvertiseDto)
+  @UseGuards(OptionalAuthGuard)
   async getAdvertiseById(
     @Param('advertiseId') advertiseId: string,
   ): Promise<Advertise> {
@@ -130,6 +136,8 @@ export class AdvertiseController {
     return await this.advertiseService.getSaved(user.sub, skip, take);
   }
   @Get('search/advertise')
+  @UseGuards(OptionalAuthGuard)
+
   @serialize(GetAdvertiseDto)
   async search(
     @Query('searchTerm') searchTerm?: string,
@@ -153,7 +161,6 @@ export class AdvertiseController {
   @serialize(GetAdvertiseDto)
   @UseGuards(AuthGuard, RoleGuard)
   @roles(UserType.COMPANY)
-  @permissions(PERMISSION.IS_APPROVED)
   async createAdvertiseForCompany(
     @user() user: userToken,
     @Body() addAdvertise: CreateAdvertiseForCompanyDto,

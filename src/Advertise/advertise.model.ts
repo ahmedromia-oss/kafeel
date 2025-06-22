@@ -79,4 +79,5 @@ export class Advertise extends BaseEntity {
       this.id = v4();
     }
   }
+  IsSaved: boolean;
 }
