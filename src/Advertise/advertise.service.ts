@@ -42,7 +42,7 @@ export class AdvertiseService {
         { companyId: userId, IsOpen: true },
         { workerId: userId, IsOpen: true },
       ],
-      relations: { savedByUsers: true },
+      relations: { savedByUsers: true , worker:true , company: true},
       skip: skip,
       take: take,
     });
@@ -139,10 +139,8 @@ export class AdvertiseService {
     );
   }
   async addAdvertiseForCompany(advertise: Advertise, companyId: string) {
-    const company = await this.userService.getUserById(companyId);
     return await this.advertiseRepo.create({
       ...advertise,
-      company,
       companyId,
     });
   }

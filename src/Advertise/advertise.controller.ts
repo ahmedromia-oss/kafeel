@@ -157,9 +157,9 @@ export class AdvertiseController {
       take,
     );
   }
-  @Post()
+  @Post('company/advertise')
   @serialize(GetAdvertiseDto)
-  @UseGuards(AuthGuard, RoleGuard)
+  @UseGuards(AuthGuard)
   @roles(UserType.COMPANY)
   async createAdvertiseForCompany(
     @user() user: userToken,
