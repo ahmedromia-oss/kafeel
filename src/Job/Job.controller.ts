@@ -127,11 +127,14 @@ export class JobController {
     @Query('category') category?: string,
     @Query('jobType') jobType?: string,
     @Query('country') coutry?: string,
+    @Query('companyId') companyId?: string,
+
     @Query('skip') skip: number = 0,
     @Query('take') take: number = 5,
   ): Promise<Job[]> {
     // Assuming delete logic is implemented in the service
     return await this.jobService.searchJob(
+      companyId,
       searchTerm,
       category,
       jobType,

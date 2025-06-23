@@ -42,7 +42,7 @@ export class AdvertiseService {
         { companyId: userId, IsOpen: true },
         { workerId: userId, IsOpen: true },
       ],
-      relations: { savedByUsers: true , worker:true , company: true},
+      relations: { savedByUsers: true, worker: true, company: true },
       skip: skip,
       take: take,
     });
@@ -122,6 +122,7 @@ export class AdvertiseService {
     ).map((e) => e.advertise);
   }
   async searchAdvertise(
+    companyId?: string,
     searchTerm?: string,
     category?: string,
     jobType?: string,
@@ -136,6 +137,7 @@ export class AdvertiseService {
       country,
       skip,
       take,
+      companyId
     );
   }
   async addAdvertiseForCompany(advertise: Advertise, companyId: string) {

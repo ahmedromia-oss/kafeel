@@ -39,7 +39,6 @@ export class AdvertiseController {
   @Get('worker/:workerId')
   @serialize(GetAdvertiseDto)
   @UseGuards(OptionalAuthGuard)
-
   async getAdvertises(
     @Param('workerId') workerId: string,
     @Query('skip') skip?: number,
@@ -49,7 +48,6 @@ export class AdvertiseController {
   }
   @Get('/')
   @UseGuards(OptionalAuthGuard)
-
   @serialize(getAdvertiseForKafeel)
   async getGlobalAdvertises(
     @Query('skip') skip?: number,
@@ -137,22 +135,26 @@ export class AdvertiseController {
   }
   @Get('search/advertise')
   @UseGuards(OptionalAuthGuard)
-
   @serialize(GetAdvertiseDto)
   async search(
     @Query('searchTerm') searchTerm?: string,
     @Query('category') category?: string,
     @Query('jobType') jobType?: string,
     @Query('country') coutry?: string,
+    @Query('companyId') companyId?: string,
+
     @Query('skip') skip: number = 0,
     @Query('take') take: number = 5,
   ): Promise<Advertise[]> {
     // Assuming delete logic is implemented in the service
     return await this.advertiseService.searchAdvertise(
+      companyId,
+
       searchTerm,
       category,
       jobType,
       coutry,
+
       skip,
       take,
     );

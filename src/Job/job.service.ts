@@ -89,6 +89,7 @@ export class JobService {
     ).map((e) => e.job);
   }
   async searchJob(
+    companyId?: string,
     searchTerm?: string,
     category?: string,
     jobType?: string,
@@ -97,6 +98,7 @@ export class JobService {
     take?: number,
   ) {
     return await this.jobRepo.searchJobs(
+      companyId,
       searchTerm,
       category,
       jobType,

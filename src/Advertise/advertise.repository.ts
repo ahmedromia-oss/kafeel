@@ -23,12 +23,14 @@ export class AdvertiseRepository extends GenericRepository<Advertise> {
     country?: string,
     skip?: number,
     take?: number,
+    companyId?: string,
   ) {
     const rawSearch = (searchTerm ?? category ?? '').trim().toLowerCase();
     const searchPattern = `%${rawSearch}%`;
     const types = jobType ? [jobType] : (Object.values(JobType) as JobType[]);
     const rawCity = (country ?? '').trim().toLowerCase();
     const cityPattern = `%${rawCity}%`;
+    const IdPattern = `%${companyId?companyId:''}%`;
 
     const qb = this.repository
       .createQueryBuilder('ad')
@@ -66,6 +68,8 @@ export class AdvertiseRepository extends GenericRepository<Advertise> {
           }),
       ),
     );
+    console.log(IdPattern)
+    qb.where('ad.companyId LIKE :companyId', { companyId: IdPattern });
 
     return await qb.getMany();
   }

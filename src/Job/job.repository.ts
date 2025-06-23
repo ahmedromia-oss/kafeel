@@ -13,6 +13,7 @@ export class JobRepository extends GenericRepository<Job> {
     super(jobRepository);
   }
   async searchJobs(
+    companyId?: string,
     searchTerm?: string,
     category?: string,
     jobType?: string,
@@ -25,16 +26,16 @@ export class JobRepository extends GenericRepository<Job> {
     const types = jobType ? [jobType] : Object.values(JobType);
     const rawCity = (country ?? '').trim().toLowerCase();
     const cityPattern = `%${rawCity}%`;
+    const IdPattern = `%${companyId?companyId:''}%`;
 
     const qb = this.repository
       .createQueryBuilder('job')
       .leftJoinAndSelect('job.savedByUsers', 'savedByUsers')
-      
+
       .leftJoinAndSelect('job.company', 'company')
       .leftJoinAndSelect('company.Jobs', 'Jobs')
       .leftJoinAndSelect('job.applicants', 'applicants')
       .leftJoinAndSelect('company.user', 'user')
-
 
       // Pagination
       .skip(skip)
@@ -63,6 +64,7 @@ export class JobRepository extends GenericRepository<Job> {
             cityPattern,
           }),
       ),
+      qb.andWhere('job.companyId LIKE :companyId', { company: IdPattern }),
     );
     return await qb.getMany();
 
