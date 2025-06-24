@@ -21,13 +21,12 @@ export class JobRepository extends GenericRepository<Job> {
     skip?: number,
     take?: number,
   ) {
-    const rawSearch = (searchTerm ?? category ?? '').trim().toLowerCase();
-    const searchPattern = `%${rawSearch}%`;
+    const cat = `%${(category ?? '').trim().toLowerCase()}%`;
+    const searchPattern = `%${searchTerm??''}%`;
     const types = jobType ? [jobType] : Object.values(JobType);
     const rawCity = (country ?? '').trim().toLowerCase();
     const cityPattern = `%${rawCity}%`;
-    const IdPattern = `%${companyId?companyId:''}%`;
-
+    const IdPattern = `%${companyId ? companyId : ''}%`;
     const qb = this.repository
       .createQueryBuilder('job')
       .leftJoinAndSelect('job.savedByUsers', 'savedByUsers')
@@ -44,28 +43,20 @@ export class JobRepository extends GenericRepository<Job> {
       .orderBy('job.createdAt', 'DESC');
 
     // Title match block
-    qb.where(
-      new Brackets((b) =>
-        b
-          .where('LOWER(job.title) LIKE :searchPattern', { searchPattern })
-          .andWhere('job.jobType IN (:...types)', { types }),
-      ),
-    );
+    
 
     // OR Description + city match block
-    qb.orWhere(
-      new Brackets((b) =>
-        b
-          .where('LOWER(job.description) LIKE :searchPattern', {
-            searchPattern,
-          })
-          .andWhere('job.jobType IN (:...types)', { types })
-          .andWhere("LOWER(COALESCE(company.city, '')) LIKE :cityPattern", {
-            cityPattern,
-          }),
-      ),
-      qb.andWhere('job.companyId LIKE :companyId', { company: IdPattern }),
-    );
+    qb.where("LOWER(COALESCE(job.description) , '') LIKE :cat", {
+      cat,
+    })
+      .andWhere('LOWER(job.title) LIKE :searchPattern', { searchPattern })
+
+      .andWhere('job.jobType IN (:...types)', { types })
+      .andWhere("LOWER(COALESCE(company.city, '')) LIKE :cityPattern", {
+        cityPattern,
+      })
+      .andWhere('job.companyId LIKE :companyId', { companyId: IdPattern });
+
     return await qb.getMany();
 
     // Execute both count and data in one go
