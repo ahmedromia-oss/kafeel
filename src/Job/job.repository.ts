@@ -46,7 +46,7 @@ export class JobRepository extends GenericRepository<Job> {
     
 
     // OR Description + city match block
-    qb.where("LOWER(COALESCE(job.description) , '') LIKE :cat", {
+    qb.where("LOWER(COALESCE(job.description , '')) LIKE :cat", {
       cat,
     })
       .andWhere('LOWER(job.title) LIKE :searchPattern', { searchPattern })
