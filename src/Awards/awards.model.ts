@@ -38,7 +38,7 @@ export class Award extends BaseEntity {
   endYearOnly: boolean;
   @Column({ type: 'uuid' })
   workerId: string;
-  @ManyToOne(() => Worker, (worker) => worker.awards)
+  @ManyToOne(() => Worker, (worker) => worker.awards , {onDelete:'CASCADE'})
   @JoinColumn({ name: 'workerId' })
   worker: Worker;
 

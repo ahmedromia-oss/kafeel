@@ -23,7 +23,7 @@ export class Skill extends BaseEntity{
   skillLevel: skillLevel;
   @Column({ nullable: true, type: 'varchar', length: 255})
   describtion: string;
-  @ManyToOne(() => Worker, (worker) => worker.skills)
+  @ManyToOne(() => Worker, (worker) => worker.skills , {onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workerId' })
   worker: Worker;
   @Column({ type: 'uuid' })

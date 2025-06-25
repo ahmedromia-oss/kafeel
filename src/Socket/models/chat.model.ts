@@ -23,7 +23,7 @@ export class Chat extends BaseEntity {
   id: string;
 
   // Members of the chat (for solo chat length = 2)
-  @ManyToMany(() => User, (user) => user.chats, { eager: true })
+  @ManyToMany(() => User, (user) => user.chats, {onDelete:'CASCADE' ,  eager: true })
   @JoinTable()
   members: User[];
 

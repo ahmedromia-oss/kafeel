@@ -23,7 +23,7 @@ export class Language extends BaseEntity{
   lanuageLevel: languageLevel;
   @Column({ nullable: true, type: 'varchar', length: 255})
   describtion: string;
-  @ManyToOne(() => Worker, (worker) => worker.languages)
+  @ManyToOne(() => Worker, (worker) => worker.languages , { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workerId' })
   worker: Worker;
   @Column({ type: 'uuid' })

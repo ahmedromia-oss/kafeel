@@ -62,7 +62,7 @@ export class User extends BaseEntity {
     enum: UserType,
   })
   userType: UserType;
-  @ManyToMany(() => Chat, (chat) => chat)
+  @ManyToMany(() => Chat, (chat) => chat , {onDelete:'CASCADE'} )
   chats: Chat[];
   @OneToMany(() => Message, (message) => message.sender)
   sentMessages: Message[];
@@ -72,7 +72,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => UserSavedJob, (savedJob) => savedJob.user)
   savedJobs: UserSavedJob[];
-  @OneToMany(() => UserSavedAdvertise, (savedAdvertise) => savedAdvertise.user)
+  @OneToMany(() => UserSavedAdvertise, (savedAdvertise) => savedAdvertise.user )
   savedAdvertises: UserSavedAdvertise[];
   @BeforeInsert()
   generateId() {

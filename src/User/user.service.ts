@@ -86,4 +86,7 @@ export class UserService {
   public async unApproveUser(userId: string) {
     return await this.UpdateUser({ userApproved: false } as User, userId);
   }
+  public async deleteUser(userId: string) {
+    return await this.UserRepository.delete({ id: userId });
+  }
 }

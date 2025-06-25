@@ -45,8 +45,7 @@ export class GetAdvertiseDto {
   @Expose()
   updatedAt: Date;
 
-  @Expose()
-  currencey: string;
+  
   @Expose()
   email: string;
   @Expose()

@@ -37,6 +37,5 @@ export class CreateAdvertiseForCompanyDto {
   @IsOptional()
   @IsString({ message: ValidationErrors.MUST_STRING })
   description?: string;
-  @IsNotEmpty({ message: ValidationErrors.REQUIRED })
-  currencey: string;
+  
 }

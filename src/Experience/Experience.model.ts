@@ -21,7 +21,7 @@ export class Experience extends BaseEntity {
   @Column({ nullable: false, type: 'date' })
   startDate: Date;
 
-  @ManyToOne(() => Worker, (worker) => worker.experiences)
+  @ManyToOne(() => Worker, (worker) => worker.experiences , {onDelete: 'CASCADE'})
   @JoinColumn({ name: 'workerId' })
   worker: Worker;
   @Column({ type: 'uuid' })

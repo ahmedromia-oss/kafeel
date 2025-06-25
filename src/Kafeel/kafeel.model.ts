@@ -12,7 +12,7 @@ import {
 export class kafeel extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   userId: string;
-  @OneToOne(() => User, { nullable: false, eager: true })
+  @OneToOne(() => User, { nullable: false, eager: true , onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
   @Column({ nullable: true, type: 'varchar', length: 255 })

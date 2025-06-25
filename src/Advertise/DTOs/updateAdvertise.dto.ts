@@ -37,8 +37,7 @@ export class UpdateAdvertiseDto {
   @IsOptional()
   @IsString({ message: ValidationErrors.MUST_STRING })
   description?: string;
-  @IsOptional()
-  currencey: string;
+ 
   @IsOptional()
   email: string;
   @IsOptional()

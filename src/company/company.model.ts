@@ -18,7 +18,7 @@ export class Company extends BaseEntity {
   userId: string;
   @Column({ type: 'text', nullable: true })
   aboutMe: string;
-  @OneToOne(() => User, { cascade: true, eager: true })
+  @OneToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn({ name: 'userId' })
   user: User;
   @OneToMany(() => Job, (job) => job.company)

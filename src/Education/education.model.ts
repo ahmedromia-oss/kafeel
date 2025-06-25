@@ -21,7 +21,7 @@ export class Education {
   @Column({ nullable: false, type: 'enum', enum: education })
   degree: education;
 
-  @ManyToOne(() => Worker, (worker) => worker.educations)
+  @ManyToOne(() => Worker, (worker) => worker.educations , { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workerId' })
   worker: Worker;
   @Column({ type: 'uuid' })

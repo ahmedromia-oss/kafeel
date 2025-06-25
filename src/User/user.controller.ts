@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -77,5 +78,11 @@ export class UserController {
   @serialize()
   async unApproveUser(@Param('userId') userId: string) {
     return await this.userService.unApproveUser(userId);
+  }
+  @Delete('delete/user')
+  @UseGuards(AuthGuard)
+  @serialize()
+  async DeleteUser(@user() user: userToken) {
+    return await this.userService.deleteUser(user.sub);
   }
 }

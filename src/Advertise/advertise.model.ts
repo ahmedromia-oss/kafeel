@@ -61,16 +61,15 @@ export class Advertise extends BaseEntity {
 
   @OneToMany(
     () => UserSavedAdvertise,
-    (savedAdvertise) => savedAdvertise.advertise,
+    (savedAdvertise) => savedAdvertise.advertise
   )
   savedByUsers: UserSavedAdvertise[];
 
-  @ManyToOne(() => Worker, (worker) => worker.advertises, { nullable: true })
+  @ManyToOne(() => Worker, (worker) => worker.advertises, { nullable: true , onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workerId' })
   worker: Worker;
-  @Column({ type: 'text', nullable: true })
-  currencey: string;
-  @ManyToOne(() => Company, (company) => company.advertises, { nullable: true })
+ 
+  @ManyToOne(() => Company, (company) => company.advertises, { nullable: true  , onDelete: 'CASCADE' })
   @JoinColumn({ name: 'companyId' })
   company: Company;
   @BeforeInsert()

@@ -7,8 +7,7 @@ import { User } from 'src/User/models/user.model';
 import { getWorkerDto } from 'src/Worker/DTOs/getWorker.dto';
 
 export class getAdvertiseForKafeel {
-  @Expose()
-  currencey: string;
+ 
   @Expose()
   email: string;
   @Expose()
