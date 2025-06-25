@@ -45,11 +45,14 @@ export class Message extends BaseEntity{
 
   @Column({ type: 'enum', enum: MessageType, default: MessageType.TEXT })
   messageType: MessageType;
+  // @Column({ type: 'boolean', default: false })
+  // isRead: boolean;
 
   @OneToMany(() => Attachment, (attachment) => attachment.message)
   attachments: Attachment[];
 
-
+  @Column({ type: 'boolean', default: false })
+  isRead: boolean;
   @BeforeInsert()
   generateId() {
     if (!this.id) {

@@ -23,4 +23,6 @@ export class getMessageDto {
   attachments?: string[];
   @Expose()
   createdAt: Date;
+  @Expose()
+  isRead: boolean;
 }

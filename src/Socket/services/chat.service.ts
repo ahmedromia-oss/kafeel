@@ -4,7 +4,6 @@ import { UserService } from 'src/User/user.service';
 import { createChatDto } from '../DTOs/Chats/createChat.dto';
 import { Chat } from '../models/chat.model';
 import { In } from 'typeorm';
-import { MessageService } from './message.service';
 import { Message } from '../models/message.model';
 
 @Injectable()
@@ -71,8 +70,10 @@ export class ChatService {
       relations: { messages: true, members: true },
     });
   }
-
-  /**
-   * Delete a chat by its ID
-   */
+  async chatByIdwithLastMessage(id: string): Promise<Chat> {
+    return await this.chatRepo.findOne({
+      where: { id },
+      relations: { lastMessage: true },
+    });
+  }
 }

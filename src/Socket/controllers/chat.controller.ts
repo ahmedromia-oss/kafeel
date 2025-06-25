@@ -17,9 +17,7 @@ import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
 import { user } from 'src/User/Decorators/user.decorator';
 import { userToken } from 'src/models/userToken.model';
 import { RoleGuard } from 'src/Auth/Gaurds/Role.gaurd';
-import { roles } from 'src/Auth/Decorators/Roles.decorator';
-import { UserType } from 'src/constants';
-import { kafeel } from 'src/Kafeel/kafeel.model';
+
 
 @Controller('chats')
 export class ChatController {

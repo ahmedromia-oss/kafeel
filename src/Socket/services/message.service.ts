@@ -16,7 +16,6 @@ import { ChatService } from './chat.service';
 export class MessageService {
   constructor(
     private readonly messageRepo: MessageRepository,
-    private readonly userService: UserService,
     private readonly chatService: ChatService,
   ) {}
 
@@ -54,6 +53,19 @@ export class MessageService {
       return message;
     } else {
       throw new NotFoundException();
+    }
+  }
+
+  async markReadManually(messageId: string): Promise<string> {
+    return await this.messageRepo.update({ id: messageId }, { isRead: true });
+  }
+  async markRead(chatId: string, userId: string): Promise<string> {
+    const chat = await this.chatService.chatByIdwithLastMessage(chatId);
+    if (userId != chat.lastMessage.senderId) {
+      return await this.messageRepo.update(
+        { id: chat.lastMessageId },
+        { isRead: true },
+      );
     }
   }
 }

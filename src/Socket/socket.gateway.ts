@@ -20,11 +20,9 @@ import { customJwtService } from 'src/JWT/jwt.service';
 import { userToken } from 'src/models/userToken.model';
 import { user } from 'src/User/Decorators/user.decorator';
 import { ChatService } from './services/chat.service';
-import { CreateMessageDto } from './DTOs/Messages/createMessage.dto';
 import { WsCurrentUser } from './decorators/wsUser.decorator';
 import { createChatDto } from './DTOs/Chats/createChat.dto';
-import { json } from 'stream/consumers';
-import { Any } from 'typeorm';
+
 import { MessageService } from './services/message.service';
 
 @WebSocketGateway()
@@ -40,8 +38,7 @@ export class ChatGateway
   @WebSocketServer()
   server: Server;
 
-  async afterInit(server: Server) {
-  }
+  async afterInit(server: Server) {}
 
   async handleConnection(client: Socket) {
     try {
@@ -49,14 +46,20 @@ export class ChatGateway
       const rooms = (await this.chatService.getChatsForUser(user.sub)).map(
         (room) => room.id,
       );
-      client.broadcast.socketsJoin(rooms);
-    } catch {}
+      client.join(rooms);
+    } catch (e) {}
   }
 
   handleDisconnect(client: Socket) {
     client.handshake.auth = null;
   }
-
+  @SubscribeMessage('markRead')
+  async handleMarkRead(
+    @MessageBody() chatId: string,
+    @WsCurrentUser() user: userToken,
+  ) {
+    await this.messageService.markRead(chatId, user.sub);
+  }
   @SubscribeMessage('sendMessage')
   async handleChatMessage(
     @MessageBody() data: any,
@@ -65,14 +68,15 @@ export class ChatGateway
   ) {
     // Broadcast to all other clients except sender
     try {
-      client.broadcast.socketsJoin([data.chatId]);
       client.broadcast
         .to(data.chatId)
         .emit('chatMessage', { message: data.message, senderId: user.sub });
-      return await this.messageService.createMessage(
+      const result = await this.messageService.createMessage(
         { chatId: data.chatId, content: data.message },
         user.sub,
       );
+
+      return result;
     } catch (e) {}
   }
   @SubscribeMessage('createChat')
