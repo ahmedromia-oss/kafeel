@@ -141,7 +141,7 @@ export class CompanyController {
   }
 
   @serialize(getCompanyDto)
-  @Post('approveUser/:companyId')
+  @Get('approveUser/:companyId')
   @UseGuards(AuthGuard)
   async unAppovedCompanies() {
     return await this.companyService.unApprovedUsers();

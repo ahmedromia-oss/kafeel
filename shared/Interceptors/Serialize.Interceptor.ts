@@ -31,6 +31,8 @@ export class SerializeInterceptor implements NestInterceptor {
           data = { ...data, currentUserId: user?.sub };
         }
 
+        
+
         return {
           code: Code.SUCCESS,
           data: this.dto

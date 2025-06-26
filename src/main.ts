@@ -8,11 +8,14 @@ import {
 import { ResponseExceptionFilter } from 'shared/Filters/ExceptionFilter';
 import { AuthModule } from './Auth/auth.module';
 import { UserModule } from './User/user.module';
+import { ResponseTranslateInterceptor } from 'shared/Interceptors/translation.interceptor';
+import { I18nService } from 'nestjs-i18n';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const i18n = app.get(I18nService) as I18nService<Record<string, unknown>>;
 
-  app.useGlobalFilters(new ResponseExceptionFilter());
+  app.useGlobalFilters(new ResponseExceptionFilter(i18n));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

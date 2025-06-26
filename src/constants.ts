@@ -19,6 +19,7 @@ export enum MessageType {
   IMAGE = 'IMAGE',
   FILE = 'FILE',
 }
+
 export const enum Code {
   PHONENUMBER_USED = 'PHONENUMBER_USED',
   UN_APPROVED = 'UN_APPROVED',

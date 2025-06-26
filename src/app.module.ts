@@ -30,14 +30,31 @@ import { JobApplicants } from './Job_Applicants/Job_applicants.model';
 import { JobApplicantsModule } from './Job_Applicants/Job_applicants.module';
 import { workerModule } from './Worker/worker.module';
 import { OTPModule } from './OTP/otp.module';
+import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import {join} from 'path';
 
 @Module({
   imports: [
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+    
+    
+      loaderOptions: {
+        
+        path: join(__dirname , '..', 'i18n'),
+        watch: true,
+      },
+      resolvers: [
+        
+        { use: QueryResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+      ],
+    }),
     AdvertiseModule,
     JwtModule.register({ global: true }),
     AuthModule,
     UserModule,
-JobModule,
+    JobModule,
     TypeOrmModule.forRoot({ ...AppDataSource.options, autoLoadEntities: true }),
     workerModule,
     SharedModule,
@@ -52,7 +69,7 @@ JobModule,
     JobApplicantsModule,
     BucketsModule,
     companyModule,
-    OTPModule
+    OTPModule,
   ],
   controllers: [],
   providers: [],

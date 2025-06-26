@@ -10,17 +10,22 @@ import { Response } from 'express';
 import { Code } from '../../src/constants';
 import { ServiceResponse } from 'src/models/response.model';
 import { QueryFailedError } from 'typeorm';
+import { I18nService } from 'nestjs-i18n';
 
 @Catch()
 export class ResponseExceptionFilter implements ExceptionFilter {
+  constructor(private readonly i18n: I18nService) {}
+
   catch(exception: any, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
+    const req    = context.getRequest<Request>();
+    const lang   = (req.headers['accept-language'] as string) || 'en';
     try {
       var obj = {};
 
       exception['response']['message'].map((e) => {
-        obj[e['property']] = Object.values(e['constraints'])[0];
+        obj[this.i18n.translate(`common.${e['property']}` , {lang:lang}) as string] = this.i18n.translate(`common.${Object.values(e['constraints'])[0]}` , {lang});
       });
       const errorResponse = {
         code: Code.BAD_INPUT,
@@ -49,6 +54,6 @@ export class ResponseExceptionFilter implements ExceptionFilter {
     if(exception instanceof UnauthorizedException){
       return response.status(401).json({Code:Code.UN_AUTORIZED})
     }
-    return response.status(400).json({ code: exception.message });
+    return response.status(400).json({ code: this.i18n.translate(`common.${exception.message}` , {lang:lang}) });
   }
 }
