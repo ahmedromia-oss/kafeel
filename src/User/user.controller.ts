@@ -30,7 +30,6 @@ import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
 import { getProfileDto } from './DTOs/getProfile.dto';
 
 import { getProfileLockedDto } from './DTOs/getProfileLocked.dto';
-import { ResponseTranslateInterceptor } from 'shared/Interceptors/translation.interceptor';
 
 @Controller('user')
 export class UserController {

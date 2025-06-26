@@ -6,9 +6,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ResponseExceptionFilter } from 'shared/Filters/ExceptionFilter';
-import { AuthModule } from './Auth/auth.module';
-import { UserModule } from './User/user.module';
-import { ResponseTranslateInterceptor } from 'shared/Interceptors/translation.interceptor';
+
 import { I18nService } from 'nestjs-i18n';
 
 async function bootstrap() {
