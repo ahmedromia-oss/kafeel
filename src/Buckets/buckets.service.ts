@@ -32,8 +32,7 @@ export class BucketsService {
   saveFile(file: Express.Multer.File, type: FileType) {
     if (file) {
       const originalName = file.originalname;
-      const extension = extname(originalName); // e.g. ".png"
-      const baseName = basename(originalName, extension); // e.g. "avatar"
+      const baseName = basename(originalName); // e.g. "avatar"
       const timestampedName = `${Date.now()}_${baseName}`;
 
       const folder = path.join(this.basePath, type);
