@@ -6,11 +6,11 @@ import {
 import * as fs from 'fs';
 import * as path from 'path';
 import { basename, extname } from 'path';
-import { FileType } from 'src/constants';
+import { baseUrl, FileType } from 'src/constants';
 
 @Injectable()
 export class BucketsService {
-  private basePath = path.join(process.cwd(), 'uploads');
+  private basePath = 'uploads';
 
   constructor() {
     this.ensureBaseFolders();
@@ -42,12 +42,13 @@ export class BucketsService {
         fs.mkdirSync(folder, { recursive: true });
       }
 
-      const fullPath = path.join(folder, timestampedName);
+      let fullPath = path.join(folder, timestampedName);
+      fullPath = fullPath.replace(/\\/g, '/');
 
       // Write file synchronously
       fs.writeFileSync(fullPath, file.buffer);
 
-      return fullPath;
+      return baseUrl + '/' + fullPath;
     }
     return null;
   }

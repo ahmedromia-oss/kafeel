@@ -129,3 +129,4 @@ export enum PostedJobDate {
   'pastWeek' = 7,
   'past24Hours' = 0,
 }
+export const baseUrl ="https://kafeel.eventoapp.info"
