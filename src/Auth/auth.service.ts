@@ -69,8 +69,15 @@ export class AuthService {
         AccessData.tokenType == tokenType.VALID) &&
       AccessData.data?.sub == refreshData.data?.sub
     ) {
+      const payload: userToken = {
+        Approved: refreshData.data.Approved,
+        sub: refreshData.data.sub,
+        verifyEmail: refreshData.data.verifyEmail,
+        verifyPhone: refreshData.data.verifyPhone,
+        type: refreshData.data.type,
+      };
       return await this.jwtService.createToken(
-        { sub: refreshData.data.sub },
+        payload,
         this.configService.get<string>('secretKey'),
         this.configService.get<string>('durationToken'),
       );
