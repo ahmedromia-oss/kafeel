@@ -69,6 +69,7 @@ export class AuthController {
   async verifyPhone(
     @Body('phoneNumber') phoneNumber: string,
     @Body('OTPcode') OTPcode: string,
+    
   ) {
     return this.authService.verfiy(phoneNumber, OTPcode);
   }

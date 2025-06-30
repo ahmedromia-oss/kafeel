@@ -7,6 +7,7 @@ import { JobApplicants } from './Job_applicants.model';
 import { JobService } from 'src/Job/job.service';
 import { UserSavedAdvertise } from 'src/User/models/userAdvertiseSaved.model';
 import { UserService } from 'src/User/user.service';
+import { valuesString } from 'src/constants';
 
 @Injectable()
 export class JobApplicantsService {
@@ -21,7 +22,13 @@ export class JobApplicantsService {
     const job = await this.jobService.getJobById(jobApplicant.JobId);
     jobApplicant.User = user;
     jobApplicant.job = job;
-    return await this.jobApplicantsRepository.create(jobApplicant);
+    try {
+      return await this.jobApplicantsRepository.findOne({
+        where: { userId: user.id, JobId: job.id },
+      });
+    } catch {
+      return await this.jobApplicantsRepository.create(jobApplicant);
+    }
   }
 
   async getApplications(

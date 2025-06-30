@@ -24,13 +24,12 @@ export class otpService {
     try {
       
       const code = this.generateCode()
-        console.log(code)
 
       const user = await this.userService.getByPhoneNumber(
         sendOTPDTO.phoneNumber,
       );
 
-      return await this.otpRepo.update(
+       await this.otpRepo.update(
         {
           userId: user.id,
         },
@@ -40,10 +39,12 @@ export class otpService {
           expiresAt: new Date(Date.now() + 5 * 60 * 1000),
         },
       );
+      return await this.otpRepo.findOne({where:{userId:user.id}})
 
     } catch {
-      const res = await this.otpRepo.create({ code: this.generateCode()});
-      console.log(res)
+      const res = await this.otpRepo.create({ code: this.generateCode() , Provider:sendOTPDTO.Provider});
+      return res
+     
       return valuesString.UPDATED
     }
   }
