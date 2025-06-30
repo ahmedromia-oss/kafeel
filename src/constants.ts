@@ -135,4 +135,4 @@ export const enum typesOfOTP  {
   LOGUP = "LOGUP",
   VERIFY = "VERIFY"
 }
-export const baseUrl ="https://2ca0-197-42-16-253.ngrok-free.app"
+export const baseUrl ="https://kafeel.eventoapp.info"
