@@ -131,6 +131,7 @@
   "COMPANY": "Company",
   "INDIVIDUAL": "Individual",
   "GOVERNMENT": "Government",
-   "1UP_1LOWER_1SPECIAL_2NUM": "At least 1 uppercase letter, 1 lowercase letter, 2 special characters, and 2 digits."
+   "1UP_1LOWER_1SPECIAL_2NUM": "At least 1 uppercase letter, 1 lowercase letter, 2 special characters, and 2 digits.",
+    "newPassword":"New Password"
 }
 

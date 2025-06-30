@@ -26,9 +26,7 @@ import { GetAdvertiseDto } from './DTOs/getAdvertise.dto';
 import { CreateAdvertiseDto } from './DTOs/createAdvertise.dto';
 import { UpdateAdvertiseDto } from './DTOs/updateAdvertise.dto';
 import { getAdvertiseForKafeel } from './DTOs/getAdvertiseForKafeelDto';
-import { get } from 'http';
 import { CreateAdvertiseForCompanyDto } from './DTOs/createAdvertiseForCompany';
-import { permissions } from 'src/Auth/Decorators/permissions.decorator';
 import { OptionalAuthGuard } from 'src/Auth/Gaurds/optional.auth.gaurd';
 
 @Controller('advertises')

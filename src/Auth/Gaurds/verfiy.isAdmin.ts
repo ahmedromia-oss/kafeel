@@ -11,7 +11,7 @@ import { userToken } from 'src/models/userToken.model';
 import { PERMISSION_KEY } from '../Decorators/permissions.decorator';
 
 @Injectable()
-export class verifyPhoneGuard implements CanActivate {
+export class verifyAdminGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
