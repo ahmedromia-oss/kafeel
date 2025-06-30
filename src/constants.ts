@@ -69,6 +69,7 @@ export enum PERMISSION {
   IS_PHONE_VERIFIED = 'IS_PHONE_VERIFIED',
   IS_EMAIL_VERIFIED = 'IS_EMAIL_VERIFIED',
   IS_APPROVED = 'IS_APPROVED',
+  IS_ADMIN = 'IS_ADMIN'
 }
 
 export const enum valuesString {
@@ -129,4 +130,9 @@ export enum PostedJobDate {
   'pastWeek' = 7,
   'past24Hours' = 0,
 }
-export const baseUrl ="https://2ca0-197-42-16-253.ngrok-free.app"
+export const enum typesOfOTP  {
+  RESETPASSWORD = "RESET_PASSWORD",
+  LOGUP = "LOGUP",
+  VERIFY = "VERIFY"
+}
+export const baseUrl ="https://kafeel.eventoapp.info"
