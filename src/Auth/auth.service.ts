@@ -266,9 +266,7 @@ export class AuthService {
     OTPcode,
   }: forgetPasswordDto) {
     const user = await this.userService.getByPhoneNumber(phoneNumber);
-    if (!user.phoneVerified) {
-      throw new UnauthorizedException();
-    }
+    
     await this.otpService.verfiyOtp(OTPcode, typesOfOTP.RESETPASSWORD);
     const hashedPass = await this.hashSaltPassword(newPassword);
     return await this.userService.UpdateUser(
