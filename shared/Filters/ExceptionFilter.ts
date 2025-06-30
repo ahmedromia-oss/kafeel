@@ -33,6 +33,7 @@ export class ResponseExceptionFilter implements ExceptionFilter {
       } as ServiceResponse<Object>;
       return response.status(400).json(errorResponse);
     } catch {
+      console.log(exception)
       if (exception instanceof QueryFailedError) {
         return response.status(400).json({ code: Code.SMTH_WITH_DB });
       }

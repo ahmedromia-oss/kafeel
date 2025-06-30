@@ -25,8 +25,7 @@ export class JobApplicants extends BaseEntity {
 
   @Column({ type: 'uuid' })
   userId: string;
-  @Column({ type: 'uuid' })
-  companyId: string;
+  
   @Column({ type: 'uuid' })
   JobId: string;
   @ManyToOne(() => User, (user) => user.jobApplications, {

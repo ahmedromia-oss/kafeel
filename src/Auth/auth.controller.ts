@@ -18,6 +18,7 @@ import { resetPassword } from './DTOs/resetPassword.dto';
 import { user } from 'src/User/Decorators/user.decorator';
 import { userToken } from 'src/models/userToken.model';
 import { AuthGuard } from './Gaurds/auth.gaurd';
+import { forgetPasswordDto } from './DTOs/forgetPassword.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -56,5 +57,19 @@ export class AuthController {
     @user() user: userToken,
   ) {
     return await this.authService.resetPassword(user.sub, resetPassword);
+  }
+  @serialize()
+  @Post('forget-password')
+  async forgetPassword(@Body() forgetPasswordDto: forgetPasswordDto) {
+    return this.authService.forgetPassword(forgetPasswordDto);
+  }
+
+  @Post('verify-phone')
+  @serialize()
+  async verifyPhone(
+    @Body('phoneNumber') phoneNumber: string,
+    @Body('OTPcode') OTPcode: string,
+  ) {
+    return this.authService.verfiy(phoneNumber, OTPcode);
   }
 }

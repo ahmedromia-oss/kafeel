@@ -6,4 +6,5 @@ export class userToken {
   verifyPhone: boolean;
   type: UserType;
   Approved: boolean;
+  isAdmin:boolean
 }

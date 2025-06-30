@@ -10,6 +10,8 @@ export class OTPController {
   @serialize()
   @Post('/')
   async send(@Body() sendOTPDTO:sendOTPDTO) {
-    return await this.otpService.create(sendOTPDTO);
+    const res =  await this.otpService.create(sendOTPDTO);
+    console.log(res)
+    return res
   }
 }

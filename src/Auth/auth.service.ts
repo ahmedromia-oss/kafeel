@@ -12,17 +12,22 @@ import { UserService } from 'src/User/user.service';
 import { plainToInstance } from 'class-transformer';
 import { User } from 'src/User/models/user.model';
 import { SignUpDTO } from './DTOs/signup.dto';
-import { Code, tokenType, UserType, ValidationErrors } from 'src/constants';
+import {
+  Code,
+  tokenType,
+  typesOfOTP,
+  UserType,
+  ValidationErrors,
+} from 'src/constants';
 import { randomBytes, scrypt as _scrypt, verify } from 'crypto';
 import { promisify } from 'util';
-import { RedisService } from 'src/Redis/redis.service';
 import { customJwtService } from 'src/JWT/jwt.service';
 import { ConfigService } from '@nestjs/config';
-import { getUserDto } from 'src/User/DTOs/getUserDto';
 import { userToken } from 'src/models/userToken.model';
 import { loginDto } from './DTOs/loginOTP.dto';
 import { otpService } from 'src/OTP/otp.service';
 import { resetPassword } from './DTOs/resetPassword.dto';
+import { forgetPasswordDto } from './DTOs/forgetPassword.dto';
 
 @Injectable()
 export class AuthService {
@@ -75,6 +80,7 @@ export class AuthService {
         verifyEmail: refreshData.data.verifyEmail,
         verifyPhone: refreshData.data.verifyPhone,
         type: refreshData.data.type,
+        isAdmin: refreshData.data.isAdmin,
       };
       return await this.jwtService.createToken(
         payload,
@@ -108,6 +114,7 @@ export class AuthService {
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
         type: user.userType,
+        isAdmin: user.isAdmin,
       };
 
       return {
@@ -128,7 +135,10 @@ export class AuthService {
   }
 
   async loginForOtp(loginDto: loginDto) {
-    const otp = await this.otpService.verfiyOtp(loginDto.OTPcode);
+    const otp = await this.otpService.verfiyOtp(
+      loginDto.OTPcode,
+      typesOfOTP.LOGUP,
+    );
 
     try {
       const user = await this.userService.getByPhoneNumber(
@@ -144,6 +154,7 @@ export class AuthService {
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
         type: user.userType,
+        isAdmin: user.isAdmin,
       };
 
       return {
@@ -179,6 +190,7 @@ export class AuthService {
           verifyEmail: userCreated.emailVerified,
           verifyPhone: userCreated.phoneVerified,
           type: userCreated.userType,
+          isAdmin: user.isAdmin,
         };
 
         return {
@@ -247,5 +259,29 @@ export class AuthService {
       .split('')
       .sort(() => Math.random() - 0.5)
       .join('');
+  }
+  async forgetPassword({
+    newPassword,
+    phoneNumber,
+    OTPcode,
+  }: forgetPasswordDto) {
+    const user = await this.userService.getByPhoneNumber(phoneNumber);
+    if (!user.phoneVerified) {
+      throw new UnauthorizedException();
+    }
+    await this.otpService.verfiyOtp(OTPcode, typesOfOTP.RESETPASSWORD);
+    const hashedPass = await this.hashSaltPassword(newPassword);
+    return await this.userService.UpdateUser(
+      { ...user, password: hashedPass } as User,
+      user.id,
+    );
+  }
+  async verfiy(phoneNumber: string, OTPcode:string) {
+    const user = await this.userService.getByPhoneNumber(phoneNumber);
+    await this.otpService.verfiyOtp(OTPcode, typesOfOTP.VERIFY);
+    return await this.userService.UpdateUser(
+      { ...user, phoneVerified: true } as User,
+      user.id,
+    );
   }
 }

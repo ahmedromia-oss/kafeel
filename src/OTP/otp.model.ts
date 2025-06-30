@@ -30,4 +30,6 @@ export class Otp {
   setExpiryDate() {
     this.expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
   }
+  @Column()
+  Provider: string;
 }

@@ -15,6 +15,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const i18n = app.get(I18nService) as I18nService<Record<string, unknown>>;
   const staticPath = join(__dirname, '..', 'uploads');
+  console.log(staticPath)
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
   });

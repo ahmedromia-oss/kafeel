@@ -74,6 +74,8 @@ export class User extends BaseEntity {
   savedJobs: UserSavedJob[];
   @OneToMany(() => UserSavedAdvertise, (savedAdvertise) => savedAdvertise.user )
   savedAdvertises: UserSavedAdvertise[];
+  @Column({default:false})
+  isAdmin:boolean
   @BeforeInsert()
   generateId() {
     if (!this.id) {
