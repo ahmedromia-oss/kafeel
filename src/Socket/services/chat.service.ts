@@ -46,12 +46,17 @@ export class ChatService {
       take: take,
     });
 
-    return await this.chatRepo.findAll({
+    const res = await this.chatRepo.findAll({
       where: {
         id: In(chats.map((e) => e.id)),
       },
       relations: { members: true, lastMessage: true },
       order: { lastMessage: { createdAt: 'DESC' } },
+    });
+    return res.map((e) => {
+      if (e.members?.length > 1) {
+        return e;
+      }
     });
   }
 

@@ -129,4 +129,4 @@ export enum PostedJobDate {
   'pastWeek' = 7,
   'past24Hours' = 0,
 }
-export const baseUrl ="https://kafeel.eventoapp.info"
+export const baseUrl ="https://2ca0-197-42-16-253.ngrok-free.app"

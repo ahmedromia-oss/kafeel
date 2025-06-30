@@ -53,6 +53,11 @@ export class JobService {
     return await this.jobRepo.create(job);
   }
 
+  async getJobByUserApplied(userId:string){
+
+    return await this.jobRepo.findAll({where:{applicants:{userId:userId}}})
+
+  }
   async updateJob(job: Job, jobId: string, companyId: string): Promise<string> {
     return await this.jobRepo.update({ id: jobId, companyId }, job);
   }

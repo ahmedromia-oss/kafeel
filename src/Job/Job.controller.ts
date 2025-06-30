@@ -143,4 +143,15 @@ export class JobController {
       take,
     );
   }
+  @Get('appliedJobs')
+  @UseGuards(OptionalAuthGuard)
+  @serialize(GetJobDto)
+  async getAppliedJobs(
+    @user() user: userToken,
+    @Query('skip') skip: number = 0,
+    @Query('take') take: number = 5,
+  ): Promise<Job[]> {
+    // Assuming delete logic is implemented in the service
+    return await this.jobService.getJobByUserApplied(user.sub);
+  }
 }
