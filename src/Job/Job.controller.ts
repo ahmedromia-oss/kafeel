@@ -143,7 +143,7 @@ export class JobController {
       take,
     );
   }
-  @Get('appliedJobs')
+  @Get('user/appliedJobs/jobs')
   @UseGuards(OptionalAuthGuard)
   @serialize(GetJobDto)
   async getAppliedJobs(
@@ -152,6 +152,6 @@ export class JobController {
     @Query('take') take: number = 5,
   ): Promise<Job[]> {
     // Assuming delete logic is implemented in the service
-    return await this.jobService.getJobByUserApplied(user.sub);
+    return await this.jobService.getJobByUserApplied(user.sub, skip, take);
   }
 }

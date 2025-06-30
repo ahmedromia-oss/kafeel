@@ -53,9 +53,9 @@ export class JobService {
     return await this.jobRepo.create(job);
   }
 
-  async getJobByUserApplied(userId:string){
+  async getJobByUserApplied(userId:string , skip?:number , take?:number){
 
-    return await this.jobRepo.findAll({where:{applicants:{userId:userId}}})
+    return await this.jobRepo.findAll({where:{applicants:{userId:userId} } , relations:{applicants:true , savedByUsers:true} , skip:skip , take:take})
 
   }
   async updateJob(job: Job, jobId: string, companyId: string): Promise<string> {
