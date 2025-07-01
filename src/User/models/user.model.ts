@@ -56,8 +56,7 @@ export class User extends BaseEntity {
   nationalId: string;
 
   @Column({
-    nullable: false,
-    default: UserType.WORKER,
+    nullable: true,
     type: 'enum',
     enum: UserType,
   })
@@ -74,8 +73,7 @@ export class User extends BaseEntity {
   savedJobs: UserSavedJob[];
   @OneToMany(() => UserSavedAdvertise, (savedAdvertise) => savedAdvertise.user )
   savedAdvertises: UserSavedAdvertise[];
-  @Column({default:false})
-  isAdmin:boolean
+
   @BeforeInsert()
   generateId() {
     if (!this.id) {

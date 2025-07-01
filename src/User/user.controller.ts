@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Put,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -30,6 +31,8 @@ import { AuthGuard } from 'src/Auth/Gaurds/auth.gaurd';
 import { getProfileDto } from './DTOs/getProfile.dto';
 
 import { getProfileLockedDto } from './DTOs/getProfileLocked.dto';
+import { RoleGuard } from 'src/Auth/Gaurds/Role.gaurd';
+import { ROLE_KEY, roles } from 'src/Auth/Decorators/Roles.decorator';
 
 @Controller('user')
 export class UserController {
@@ -85,5 +88,12 @@ export class UserController {
   @serialize()
   async DeleteUser(@user() user: userToken) {
     return await this.userService.deleteUser(user.sub);
+  }
+  @Delete('delete/user/:userId')
+  @UseGuards(AuthGuard , RoleGuard)
+  @roles(UserType.ADMIN)
+  @serialize()
+  async DeleteUserAdmin(@Param('userId') userId:string) {
+    return await this.userService.deleteUser(userId);
   }
 }

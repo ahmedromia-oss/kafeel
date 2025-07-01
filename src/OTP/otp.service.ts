@@ -4,8 +4,9 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
+import axios from 'axios';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
-import { Code, tokenType } from 'src/constants';
+import { Code, tokenType, typesOfOTP, valuesString } from 'src/constants';
 import { OtpRepository } from './otp.repository';
 import { User } from 'src/User/models/user.model';
 import { Otp } from './otp.model';
@@ -24,6 +25,7 @@ export class otpService {
     return await this.otpRepo.update({ id: otp.id }, otp);
   }
   async create(sendOTPDTO: sendOTPDTO) {
+    const code = this.generateCode();
     try {
       const user = await this.userService.getByPhoneNumber(
         sendOTPDTO.phoneNumber,
@@ -36,11 +38,21 @@ export class otpService {
         {
           code: this.generateCode(),
           expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+          Provider: typesOfOTP.LOGUP,
         },
       );
-      return await this.otpRepo.findOne({ where: { userId: user.id } });
+      const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${user.phoneNumber}&body=Kafeel account single-use code: ${code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+      await axios.get(url);
+      return valuesString.UPDATED;
     } catch {
-      return await this.otpRepo.create({ code: this.generateCode() });
+      const res = await this.otpRepo.create({
+        code: this.generateCode(),
+        Provider: typesOfOTP.LOGUP,
+      });
+      const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+      await axios.get(url);
+
+      return valuesString.UPDATED;
     }
   }
   private generateCode(): string {
@@ -51,10 +63,14 @@ export class otpService {
     const now = new Date();
     try {
       const otp = await this.otpRepo.findOne({
-        where: { code: code, expiresAt: MoreThan(now) },
+        where: {
+          code: code,
+          expiresAt: MoreThan(now),
+          Provider: typesOfOTP.LOGUP,
+        },
       });
       return otp;
-    } catch  {
+    } catch {
       throw new BadRequestException(Code.INVALID_OTP);
     }
   }

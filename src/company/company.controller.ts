@@ -32,7 +32,6 @@ import { BucketsService } from 'src/Buckets/buckets.service';
 import { getCompanyDto } from './DTOs/getCompany.dto';
 import { permissions } from 'src/Auth/Decorators/permissions.decorator';
 import { GetAdvertiseDto } from 'src/Advertise/DTOs/getAdvertise.dto';
-import { verifyAdminGuard } from 'src/Auth/Gaurds/verfiy.isAdmin';
 @permissions(PERMISSION.IS_APPROVED)
 @Controller('company')
 export class CompanyController {
@@ -136,19 +135,18 @@ export class CompanyController {
   }
   @serialize()
   @Put('approveUser/:companyId')
-  @permissions(PERMISSION.IS_ADMIN)
-
-  @UseGuards(AuthGuard ,verifyAdminGuard)
+  @UseGuards(AuthGuard, RoleGuard)
+  @roles(UserType.ADMIN)
   async approveCompany(@Param('companyId') companyId: string) {
     return await this.companyService.approveCompany(companyId);
   }
 
   @serialize(getCompanyDto)
-  @permissions(PERMISSION.IS_ADMIN)
-  @Get('approveUser/:companyId')
-  @UseGuards(AuthGuard , verifyAdminGuard)
+  @UseGuards(AuthGuard, RoleGuard)
+  @roles(UserType.ADMIN)
+  // @permissions(PERMISSION.IS_ADMIN)
+  @Get('unapproved/companies')
   async unAppovedCompanies() {
     return await this.companyService.unApprovedUsers();
   }
- 
 }

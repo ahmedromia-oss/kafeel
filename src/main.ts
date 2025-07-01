@@ -15,7 +15,10 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const i18n = app.get(I18nService) as I18nService<Record<string, unknown>>;
   const staticPath = join(process.cwd(), 'uploads');
-  console.log(staticPath);
+   app.enableCors({
+    origin: '*', // 👈 or 5173 for Vite
+    credentials: true, // if using cookies or auth headers
+  });
   app.useStaticAssets(join(process.cwd(), 'uploads'), {
     prefix: '/uploads/',
   });

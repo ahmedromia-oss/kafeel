@@ -4,6 +4,5 @@ import { ValidationErrors } from 'src/constants';
 export class sendOTPDTO {
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   phoneNumber: string;
-  @IsNotEmpty({message:ValidationErrors.REQUIRED})
-  Provider:string
+
 }

@@ -80,7 +80,6 @@ export class AuthService {
         verifyEmail: refreshData.data.verifyEmail,
         verifyPhone: refreshData.data.verifyPhone,
         type: refreshData.data.type,
-        isAdmin: refreshData.data.isAdmin,
       };
       return await this.jwtService.createToken(
         payload,
@@ -114,7 +113,7 @@ export class AuthService {
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
         type: user.userType,
-        isAdmin: user.isAdmin,
+       
       };
 
       return {
@@ -153,7 +152,7 @@ export class AuthService {
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
         type: user.userType,
-        isAdmin: user.isAdmin,
+        
       };
 
       return {
@@ -189,7 +188,6 @@ export class AuthService {
           verifyEmail: userCreated.emailVerified,
           verifyPhone: userCreated.phoneVerified,
           type: userCreated.userType,
-          isAdmin: user.isAdmin,
         };
 
         return {

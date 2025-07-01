@@ -21,6 +21,7 @@ export class RoleGuard implements CanActivate {
       return true;
     }
     const user:userToken= context.switchToHttp().getRequest().user.data;
+    console.log(user)
    if(requiredRoles.includes(user.type)){
     
     return true
