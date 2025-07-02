@@ -113,7 +113,6 @@ export class AuthService {
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
         type: user.userType,
-       
       };
 
       return {
@@ -134,9 +133,7 @@ export class AuthService {
   }
 
   async loginForOtp(loginDto: loginDto) {
-    const otp = await this.otpService.verfiyOtp(
-      loginDto.OTPcode,
-    );
+    const otp = await this.otpService.verfiyOtp(loginDto.OTPcode);
 
     try {
       const user = await this.userService.getByPhoneNumber(
@@ -152,7 +149,6 @@ export class AuthService {
         verifyEmail: user.emailVerified,
         verifyPhone: user.phoneVerified,
         type: user.userType,
-        
       };
 
       return {
@@ -226,6 +222,7 @@ export class AuthService {
       user.id,
     );
   }
+
   private generateStrongPassword(length: number = 12): string {
     const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lowercase = 'abcdefghijklmnopqrstuvwxyz';
@@ -257,26 +254,11 @@ export class AuthService {
       .sort(() => Math.random() - 0.5)
       .join('');
   }
-  async forgetPassword({
-    newPassword,
-    phoneNumber,
-    OTPcode,
-  }: forgetPasswordDto) {
-    const user = await this.userService.getByPhoneNumber(phoneNumber);
-    
-    await this.otpService.verfiyOtp(OTPcode);
+  async forgetPassword({ newPassword }: forgetPasswordDto, userId: string) {
     const hashedPass = await this.hashSaltPassword(newPassword);
     return await this.userService.UpdateUser(
-      { ...user, password: hashedPass } as User,
-      user.id,
-    );
-  }
-  async verfiy(phoneNumber: string, OTPcode:string) {
-    const user = await this.userService.getByPhoneNumber(phoneNumber);
-    await this.otpService.verfiyOtp(OTPcode);
-    return await this.userService.UpdateUser(
-      { ...user, phoneVerified: true } as User,
-      user.id,
+      { password: hashedPass } as User,
+      userId,
     );
   }
 }

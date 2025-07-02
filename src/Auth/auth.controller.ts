@@ -59,18 +59,11 @@ export class AuthController {
     return await this.authService.resetPassword(user.sub, resetPassword);
   }
   @serialize()
+  @UseGuards(AuthGuard)
   @Post('forget-password')
-  async forgetPassword(@Body() forgetPasswordDto: forgetPasswordDto) {
-    return this.authService.forgetPassword(forgetPasswordDto);
+  async forgetPassword(@Body() forgetPasswordDto: forgetPasswordDto , @user() user:userToken) {
+    return await this.authService.forgetPassword(forgetPasswordDto , user.sub);
   }
 
-  @Post('verify-phone')
-  @serialize()
-  async verifyPhone(
-    @Body('phoneNumber') phoneNumber: string,
-    @Body('OTPcode') OTPcode: string,
-    
-  ) {
-    return this.authService.verfiy(phoneNumber, OTPcode);
-  }
+ 
 }

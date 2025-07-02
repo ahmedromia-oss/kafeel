@@ -82,8 +82,8 @@ export class AdvertiseService {
     workerId: string,
   ): Promise<string> {
     // you might want to verify existence first, or let repository handle 0‑rows‑affected
-    return await this.advertiseRepo.update(
-      { id: advertiseId, workerId },
+    return await this.advertiseRepo.update([
+      { id: advertiseId, workerId } , {id:advertiseId , companyId:workerId}],
       advertise,
     );
   }
