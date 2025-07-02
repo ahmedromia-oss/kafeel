@@ -13,21 +13,20 @@ export class JobRepository extends GenericRepository<Job> {
   ) {
     super(jobRepository);
   }
-  async takeTop5(companyId:string) {
-  return  await this.jobRepository
-  .createQueryBuilder("job")
-  
-  .leftJoin("job.applicants", "applicants")
+  async takeTop5(companyId: string) {
+    return await this.jobRepository
+      .createQueryBuilder('job')
 
-  .select("job.title" , "title")
-  .addSelect("count(applicants.userId)" , "applicants")
-  .where("job.companyId = :companyId", { companyId })
-  .groupBy("job.title")
-  .orderBy("applicants" , "DESC")
-  .take(5)
-  .skip(0)
-  .getRawMany()
+      .leftJoin('job.applicants', 'applicants')
 
+      .select('job.title', 'title')
+      .addSelect('count(applicants.userId)', 'applicants')
+      .where('job.companyId = :companyId', { companyId })
+      .groupBy('job.title')
+      .orderBy('applicants', 'DESC')
+      .limit(5)
+    
+      .getRawMany();
   }
   async searchJobs(
     companyId?: string,
