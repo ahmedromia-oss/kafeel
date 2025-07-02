@@ -14,7 +14,7 @@ export class JobRepository extends GenericRepository<Job> {
     super(jobRepository);
   }
   async takeTop5(companyId: string) {
-    return await this.jobRepository
+    return (await this.jobRepository
       .createQueryBuilder('job')
 
       .leftJoin('job.applicants', 'applicants')
@@ -23,10 +23,9 @@ export class JobRepository extends GenericRepository<Job> {
       .addSelect('count(applicants.userId)', 'applicants')
       .where('job.companyId = :companyId', { companyId })
       .groupBy('job.title')
-      .orderBy('applicants', 'DESC')
-      .limit(5)
+      .orderBy('applicants', 'DESC')).take(5).getRawMany()
+      
     
-      .getRawMany();
   }
   async searchJobs(
     companyId?: string,
