@@ -71,8 +71,9 @@ export class JobController {
     @Param('companyId') companyId: string,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
+    @Query('sort') sort?:string
   ): Promise<Job[]> {
-    return this.jobService.getJobsByCompany(companyId, skip, take);
+    return this.jobService.getJobsByCompany(companyId, skip, take , sort);
   }
 
   // DELETE /jobs/:jobId

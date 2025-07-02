@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
 import { Job } from './models/job.model';
 import { JobType } from 'src/constants';
+import { title } from 'process';
 
 export class JobRepository extends GenericRepository<Job> {
   constructor(
@@ -11,6 +12,22 @@ export class JobRepository extends GenericRepository<Job> {
     private readonly jobRepository: Repository<Job>,
   ) {
     super(jobRepository);
+  }
+  async takeTop5(companyId:string) {
+  return  await this.jobRepository
+  .createQueryBuilder("job")
+  
+  .leftJoin("job.applicants", "applicants")
+
+  .select("job.title" , "title")
+  .addSelect("count(applicants.userId)" , "applicants")
+  .where("job.companyId = :companyId", { companyId })
+  .groupBy("job.title")
+  .orderBy("applicants" , "DESC")
+  .take(5)
+  .skip(0)
+  .getRawMany()
+
   }
   async searchJobs(
     companyId?: string,
@@ -22,7 +39,7 @@ export class JobRepository extends GenericRepository<Job> {
     take?: number,
   ) {
     const cat = `%${(category ?? '').trim().toLowerCase()}%`;
-    const searchPattern = `%${searchTerm??''}%`;
+    const searchPattern = `%${searchTerm ?? ''}%`;
     const types = jobType ? [jobType] : Object.values(JobType);
     const rawCity = (country ?? '').trim().toLowerCase();
     const cityPattern = `%${rawCity}%`;
@@ -43,7 +60,6 @@ export class JobRepository extends GenericRepository<Job> {
       .orderBy('job.createdAt', 'DESC');
 
     // Title match block
-    
 
     // OR Description + city match block
     qb.where("LOWER(COALESCE(job.description , '')) LIKE :cat", {

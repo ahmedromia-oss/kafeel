@@ -21,13 +21,18 @@ export class JobService {
     companyId: string,
     skip: number = 0,
     take: number = 5,
+    sort?:string
   ): Promise<Job[]> {
-    return await this.jobRepo.findAll({
+    if(sort == 'apps'){
+      return await this.jobRepo.takeTop5(companyId)
+    }
+    const res =  await this.jobRepo.findAll({
       relations: { savedByUsers: true , applicants:true },
-      where: { companyId },
+      where: { companyId},
       skip: skip,
       take: take,
     });
+    return res
   }
 
   async getJobById(jobId: string): Promise<Job> {
