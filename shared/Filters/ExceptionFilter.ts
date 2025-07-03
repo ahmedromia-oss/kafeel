@@ -19,8 +19,15 @@ export class ResponseExceptionFilter implements ExceptionFilter {
 
   catch(exception: any, host: ArgumentsHost) {
     const type = host.getType();
-    if (type == 'ws') {
-      return response.status(500)
+    if (type === 'ws') {
+      const client = host.switchToWs().getClient();
+
+      // Handle socket-specific errors
+
+      client.emit('error', {
+        message: 'Connection error occurred',
+      });
+      return;
     } else {
       const context = host.switchToHttp();
       const response = context.getResponse<Response>();
