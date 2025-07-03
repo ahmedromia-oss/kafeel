@@ -1,4 +1,4 @@
-import { ForbiddenException, UseGuards } from '@nestjs/common';
+import { ForbiddenException, NotFoundException, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   WebSocketGateway,
@@ -51,14 +51,20 @@ export class ChatGateway
   }
 
   handleDisconnect(client: Socket) {
+    try{
     client.handshake.auth = null;
+    }
+    catch{}
   }
   @SubscribeMessage('markRead')
   async handleMarkRead(
     @MessageBody() chatId: string,
     @WsCurrentUser() user: userToken,
   ) {
+    try{
     await this.messageService.markRead(chatId, user.sub);
+    }
+    catch{}
   }
   @SubscribeMessage('sendMessage')
   async handleChatMessage(
@@ -77,18 +83,22 @@ export class ChatGateway
       );
 
       return result;
-    } catch (e) {}
+    } catch (e) {
+    }
   }
   @SubscribeMessage('createChat')
   async createChat(
     @MessageBody() recieverId: string,
     @WsCurrentUser() user: userToken,
   ) {
+    try{
     if (user.sub != recieverId) {
       return await this.chatService.createChat(user.sub, {
         recieverId: recieverId,
       } as createChatDto);
     }
+  }
+  catch{}
   }
 
   private async getUserIdFromClient(client: Socket): Promise<userToken> {
