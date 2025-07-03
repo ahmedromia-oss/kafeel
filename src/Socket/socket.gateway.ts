@@ -41,28 +41,30 @@ export class ChatGateway
   async afterInit(server: Server) {}
 
   async handleConnection(client: Socket) {
-    
+    try {
       const user = await this.getUserIdFromClient(client);
       const rooms = (await this.chatService.getChatsForUser(user.sub)).map(
         (room) => room.id,
       );
       client.join(rooms);
-    
+    } catch (e) {}
   }
 
   handleDisconnect(client: Socket) {
- 
+    try{
     client.handshake.auth = null;
-   
+    }
+    catch{}
   }
   @SubscribeMessage('markRead')
   async handleMarkRead(
     @MessageBody() chatId: string,
     @WsCurrentUser() user: userToken,
   ) {
-   
+    try{
     await this.messageService.markRead(chatId, user.sub);
-  
+    }
+    catch{}
   }
   @SubscribeMessage('sendMessage')
   async handleChatMessage(
@@ -71,7 +73,7 @@ export class ChatGateway
     @ConnectedSocket() client: Socket,
   ) {
     // Broadcast to all other clients except sender
-  
+    try {
       client.broadcast
         .to(data.chatId)
         .emit('chatMessage', { message: data.message, senderId: user.sub });
@@ -81,22 +83,23 @@ export class ChatGateway
       );
 
       return result;
-    
+    } catch (e) {
+    }
   }
   @SubscribeMessage('createChat')
   async createChat(
     @MessageBody() recieverId: string,
     @WsCurrentUser() user: userToken,
   ) {
-   
+    try{
     if (user.sub != recieverId) {
       return await this.chatService.createChat(user.sub, {
         recieverId: recieverId,
       } as createChatDto);
     }
   }
-
-  
+  catch{}
+  }
 
   private async getUserIdFromClient(client: Socket): Promise<userToken> {
     try {
