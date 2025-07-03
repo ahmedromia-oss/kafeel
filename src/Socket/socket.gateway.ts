@@ -61,10 +61,9 @@ export class ChatGateway
     @MessageBody() chatId: string,
     @WsCurrentUser() user: userToken,
   ) {
-    try{
+   
     await this.messageService.markRead(chatId, user.sub);
-    }
-    catch{}
+  
   }
   @SubscribeMessage('sendMessage')
   async handleChatMessage(
