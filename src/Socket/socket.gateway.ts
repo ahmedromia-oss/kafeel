@@ -73,7 +73,7 @@ export class ChatGateway
     @ConnectedSocket() client: Socket,
   ) {
     // Broadcast to all other clients except sender
-    try {
+  
       client.broadcast
         .to(data.chatId)
         .emit('chatMessage', { message: data.message, senderId: user.sub });
@@ -83,8 +83,7 @@ export class ChatGateway
       );
 
       return result;
-    } catch (e) {
-    }
+    
   }
   @SubscribeMessage('createChat')
   async createChat(
