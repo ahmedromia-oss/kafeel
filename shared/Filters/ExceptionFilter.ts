@@ -6,7 +6,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { response, Response } from 'express';
 import { Code } from '../../src/constants';
 import { ServiceResponse } from 'src/models/response.model';
 import { QueryFailedError } from 'typeorm';
@@ -20,13 +20,7 @@ export class ResponseExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const type = host.getType();
     if (type == 'ws') {
-      const client = host.switchToWs().getClient();
-
-     
-
-      client.emit('error', {
-        status: 'error',
-      });
+      return response.status(500)
     } else {
       const context = host.switchToHttp();
       const response = context.getResponse<Response>();
