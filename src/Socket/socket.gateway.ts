@@ -41,20 +41,19 @@ export class ChatGateway
   async afterInit(server: Server) {}
 
   async handleConnection(client: Socket) {
-    try {
+    
       const user = await this.getUserIdFromClient(client);
       const rooms = (await this.chatService.getChatsForUser(user.sub)).map(
         (room) => room.id,
       );
       client.join(rooms);
-    } catch (e) {}
+    
   }
 
   handleDisconnect(client: Socket) {
-    try{
+ 
     client.handshake.auth = null;
-    }
-    catch{}
+   
   }
   @SubscribeMessage('markRead')
   async handleMarkRead(
@@ -89,15 +88,15 @@ export class ChatGateway
     @MessageBody() recieverId: string,
     @WsCurrentUser() user: userToken,
   ) {
-    try{
+   
     if (user.sub != recieverId) {
       return await this.chatService.createChat(user.sub, {
         recieverId: recieverId,
       } as createChatDto);
     }
   }
-  catch{}
-  }
+
+  
 
   private async getUserIdFromClient(client: Socket): Promise<userToken> {
     try {
