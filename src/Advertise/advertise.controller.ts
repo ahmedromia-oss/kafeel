@@ -99,7 +99,6 @@ export class AdvertiseController {
   @Delete(':advertiseId')
   @serialize()
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.WORKER)
   async deleteAdvertise(
     @user() user: userToken,
     @Param('advertiseId') advertiseId: string,
