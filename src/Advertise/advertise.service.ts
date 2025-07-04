@@ -52,6 +52,10 @@ export class AdvertiseService {
    * Get a single advert by its ID, scoped to the worker
    */
   async deleteAdvertise(advertiseId: string, workerId: string) {
+    const user = await this.userService.getUserById(workerId)
+    if(user.userType == UserType.ADMIN){
+      return await this.advertiseRepo.delete({id:advertiseId})
+    }
     return await this.advertiseRepo.delete({
       workerId: workerId,
       id: advertiseId,
