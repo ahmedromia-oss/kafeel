@@ -123,7 +123,7 @@ export class otpService {
           userId: user.id,
         },
         {
-          code: this.generateCode(),
+          code:code,
           expiresAt: new Date(Date.now() + 5 * 60 * 1000),
           Provider: typesOfOTP.LOGUP,
         },
@@ -136,7 +136,7 @@ export class otpService {
         code: this.generateCode(),
         Provider: typesOfOTP.LOGUP,
       });
-      const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+      const url = `https://api.oursms.com/api-a/msgs?usernameABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
       await axios.get(url);
 
       return valuesString.UPDATED;
