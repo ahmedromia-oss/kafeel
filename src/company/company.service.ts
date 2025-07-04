@@ -20,7 +20,7 @@ export class companyService {
     return await this.companyRepo.findOne({ where: { userId: companyId } });
   }
   async getAll(){
-    return await this.companyRepo.findAll({relations:{Jobs:true}})
+    return await this.companyRepo.findAll({relations:{Jobs:true} , where:{user:{userApproved:true}}})
   }
   async getProfile(userId: string) {
     return await this.companyRepo.findOne({ where: { userId: userId } });
