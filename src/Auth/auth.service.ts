@@ -99,6 +99,9 @@ export class AuthService {
 
   async logIn(data: SignInUserDTO) {
     const user = await this.userService.getUserByEmail(data.email);
+    if(user.userApproved == false){
+      throw new UnauthorizedException()
+    }
 
     if (user) {
       const scrypt = promisify(_scrypt);
@@ -134,6 +137,9 @@ export class AuthService {
 
   async loginForOtp(loginDto: loginDto) {
     const otp = await this.otpService.verfiyOtp(loginDto.OTPcode);
+    if(otp?.user && otp.user?.userApproved == false){
+      throw new UnauthorizedException()
+    }
 
     try {
       const user = await this.userService.getByPhoneNumber(
@@ -142,6 +148,7 @@ export class AuthService {
       if (otp.userId != user.id || otp.user?.userType != loginDto.userType) {
         throw new BadRequestException(Code.INVALID_OTP);
       }
+     
 
       const payload: userToken = {
         Approved: user.userApproved,
