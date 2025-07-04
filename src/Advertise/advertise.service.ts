@@ -56,10 +56,10 @@ export class AdvertiseService {
     if(user.userType == UserType.ADMIN){
       return await this.advertiseRepo.delete({id:advertiseId})
     }
-    return await this.advertiseRepo.delete({
+    return await this.advertiseRepo.delete([{
       workerId: workerId,
       id: advertiseId,
-    });
+    } , {companyId:workerId , id:advertiseId}]);
   }
   async getAdvertiseById(advertiseId: string): Promise<Advertise> {
     return await this.advertiseRepo.findOne({
