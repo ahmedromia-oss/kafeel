@@ -14,19 +14,18 @@ export class JobRepository extends GenericRepository<Job> {
     super(jobRepository);
   }
   async takeTop5(companyId: string) {
-    return await this.jobRepository
-      .createQueryBuilder('job')
+    return await this.jobRepository.query(
+      `select jo.title as title , count(apps.id) as applicants from company
+join job jo
+on jo.companyId =  '${companyId}'
+join job_applicants apps
+on apps.jobId = jo.id
 
-      .leftJoin('job.applicants', 'applicants')
-
-      .select('job.title', 'title')
-      .addSelect('count(applicants.userId)', 'applicants')
-      .where('job.companyId = :companyId', { companyId })
-      .groupBy('job.title')
-      .orderBy('applicants', 'DESC')
-      .limit(5)
-    
-      .getRawMany();
+group by title
+order by count(apps.id)
+limit 5
+`,
+    );
   }
   async searchJobs(
     companyId?: string,
