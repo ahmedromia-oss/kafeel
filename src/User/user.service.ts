@@ -6,6 +6,7 @@ import { UnitOfWork } from 'src/UnitOfWork/unitOfWork.service';
 import { UserFactoryService } from './user.factory';
 import { UserRepository } from './repositories/user.repository';
 import { EntityManager } from 'typeorm';
+import { UserType } from 'src/constants';
 
 @Injectable()
 export class UserService {
@@ -61,6 +62,11 @@ export class UserService {
   }
   public async getUserById(id: string): Promise<User> {
     return await this.UserRepository.findById(id);
+  }
+  public async getUsersBasedType(type:UserType){
+    const service = this.userFactory.getService(type);
+    const result =  await service.getAll()
+    return result
   }
   public async allUsers(): Promise<User[]> {
     return await this.UserRepository.findAll({

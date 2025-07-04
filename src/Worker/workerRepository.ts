@@ -1,5 +1,4 @@
 import { GenericRepository } from 'shared/generic.repository';
-import { education } from 'src/constants';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, EntityManager, Repository } from 'typeorm';

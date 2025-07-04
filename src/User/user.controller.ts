@@ -33,6 +33,7 @@ import { getProfileDto } from './DTOs/getProfile.dto';
 import { getProfileLockedDto } from './DTOs/getProfileLocked.dto';
 import { RoleGuard } from 'src/Auth/Gaurds/Role.gaurd';
 import { ROLE_KEY, roles } from 'src/Auth/Decorators/Roles.decorator';
+import { query } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -44,7 +45,6 @@ export class UserController {
   @serialize()
   @Put()
   @UseInterceptors(FileInterceptor('profilePhoto'))
-
   async update(
     @Body() data: updateUserDto,
     @user() userToUpdate: userToken,
@@ -90,10 +90,25 @@ export class UserController {
     return await this.userService.deleteUser(user.sub);
   }
   @Delete('delete/user/:userId')
-  @UseGuards(AuthGuard , RoleGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @roles(UserType.ADMIN)
   @serialize()
-  async DeleteUserAdmin(@Param('userId') userId:string) {
+  async DeleteUserAdmin(@Param('userId') userId: string) {
     return await this.userService.deleteUser(userId);
+  }
+  @Get('/user/users/companies')
+  @serialize(getProfileDto, ['COMPANY'])
+  async getCompanies() {
+    return await this.userService.getUsersBasedType(UserType.COMPANY);
+  }
+  @Get('/user/users/kafeels')
+  @serialize(getProfileDto, ['KAFEEL'])
+  async getKAfeels() {
+    return await this.userService.getUsersBasedType(UserType.KAFEEL);
+  }
+   @Get('/user/users/workers')
+  @serialize(getProfileDto, ['WORKER'])
+  async getUsers() {
+    return await this.userService.getUsersBasedType(UserType.WORKER);
   }
 }

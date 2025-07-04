@@ -144,7 +144,6 @@ export class CompanyController {
   @serialize(getCompanyDto)
   @UseGuards(AuthGuard, RoleGuard)
   @roles(UserType.ADMIN)
-  // @permissions(PERMISSION.IS_ADMIN)
   @Get('unapproved/companies')
   async unAppovedCompanies() {
     return await this.companyService.unApprovedUsers();

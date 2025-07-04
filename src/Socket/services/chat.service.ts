@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ChatRepository } from '../repositories/chat.repository';
 import { UserService } from 'src/User/user.service';
 import { createChatDto } from '../DTOs/Chats/createChat.dto';
@@ -21,6 +21,9 @@ export class ChatService {
   }
   async createChat(senderId: string, createDto: createChatDto): Promise<Chat> {
     // Fetch user entities for each member
+    if(senderId == createDto.recieverId){
+      throw new NotFoundException()
+    }
     const sender = await this.userService.getUserById(senderId);
     const reciever = await this.userService.getUserById(createDto.recieverId);
     const members = [sender, reciever];

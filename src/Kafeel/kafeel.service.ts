@@ -22,4 +22,7 @@ export class kafeelService {
   async updateKafeel(id: string, kafeel: kafeel) {
     return await this.KafeelRepo.update({ userId: id }, kafeel);
   }
+  async getAll(){
+    return await this.KafeelRepo.findAll()
+  }
 }

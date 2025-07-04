@@ -54,4 +54,7 @@ export class WorkerService {
     }
     return await this.workerRepo.update({ userId: workerId }, worker);
   }
+  async getAll(){
+    return await this.workerRepo.findAll({relations:{awards:true , educations:true , experiences:true , skills:true , languages:true}})
+  }
 }

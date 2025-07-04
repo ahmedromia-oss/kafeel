@@ -17,7 +17,6 @@ export class OTPController {
   @serialize()
   @Post('/mail')
   async sendMail(@Body() { email }) {
-    console.log(email);
     return await this.otpService.sendMailOtp(email);
   }
   @Post('verfiy/mail')

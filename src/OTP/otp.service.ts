@@ -30,7 +30,6 @@ export class otpService {
   ) {}
   async verifyEmailOtp(otp: string) {
     try {
-      console.log(otp)
       const otpUser = await this.otpRepo.findOne({
         where: {
           code: otp,
@@ -52,7 +51,6 @@ export class otpService {
         this.configService.get<string>('durationToken'),
       );
     } catch(e) {
-      console.log(e)
       throw new BadRequestException(Code.INVALID_OTP);
     }
   }
@@ -102,13 +100,11 @@ export class otpService {
 
       transporter.sendMail(mailOptions, (error) => {
         if (error) {
-          console.log(error);
           throw new NotFoundException();
         }
       });
       return valuesString.UPDATED;
     } catch (e) {
-      console.log(e);
       throw new NotFoundException();
     }
   }
@@ -142,6 +138,7 @@ export class otpService {
       });
       const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
       await axios.get(url);
+
       return valuesString.UPDATED;
     }
   }
