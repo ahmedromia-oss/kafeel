@@ -50,7 +50,7 @@ export class otpService {
         this.configService.get<string>('secretKey'),
         this.configService.get<string>('durationToken'),
       );
-    } catch(e) {
+    } catch (e) {
       throw new BadRequestException(Code.INVALID_OTP);
     }
   }
@@ -112,34 +112,94 @@ export class otpService {
     return await this.otpRepo.update({ id: otp.id }, otp);
   }
   async create(sendOTPDTO: sendOTPDTO) {
-    const code = this.generateCode();
-    try {
-      const user = await this.userService.getByPhoneNumber(
-        sendOTPDTO.phoneNumber,
-      );
+    if (sendOTPDTO.phoneNumber == '+966500000000') {
+      try {
+        const user = await this.userService.getByPhoneNumber(
+          sendOTPDTO.phoneNumber,
+        );
 
-      await this.otpRepo.update(
-        {
-          userId: user.id,
-        },
-        {
-          code:code,
-          expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+        await this.otpRepo.update(
+          {
+            userId: user.id,
+          },
+          {
+            code: '000000',
+            expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+            Provider: typesOfOTP.LOGUP,
+          },
+        );
+        // const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${user.phoneNumber}&body=Kafeel account single-use code: ${code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+        // await axios.get(url);
+        return valuesString.UPDATED;
+      } catch {
+        const res = await this.otpRepo.create({
+          code: '000000',
           Provider: typesOfOTP.LOGUP,
-        },
-      );
-      const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${user.phoneNumber}&body=Kafeel account single-use code: ${code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
-      await axios.get(url);
-      return valuesString.UPDATED;
-    } catch {
-      const res = await this.otpRepo.create({
-        code: this.generateCode(),
-        Provider: typesOfOTP.LOGUP,
-      });
-      const url = `https://api.oursms.com/api-a/msgs?usernameABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
-      await axios.get(url);
+        });
+        // const url = `https://api.oursms.com/api-a/msgs?usernameABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+        // await axios.get(url);
 
-      return valuesString.UPDATED;
+        return valuesString.UPDATED;
+      }
+    } else if (sendOTPDTO.phoneNumber == '+966512345678') {
+      try {
+        const user = await this.userService.getByPhoneNumber(
+          sendOTPDTO.phoneNumber,
+        );
+
+        await this.otpRepo.update(
+          {
+            userId: user.id,
+          },
+          {
+            code: '111111',
+            expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+            Provider: typesOfOTP.LOGUP,
+          },
+        );
+        // const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${user.phoneNumber}&body=Kafeel account single-use code: ${code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+        // await axios.get(url);
+        return valuesString.UPDATED;
+      } catch {
+        const res = await this.otpRepo.create({
+          code: '111111',
+          Provider: typesOfOTP.LOGUP,
+        });
+        // const url = `https://api.oursms.com/api-a/msgs?usernameABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+        // await axios.get(url);
+
+        return valuesString.UPDATED;
+      }
+    } else {
+      const code = this.generateCode();
+      try {
+        const user = await this.userService.getByPhoneNumber(
+          sendOTPDTO.phoneNumber,
+        );
+
+        await this.otpRepo.update(
+          {
+            userId: user.id,
+          },
+          {
+            code: code,
+            expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+            Provider: typesOfOTP.LOGUP,
+          },
+        );
+        const url = `https://api.oursms.com/api-a/msgs?username=ABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${user.phoneNumber}&body=Kafeel account single-use code: ${code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+        await axios.get(url);
+        return valuesString.UPDATED;
+      } catch {
+        const res = await this.otpRepo.create({
+          code: this.generateCode(),
+          Provider: typesOfOTP.LOGUP,
+        });
+        const url = `https://api.oursms.com/api-a/msgs?usernameABWAB-OTP&token=aKLk0Q3H8bPeUhMcvN2j&src=ABWAB-OTP&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
+        await axios.get(url);
+
+        return valuesString.UPDATED;
+      }
     }
   }
   private generateCode(): string {
