@@ -8,7 +8,7 @@ export class getJobApplicantDto {
   describtion: string;
   @Expose()
   CV: string;
-  @Expose()
+  @Expose ({name:'User'})
   @Type(()=>getUserDto)
-  user:getUserDto
+  user:getUserDto;
 }
