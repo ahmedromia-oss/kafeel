@@ -17,10 +17,11 @@ export class GetAwardDto {
 
   @Expose()
   @Transform(({ value }) => {
-    if (value === null || typeof value === 'undefined')
+    if (value === null || value === undefined) {
       return valuesString.PRESENT;
-
-    return new Date(value);
+    } else {
+      return value;
+    }
   })
   endDate?: Date | string;
 
