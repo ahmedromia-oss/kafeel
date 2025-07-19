@@ -29,6 +29,7 @@ export class updateEducationDto {
     }
   })
   @IsDate({ message: ValidationErrors.INVALID_DATE })
+  @Transform(({ value }) => new Date(value))
   endDate: Date;
   @IsOptional()
   @IsString({ message: ValidationErrors.MUST_STRING })
