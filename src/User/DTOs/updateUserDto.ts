@@ -53,7 +53,7 @@ export class updateUserDto {
   country: string;
 
   @IsOptional()
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) =>{if(value){return  new Date(value)}})
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   birthDate: Date;
 }
