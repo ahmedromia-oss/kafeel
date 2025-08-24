@@ -41,6 +41,7 @@ export class JobService {
     return await this.jobRepo.findOne({
       where: { id: jobId },
       relations: {
+        Kafeel:true,
         applicants: true,
         savedByUsers: true,
         company: { Jobs: true },
@@ -50,6 +51,7 @@ export class JobService {
   async getJobs(skip: number = 0, take: number = 5): Promise<Job[]> {
     return await this.jobRepo.findAll({
       relations: {
+        Kafeel:true,
         savedByUsers: true,
         applicants: true,
         company: { Jobs: true },
