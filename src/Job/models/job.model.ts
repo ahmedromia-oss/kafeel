@@ -2,6 +2,7 @@ import { BaseEntity } from 'shared/shared.entity';
 import { Company } from 'src/company/company.model';
 import { JobType } from 'src/constants';
 import { JobApplicants } from 'src/Job_Applicants/Job_applicants.model';
+import { kafeel } from 'src/Kafeel/kafeel.model';
 import { UserSavedJob } from 'src/User/models/userJobSaved.model';
 
 import {
@@ -50,11 +51,16 @@ export class Job extends BaseEntity {
       this.id = v4();
     }
   }
-  @Column({ type: 'uuid', nullable: false })
+  @Column({ type: 'uuid', nullable: true })
   companyId: string;
-  @ManyToOne(() => Company, (company) => company.Jobs, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'companyId' })
+  @ManyToOne(() => Company, (company) => company.Jobs, { onDelete: 'CASCADE' , nullable:true })
+  @JoinColumn({ name: 'companyId' } )
   company: Company;
+  @Column({ type: 'uuid', nullable: true })
+  kafeelId: string;
+  @ManyToOne(() => kafeel, (kafeel) => kafeel.Jobs, { onDelete: 'CASCADE' , nullable:true })
+  @JoinColumn({ name: 'kafeelId' })
+  Kafeel: kafeel;
   @Column('text')
   email: string;
   @Column('text')

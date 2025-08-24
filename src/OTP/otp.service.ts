@@ -112,6 +112,7 @@ export class otpService {
     return await this.otpRepo.update({ id: otp.id }, otp);
   }
   async create(sendOTPDTO: sendOTPDTO) {
+    console.log(sendOTPDTO.phoneNumber)
     if (sendOTPDTO.phoneNumber == '+966500000000') {
       try {
         const user = await this.userService.getByPhoneNumber(
@@ -130,8 +131,9 @@ export class otpService {
         );
       
         return valuesString.UPDATED;
-      } catch {
-        const res = await this.otpRepo.create({
+      } catch(e) {
+        console.log(e)
+        await this.otpRepo.create({
           code: '000000',
           Provider: typesOfOTP.LOGUP,
         });

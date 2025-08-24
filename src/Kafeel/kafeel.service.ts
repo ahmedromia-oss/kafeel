@@ -11,6 +11,7 @@ export class kafeelService {
   async create(userId: string, manager?: EntityManager) {
     return await this.KafeelRepo.create({ userId: userId }, manager);
   }
+
   async getProfile(userId: string) {
     return await this.KafeelRepo.findOne({ where: { userId: userId } });
   }

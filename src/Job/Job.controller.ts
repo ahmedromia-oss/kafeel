@@ -34,19 +34,23 @@ export class JobController {
   @Post()
   @serialize(GetJobDto)
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.COMPANY)
+  @roles(UserType.COMPANY, UserType.KAFEEL)
   async createJob(
     @Body() createJobDto: CreateJobDto,
     @user() user: userToken,
   ): Promise<Job> {
     const job = plainToInstance(Job, createJobDto);
-    job.companyId = user.sub;
-    return await this.jobService.createJob(job);
+    if (user.type == UserType.KAFEEL) {
+      job.kafeelId = user.sub;
+    } else {
+      job.companyId = user.sub;
+      return await this.jobService.createJob(job);
+    }
   }
   @Put(':jobId')
   @serialize()
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.COMPANY)
+  @roles(UserType.COMPANY, UserType.KAFEEL)
   async updateJob(
     @Param('jobId') jobId: string,
     @Body() updateJob: UpdateJobDto,
@@ -71,16 +75,16 @@ export class JobController {
     @Param('companyId') companyId: string,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
-    @Query('sort') sort?:string
+    @Query('sort') sort?: string,
   ): Promise<Job[]> {
-    return this.jobService.getJobsByCompany(companyId, skip, take , sort);
+    return this.jobService.getJobsByCompany(companyId, skip, take, sort);
   }
 
   // DELETE /jobs/:jobId
   @Delete(':jobId')
   @serialize()
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.COMPANY)
+  @roles(UserType.COMPANY, UserType.KAFEEL)
   async deleteJob(
     @user() user: userToken,
     @Param('jobId') jobId: string,

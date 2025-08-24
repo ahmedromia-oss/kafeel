@@ -106,7 +106,7 @@ export class UserController {
   async getKAfeels() {
     return await this.userService.getUsersBasedType(UserType.KAFEEL);
   }
-   @Get('/user/users/workers')
+  @Get('/user/users/workers')
   @serialize(getProfileDto, ['WORKER'])
   async getUsers() {
     return await this.userService.getUsersBasedType(UserType.WORKER);

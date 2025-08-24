@@ -88,7 +88,7 @@ export class UserService {
     const service = this.userFactory.getService(user.userType);
     return await service.getPrivateProfile(user.id);
   }
-
+  
   public async unApproveUser(userId: string) {
     return await this.UpdateUser({ userApproved: false } as User, userId);
   }

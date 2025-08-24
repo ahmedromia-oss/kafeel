@@ -12,7 +12,11 @@ import { education, ValidationErrors } from 'src/constants';
 
 export class createEducationDto {
   @IsNotEmpty()
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => {
+    if (value) {
+      return new Date(value);
+    }
+  })
   @IsDate({ message: ValidationErrors.INVALID_DATE })
   startDate: Date;
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
@@ -29,6 +33,12 @@ export class createEducationDto {
     }
   })
   @IsDate({ message: ValidationErrors.INVALID_DATE })
+  @Transform(({ value }) => {
+    if (value) {
+      return new Date(value);
+    }
+  })
+
   endDate: Date;
   @IsNotEmpty({ message: ValidationErrors.REQUIRED })
   @IsString({ message: ValidationErrors.MUST_STRING })

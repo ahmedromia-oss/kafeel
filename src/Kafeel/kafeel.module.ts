@@ -11,7 +11,7 @@ import { TokenModule } from 'src/JWT/jwt.module';
 @Module({
   imports: [TypeOrmModule.forFeature([kafeel]) , TokenModule],
   providers: [kafeelService , KafeelRepository],
-  exports: [],
+  exports: [kafeelService],
   controllers:[KafeelController]
 })
 export class KafeelModule {}

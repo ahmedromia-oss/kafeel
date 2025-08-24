@@ -20,6 +20,7 @@ export class getEducationDto {
   @Expose()
   describtion: string;
   @Transform(({ value }) => {
+    
     if (value === null || value === undefined) {
       return valuesString.PRESENT;
     }
