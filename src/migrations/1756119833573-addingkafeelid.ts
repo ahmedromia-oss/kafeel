@@ -1,9 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Addingkafeelid1756119133652 implements MigrationInterface {
-    name = 'Addingkafeelid1756119133652'
+export class Addingkafeelid1756119833573 implements MigrationInterface {
+    name = 'Addingkafeelid1756119833573'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE \`job\` ADD \`KafeelId\` varchar(255) NULL`);
         await queryRunner.query(`ALTER TABLE \`job\` DROP FOREIGN KEY \`FK_e66170573cabd565dab1132727d\``);
         await queryRunner.query(`ALTER TABLE \`job\` CHANGE \`companyId\` \`companyId\` varchar(255) NULL`);
         await queryRunner.query(`ALTER TABLE \`job\` ADD CONSTRAINT \`FK_e66170573cabd565dab1132727d\` FOREIGN KEY (\`companyId\`) REFERENCES \`company\`(\`userId\`) ON DELETE CASCADE ON UPDATE NO ACTION`);
@@ -15,6 +16,7 @@ export class Addingkafeelid1756119133652 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`job\` DROP FOREIGN KEY \`FK_e66170573cabd565dab1132727d\``);
         await queryRunner.query(`ALTER TABLE \`job\` CHANGE \`companyId\` \`companyId\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`job\` ADD CONSTRAINT \`FK_e66170573cabd565dab1132727d\` FOREIGN KEY (\`companyId\`) REFERENCES \`company\`(\`userId\`) ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE \`job\` DROP COLUMN \`KafeelId\``);
     }
 
 }
