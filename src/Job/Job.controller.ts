@@ -42,6 +42,7 @@ export class JobController {
     const job = plainToInstance(Job, createJobDto);
     if (user.type == UserType.KAFEEL) {
       job.kafeelId = user.sub;
+      return await this.jobService.createJob(job);
     } else {
       job.companyId = user.sub;
       return await this.jobService.createJob(job);
@@ -100,7 +101,7 @@ export class JobController {
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ): Promise<Job[]> {
-    return this.jobService.getJobs(skip, take);
+    return await this.jobService.getJobs(skip, take);
   }
   @UseGuards(AuthGuard)
   @Post('save/:JobId')

@@ -1,6 +1,8 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import { getCompanyDto } from 'src/company/DTOs/getCompany.dto';
 import { JobType } from 'src/constants';
+import { getKafeelDto } from 'src/Kafeel/DTOs/getKafeel.dto';
+import { kafeel } from 'src/Kafeel/kafeel.model';
 import { User } from 'src/User/models/user.model';
 import { UserSavedJob } from 'src/User/models/userJobSaved.model';
 
@@ -49,4 +51,9 @@ export class GetJobDto {
     return obj.savedByUsers?.map((e)=>e.userId).includes(obj?.currentUserId || '') || false;
   })
   IsSaved: boolean;
+  @Expose()
+  @Type(()=>getKafeelDto)
+  Kafeel:getKafeelDto
+  @Expose()
+  kafeelId:string
 }
