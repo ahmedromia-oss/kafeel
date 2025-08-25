@@ -55,5 +55,5 @@ export class GetJobDto {
   @Type(()=>getKafeelDto)
   Kafeel:getKafeelDto
   @Expose()
-  kafeelId:string
+  KafeelId:string
 }

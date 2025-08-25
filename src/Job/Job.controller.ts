@@ -41,7 +41,7 @@ export class JobController {
   ): Promise<Job> {
     const job = plainToInstance(Job, createJobDto);
     if (user.type == UserType.KAFEEL) {
-      job.kafeelId = user.sub;
+      job.KafeelId = user.sub;
       return await this.jobService.createJob(job);
     } else {
       job.companyId = user.sub;

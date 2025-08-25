@@ -57,9 +57,9 @@ export class Job extends BaseEntity {
   @JoinColumn({ name: 'companyId' } )
   company: Company;
   @Column({ type: 'uuid', nullable: true })
-  kafeelId: string;
+  KafeelId: string;
   @ManyToOne(() => kafeel, (kafeel) => kafeel.Jobs, { onDelete: 'CASCADE' , nullable:true })
-  @JoinColumn({ name: 'kafeelId' })
+  @JoinColumn({ name: 'KafeelId' })
   Kafeel: kafeel;
   @Column('text')
   email: string;

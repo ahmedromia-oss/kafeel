@@ -41,7 +41,7 @@ export class JobService {
     return await this.jobRepo.findOne({
       where: { id: jobId },
       relations: {
-        Kafeel:true,
+        Kafeel: true,
         applicants: true,
         savedByUsers: true,
         company: { Jobs: true },
@@ -51,7 +51,7 @@ export class JobService {
   async getJobs(skip: number = 0, take: number = 5): Promise<Job[]> {
     return await this.jobRepo.findAll({
       relations: {
-        Kafeel:true,
+        Kafeel: true,
         savedByUsers: true,
         applicants: true,
         company: { Jobs: true },
@@ -66,7 +66,7 @@ export class JobService {
       job.company = await this.companyService.getCompany(job.companyId);
       return await this.jobRepo.create(job);
     } else {
-      job.Kafeel = await this.kafeelService.getProfile(job.kafeelId);
+      job.Kafeel = await this.kafeelService.getProfile(job.KafeelId);
       return await this.jobRepo.create(job);
     }
   }
@@ -88,7 +88,7 @@ export class JobService {
     try {
       return await this.jobRepo.update({ id: jobId, companyId }, job);
     } catch {
-      return await this.jobRepo.update({ id: jobId, kafeelId: companyId }, job);
+      return await this.jobRepo.update({ id: jobId, KafeelId: companyId }, job);
     }
   }
 
@@ -96,7 +96,7 @@ export class JobService {
     try {
       return await this.jobRepo.delete({ id: jobId, companyId });
     } catch {
-      return await this.jobRepo.delete({ id: jobId, kafeelId: companyId });
+      return await this.jobRepo.delete({ id: jobId, KafeelId: companyId });
     }
   }
   async saveAndDeleteJob(userId: string, jobId: string) {
