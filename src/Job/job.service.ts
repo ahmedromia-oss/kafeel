@@ -28,13 +28,25 @@ export class JobService {
     if (sort == 'apps') {
       return await this.jobRepo.takeTop5(companyId);
     }
-    const res = await this.jobRepo.findAll({
-      relations: { savedByUsers: true, applicants: true },
-      where: { companyId },
-      skip: skip,
-      take: take,
-    });
-    return res;
+    try {
+      await this.companyService.getProfile(companyId);
+
+      const res = await this.jobRepo.findAll({
+        relations: { savedByUsers: true, applicants: true },
+        where: { companyId },
+        skip: skip,
+        take: take,
+      });
+      return res;
+    } catch {
+      const res = await this.jobRepo.findAll({
+        relations: { savedByUsers: true, applicants: true },
+        where: { KafeelId: companyId },
+        skip: skip,
+        take: take,
+      });
+      return res;
+    }
   }
 
   async getJobById(jobId: string): Promise<Job> {
