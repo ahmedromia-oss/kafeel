@@ -31,6 +31,7 @@ import { JobApplicants } from './Job_applicants.model';
 import { getJobApplicantDto } from './DTOs/getJobApplicant.dto';
 import { getUserDto } from 'src/User/DTOs/getUserDto';
 import { User } from 'src/User/models/user.model';
+import { kafeel } from 'src/Kafeel/kafeel.model';
 
 @Controller('jobApplicant')
 export class jobApplicantController {
@@ -63,7 +64,7 @@ export class jobApplicantController {
   }
   @Get('applications/:jobId')
   @UseGuards(AuthGuard, RoleGuard)
-  @roles(UserType.COMPANY)
+  @roles(UserType.COMPANY ,UserType.KAFEEL)
   @serialize(getJobApplicantDto)
   async getApplications(
     @user() user: userToken,

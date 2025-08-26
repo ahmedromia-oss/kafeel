@@ -37,13 +37,16 @@ export class JobApplicantsService {
     skip: number = 0,
     take: number = 5,
   ) {
-    const res =  await this.jobApplicantsRepository.findAll({
-      where: { JobId: jobId, job: { companyId: companyId } },
-      relations: {User: true },
+    const res = await this.jobApplicantsRepository.findAll({
+      where: [
+        { JobId: jobId, job: { companyId: companyId } },
+        { JobId: jobId, job: { KafeelId: companyId } },
+      ],
+
+      relations: { User: true },
       skip: skip,
       take: take,
     });
-    console.log(res)
-    return res
+    return res;
   }
 }
