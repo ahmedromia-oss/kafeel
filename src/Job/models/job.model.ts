@@ -53,12 +53,18 @@ export class Job extends BaseEntity {
   }
   @Column({ type: 'uuid', nullable: true })
   companyId: string;
-  @ManyToOne(() => Company, (company) => company.Jobs, { onDelete: 'CASCADE' , nullable:true })
-  @JoinColumn({ name: 'companyId' } )
+  @ManyToOne(() => Company, (company) => company.Jobs, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'companyId' })
   company: Company;
   @Column({ type: 'uuid', nullable: true })
   KafeelId: string;
-  @ManyToOne(() => kafeel, (kafeel) => kafeel.Jobs, { onDelete: 'CASCADE' , nullable:true })
+  @ManyToOne(() => kafeel, (kafeel) => kafeel.Jobs, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
   @JoinColumn({ name: 'KafeelId' })
   Kafeel: kafeel;
   @Column('text')
@@ -69,5 +75,7 @@ export class Job extends BaseEntity {
   phoneNumber: string;
   @OneToMany(() => UserSavedJob, (savedJob) => savedJob.job)
   savedByUsers: UserSavedJob[];
-  IsSaved:boolean
+  IsSaved: boolean;
+  @Column({ type: 'bool'  , default:true})
+  isOpen: boolean;
 }

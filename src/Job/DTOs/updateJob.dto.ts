@@ -46,4 +46,7 @@ export class UpdateJobDto {
   currency: string;
   @IsOptional({ message: ValidationErrors.REQUIRED })
   phoneNumber: string;
+  @IsBoolean()
+  @IsOptional()
+  isOpen:boolean
 }

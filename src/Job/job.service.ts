@@ -60,6 +60,18 @@ export class JobService {
       },
     });
   }
+  async getOpenJobById(jobId: string): Promise<Job> {
+    return await this.jobRepo.findOne({
+      where: { id: jobId , isOpen:true },
+      relations: {
+    
+        Kafeel: true,
+        applicants: true,
+        savedByUsers: true,
+        company: { Jobs: true },
+      },
+    });
+  }
   async getJobs(skip: number = 0, take: number = 5): Promise<Job[]> {
     return await this.jobRepo.findAll({
       relations: {

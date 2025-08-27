@@ -56,4 +56,6 @@ export class GetJobDto {
   Kafeel:getKafeelDto
   @Expose()
   KafeelId:string
+  @Expose()
+  isOpen:boolean
 }

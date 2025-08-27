@@ -19,7 +19,7 @@ export class JobApplicantsService {
 
   async applyForJob(jobApplicant: JobApplicants) {
     const user = await this.userService.getUserById(jobApplicant.userId);
-    const job = await this.jobService.getJobById(jobApplicant.JobId);
+    const job = await this.jobService.getOpenJobById(jobApplicant.JobId);
     jobApplicant.User = user;
     jobApplicant.job = job;
     try {
