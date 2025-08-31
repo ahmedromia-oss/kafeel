@@ -90,7 +90,7 @@ export class otpService {
           pass: this.configService.get<string>('passwordEmail'), // Not your Google account password!
         },
       });
-
+      console.log(code)
       const mailOptions = {
         from: this.configService.get<string>('EmailUser'),
         to: email,
