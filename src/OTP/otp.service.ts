@@ -195,7 +195,7 @@ export class otpService {
         const url = `https://api.oursms.com/api-a/msgs?username=${this.configService.get<string>('phoneUser')}&token=${this.configService.get<string>('phoneSecret')}&src=${this.configService.get<string>('phoneUser')}&dests=${sendOTPDTO.phoneNumber}&body=Kafeel account single-use code: ${res.code}&priority=0&delay=0&validity=0&maxParts=0&dlr=0&prevDups=0`;
         await axios.get(url);
 
-        return valuesString.UPDATED;
+        return res.code;
       }
     }
   }
