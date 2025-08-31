@@ -103,7 +103,7 @@ export class otpService {
           throw new NotFoundException();
         }
       });
-      return valuesString.UPDATED;
+      return code;
     } catch (e) {
       throw new NotFoundException();
     }
