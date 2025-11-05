@@ -30,6 +30,7 @@ import { JobApplicants } from './Job_Applicants/Job_applicants.model';
 import { JobApplicantsModule } from './Job_Applicants/Job_applicants.module';
 import { workerModule } from './Worker/worker.module';
 import { OTPModule } from './OTP/otp.module';
+import { ConstantsModule } from './Constants/constants.module';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import {join} from 'path';
 
@@ -70,6 +71,7 @@ import {join} from 'path';
     BucketsModule,
     companyModule,
     OTPModule,
+    ConstantsModule,
   ],
   controllers: [],
   providers: [],
