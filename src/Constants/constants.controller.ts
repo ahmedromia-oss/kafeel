@@ -6,7 +6,7 @@ import {
   Get,
   UseGuards,
 } from '@nestjs/common';
-import { serialize } from '../../Shared/Interceptors/Serialize.Interceptor';
+import { serialize } from '../../shared/Interceptors/Serialize.Interceptor';
 import { ConstantsService } from './constants.service';
 import { CreateConstantsDto } from './DTOs/createConstants.dto';
 import { UpdateConstantsDto } from './DTOs/updateConstants.dto';
